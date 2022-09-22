@@ -548,7 +548,9 @@ ol.s {
 
 .project__container {
    row-gap: 2rem;
-   background-color: var(--first-color-light);
+   /* background-color: var(--first-color-light); */
+   background-color: var(--first-color-darken);
+
    grid-template-columns: repeat(5, 4fr);
    padding: 1rem;
    border-radius: 0.5rem;
@@ -771,6 +773,9 @@ ol.s {
 
    .project__container {
       background-color: var(--first-color-light);
+      background-color: var(--first-color-darken);
+      background-color: rgba(139, 62, 221, 0.2);
+      /* background-color: rgba(62, 99, 221, 0.5); */
       grid-template-columns: repeat(7, 1fr);
       /* padding: 0rem 2rem; */
       padding: 1rem 0.5rem 0.5rem 1rem;
