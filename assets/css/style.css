@@ -312,8 +312,8 @@ img {
 }
 
 .about__description {
-   /* margin-bottom: var(--mb-4); */
    text-align: justify;
+   margin-bottom: var(--mb-4);
 }
 
 .about__img {
@@ -549,6 +549,9 @@ ol.s {
 .project__container {
    row-gap: 2rem;
    background-color: var(--first-color-light);
+   grid-template-columns: repeat(5, 4fr);
+   padding: 1rem;
+   border-radius: 0.5rem;
 }
 
 .project__data {
@@ -805,6 +808,7 @@ ol.s {
       background-color: var(--first-color-darken);
       padding: 5rem 0;
       border-radius: 0.5rem;
+      margin-bottom: -50px;
    }
 }
 
