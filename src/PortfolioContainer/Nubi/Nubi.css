@@ -1,0 +1,13 @@
+.body {
+   background-image: url("../../images/bg5.gif");
+   background-repeat: no-repeat;
+   /* background-size: contain; */
+   background-position: center;
+   background-position-y: unset;
+   /* height: 100vh; */
+   margin: 5rem;
+}
+.title {
+   color: black;
+   text-align: center;
+}
