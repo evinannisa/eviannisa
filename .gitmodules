@@ -1,3 +1,4 @@
-[submodule "client"]
-    path = client
-    url = "https://github.com/evinannisa/client.git"
+[submodule "C:\\Users\\ASUS\\Documents\\Evi\\portfolio\\client"]
+	path = C:\Users\ASUS\Documents\Evi\portfolio\client
+	url = C:\Users\ASUS\Documents\Evi\portfolio\client
+
