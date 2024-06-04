@@ -2,6 +2,3 @@
 	path = client
 	url = https://github.com/evinannisa/eviannisa.git
 	branch = main
-[submodule "commonlib"]
-	path = commonlib
-	url = git://git.mysociety.org/commonlib
