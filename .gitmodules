@@ -1,3 +1,3 @@
-[submodule "client"]
-    path = client
+[submodule "https://github.com/evinannisa/eviannisa/tree/dd3f06912668c2758dbc7c49726b51b04d83815a"]
+    path = https://github.com/evinannisa/eviannisa/tree/dd3f06912668c2758dbc7c49726b51b04d83815a
     url = https://github.com/evinannisa/eviannisa/tree/dd3f06912668c2758dbc7c49726b51b04d83815a
