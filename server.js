@@ -12,14 +12,14 @@ app.use(express.json());
 app.use(cors());
 
 // Static file serving for main public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Static file serving for submodule
-app.use('/submodule', express.static(path.join(__dirname, 'submodule')));
+app.use("/client", express.static(path.join(__dirname, "client")));
 
 // Route for serving index.html from submodule
-app.get('/submodule', (req, res) => {
-  res.sendFile(path.join(__dirname, 'submodule', 'index.html'));
+app.get("/client", (req, res) => {
+   res.sendFile(path.join(__dirname, "client", "index.html"));
 });
 
 app.use("/", contactRoute);
