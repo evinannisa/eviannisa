@@ -11,12 +11,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Melayani file statis dari client/public
-app.use(express.static(path.join(__dirname, "client", "public")));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-// Route untuk melayani index.html dari client/public
-app.get("/", (req, res) => {
-   res.sendFile(path.join(__dirname, "client", "public", "index.html"));
+// Route untuk melayani index.html dari client/build
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 app.use("/api", contactRoute);
