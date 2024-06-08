@@ -11,15 +11,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Middleware untuk menyajikan file statis dari folder public
-app.use(express.static(path.join(__dirname, "public")));
+// Middleware untuk menyajikan file statis dari folder build
+app.use(express.static(path.join(__dirname, "../client/build")));
 
-// Middleware untuk menyajikan file statis dari hasil build aplikasi React
-app.use(express.static(path.join(__dirname, "client/build")));
-
-// Route untuk melayani halaman utama dari aplikasi React
-app.get("/", (req, res) => {
-   res.sendFile(path.join(__dirname, "client/build", "index.html"));
+// Semua request yang tidak dikenali oleh server akan mengembalikan index.html
+app.get("*", (req, res) => {
+   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 // app.use("/", contactRoute);
