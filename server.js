@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
 // Route untuk melayani index.html dari client/build
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
