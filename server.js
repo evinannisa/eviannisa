@@ -11,11 +11,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-   res.send("Hello, World!");
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Route untuk melayani index.html dari client/build
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.use("/", contactRoute);
+// app.use("/", contactRoute);
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));
