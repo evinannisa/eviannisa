@@ -6,7 +6,7 @@ import DribbleIcon from "../../../assets/Home/basketball-solid.svg";
 import LinkedInIcon from "../../../assets/Home/linkedin.svg";
 import InstagramIcon from "../../../assets/Home/instagram.svg";
 import GithubIcon from "../../../assets/Home/github.svg";
-import Resume from "../../../assets/Profile/CV_Evi_Nur_Annisa.pdf";
+import Resume from "../../../assets/Profile/Resume.pdf";
 import "./Profile.css";
 
 export default function Profile() {
