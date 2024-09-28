@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/eviannisa/static/css/main.7c789ef2.css",
-    "main.js": "/eviannisa/static/js/main.590fb456.js",
+    "main.css": "/eviannisa/static/css/main.03ea0d37.css",
+    "main.js": "/eviannisa/static/js/main.f0f205a4.js",
     "static/js/453.419a5d54.chunk.js": "/eviannisa/static/js/453.419a5d54.chunk.js",
     "static/media/photo.jpg": "/eviannisa/static/media/photo.c2bbdd27bc94162a1f17.jpg",
     "static/media/edufams.png": "/eviannisa/static/media/edufams.e976b6b6ac107f9ec7c0.png",
@@ -13,11 +13,10 @@
     "static/media/Poppins-SemiBold.ttf": "/eviannisa/static/media/Poppins-SemiBold.cce5625b56ec678e4202.ttf",
     "static/media/Poppins-Bold.ttf": "/eviannisa/static/media/Poppins-Bold.404e299be26d78e66794.ttf",
     "static/media/Poppins-ExtraBold.ttf": "/eviannisa/static/media/Poppins-ExtraBold.4ed78cd5d64af4efc3c7.ttf",
+    "static/media/resume-evi.pdf": "/eviannisa/static/media/resume-evi.b84109502522ac9dac2d.pdf",
     "static/media/jconnect.png": "/eviannisa/static/media/jconnect.d258e0dce60997e69dd0.png",
-    "static/media/bg5.gif": "/eviannisa/static/media/bg5.3303d899cb5a80449eab.gif",
     "static/media/mailz.jpeg": "/eviannisa/static/media/mailz.d13d5e32cbc73884b526.jpeg",
     "static/media/evilcorps.png": "/eviannisa/static/media/evilcorps.44a568831f1af5c90fd2.png",
-    "static/media/Resume.pdf": "/eviannisa/static/media/Resume.08d18446d628bd0d2b2b.pdf",
     "static/media/skordigital.png": "/eviannisa/static/media/skordigital.c2f9ff739526956fca30.png",
     "static/media/bg.jpg": "/eviannisa/static/media/bg.d580cd375921d13ae60d.jpg",
     "static/media/github.svg": "/eviannisa/static/media/github.f8ae688986694470c887b2381271b58c.svg",
@@ -25,20 +24,20 @@
     "static/media/basketball-solid.svg": "/eviannisa/static/media/basketball-solid.c4f5b163d43f3b180f2e0bc5b058f482.svg",
     "static/media/instagram.svg": "/eviannisa/static/media/instagram.8d05441fbdd4575f943eed3472ada419.svg",
     "static/media/whatsapp.svg": "/eviannisa/static/media/whatsapp.b22805240a27dd9ce57ba4d44ffeb805.svg",
-    "static/media/programming-skills.svg": "/eviannisa/static/media/programming-skills.d19983a9bee884277ffa.svg",
-    "static/media/projects.svg": "/eviannisa/static/media/projects.2b352a52b0588dab62f5.svg",
-    "static/media/interests.svg": "/eviannisa/static/media/interests.809890a3e4fb0938f61b.svg",
-    "static/media/education.svg": "/eviannisa/static/media/education.10cfa28a40119ebd70cf.svg",
-    "static/media/work-history.svg": "/eviannisa/static/media/work-history.a566475dedb99dea4bb8.svg",
+    "static/media/programming-skills.svg": "/eviannisa/static/media/programming-skills.3bdce3e65068107428a1.svg",
+    "static/media/projects.svg": "/eviannisa/static/media/projects.471fe875d8cdcbe0bbc4.svg",
+    "static/media/interests.svg": "/eviannisa/static/media/interests.311391e8b5ae1f2a7364.svg",
+    "static/media/education.svg": "/eviannisa/static/media/education.9ed8b53812c3beb648e1.svg",
+    "static/media/work-history.svg": "/eviannisa/static/media/work-history.f8127a79c81e4defe8bc.svg",
     "static/media/linkedin.svg": "/eviannisa/static/media/linkedin.4dcacd05a6d008f3e855fda98603ebc7.svg",
     "static/media/facebook.svg": "/eviannisa/static/media/facebook.e785152fb44aa0fb9094b5acc71736e8.svg",
     "static/media/telegram-plane.svg": "/eviannisa/static/media/telegram-plane.3108489689ceef87cda07722b0f165cf.svg",
-    "main.7c789ef2.css.map": "/eviannisa/static/css/main.7c789ef2.css.map",
-    "main.590fb456.js.map": "/eviannisa/static/js/main.590fb456.js.map",
+    "main.03ea0d37.css.map": "/eviannisa/static/css/main.03ea0d37.css.map",
+    "main.f0f205a4.js.map": "/eviannisa/static/js/main.f0f205a4.js.map",
     "453.419a5d54.chunk.js.map": "/eviannisa/static/js/453.419a5d54.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7c789ef2.css",
-    "static/js/main.590fb456.js"
+    "static/css/main.03ea0d37.css",
+    "static/js/main.f0f205a4.js"
   ]
 }
