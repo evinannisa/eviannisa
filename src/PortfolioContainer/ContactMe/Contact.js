@@ -14,7 +14,7 @@ import FacebookIcon from "../../assets/Home/facebook.svg";
 import WhatsAppIcon from "../../assets/Home/whatsapp.svg";
 import TelegramIcon from "../../assets/Home/telegram-plane.svg";
 
-export default function ContactMe(props) {
+export default function Contact(props) {
    let fadeInScreenHandler = (screen) => {
       if (screen.fadeInScreen !== props.id) return;
       Animations.animations.fadeInScreen(props.id);
@@ -41,17 +41,23 @@ export default function ContactMe(props) {
       setMessage(e.target.value);
    };
 
-   console.log(name);
-
    const submitForm = async (e) => {
       e.preventDefault();
+      if (name.length === 0 || email.length === 0 || message.length === 0) {
+         setBool(false);
+         toast.error("please fill all the fields");
+         return;
+      }
+
+      setBool(true);
+
       try {
          let data = {
             name,
             email,
             message,
          };
-         setBool(true);
+         // setBool(true);
          const res = await axios.post(`/contact`, data);
          if (name.length === 0 || email.length === 0 || message.length === 0) {
             setBanner(res.data.msg);
@@ -63,12 +69,23 @@ export default function ContactMe(props) {
             setBool(false);
          }
 
-         setName("");
-         setEmail("");
-         setMessage("");
+         // setName("");
+         // setEmail("");
+         // setMessage("");
       } catch (error) {
-         console.log(error);
+         setTimeout(() => {
+            setBool(false);
+            toast.error("email sending failed");
+         }, 3000);
+
+         setTimeout(() => {
+            toast.info("Please contact via WhatsApp");
+         }, 5000);
       }
+
+      setName("");
+      setEmail("");
+      setMessage("");
    };
 
    return (

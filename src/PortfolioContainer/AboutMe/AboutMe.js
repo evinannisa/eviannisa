@@ -14,13 +14,15 @@ export default function AboutMe(props) {
       ScrollService.currentScreenFadeIn.subscribe(fadeInScreenHandler);
 
    const SCREEN_CONSTANTS = {
-      description: `Hello, my name is Evi Nur Annisa. I'm Frontend Developer based in Yogyakarta with 2 years of experience. Currently, I'm focused on developing my portfolio as Frontend Developer and enhance my skills as a UI/UX Designer. I am also continuously seeking new projects and challenges to further my growth and expertise, striving to be a better Evi each day.<br><br>Take your time, check my resume, and see my skills. Thank you..`,
+      description: `
+      Hello, my name is Evi Nur Annisa. I am a dedicated and creative Frontend Developer with a strong focus on designing and developing responsive web applications. With expertise in HTML, CSS, JavaScript and frameworks like React and Next, I strive to build user-centered interfaces that deliver great user experiences. My approach blends innovation and attention to detail, resulting in visually appealing and well-performing solutions. I enjoy working in close collaboration and am always interested in exploring and applying the latest technologies to improve web development. Also, I am still growing and striving to be a better Evi each day. Take your time, check my resume and see my skills. Thank you.
+      `,
       highlights: {
          bullets: [
             "Frontend Developer",
             "Design UI/UX",
-            "React JS, Typescript",
-            "HTML CSS JavaScript",
+            "React JS, Micro Frontend",
+            "HTML CSS JavaScript/Typescript",
          ],
          heading: "Here are a few Highlights",
       },

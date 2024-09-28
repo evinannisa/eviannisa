@@ -69,7 +69,7 @@ export default function Header() {
                   />
                </div>
                <div className="header-logo">
-                  <span>Bytefolio</span>
+                  <span>Portofolio</span>
                </div>
                <div
                   className={

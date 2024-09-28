@@ -6,12 +6,12 @@ import DribbleIcon from "../../../assets/Home/basketball-solid.svg";
 import LinkedInIcon from "../../../assets/Home/linkedin.svg";
 import InstagramIcon from "../../../assets/Home/instagram.svg";
 import GithubIcon from "../../../assets/Home/github.svg";
-import Resume from "../../../assets/Profile/Resume.pdf";
+import Resume from "../../../assets/Profile/resume-evi.pdf";
 import "./Profile.css";
 
 export default function Profile() {
    const [typeEffect] = useTypewriter({
-      words: ["Front End Developer", "UI/UX Designer"],
+      words: ["Front End Developer"],
       loop: {},
       typeSpeed: 100,
       deleteSpeed: 40,
@@ -47,8 +47,8 @@ export default function Profile() {
                   <span className="primary-text">
                      <h1>&nbsp;{typeEffect}</h1>
                      <span className="profile-role-tagline">
-                        Expertise in Frontend Application Development and UI/UX
-                        Design.
+                        Expertise in web development according to project
+                        specifications
                      </span>
                   </span>
                </div>

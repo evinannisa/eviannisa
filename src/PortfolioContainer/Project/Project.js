@@ -5,6 +5,7 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import Animations from "../../utilities/Animations";
 import ScrollService from "../../utilities/ScrollService";
 import ScreenHeading from "../../utilities/ScreenHeading/ScreenHeading";
+import BgFooter from "../../assets/Testimonial/shape-bg.png";
 import "./Project.css";
 
 export default function Project(props) {
@@ -56,16 +57,16 @@ export default function Project(props) {
                            </div>
                            <div className="client-info">
                               <ul className="stars list-unstyled">
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                                  <li className="title">
                                     &nbsp; EduFams &nbsp;
                                  </li>
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
@@ -73,7 +74,7 @@ export default function Project(props) {
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                               </ul>
                            </div>
                         </div>
@@ -84,16 +85,16 @@ export default function Project(props) {
                            <div className="testi-comment skordigital"></div>
                            <div className="client-info">
                               <ul className="stars list-unstyled">
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                                  <li className="title">
                                     &nbsp; Skordigital Pencak Silat &nbsp;
                                  </li>
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
@@ -101,7 +102,7 @@ export default function Project(props) {
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                               </ul>
                            </div>
                         </div>
@@ -114,16 +115,16 @@ export default function Project(props) {
                            </div>
                            <div className="client-info">
                               <ul className="stars list-unstyled">
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                                  <li className="title">
                                     &nbsp; Evil Corps &nbsp;
                                  </li>
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
@@ -131,7 +132,7 @@ export default function Project(props) {
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                               </ul>
                            </div>
                         </div>
@@ -142,16 +143,16 @@ export default function Project(props) {
                            <div className="testi-comment jconnect"></div>
                            <div className="client-info">
                               <ul className="stars list-unstyled">
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                                  <li className="title">
                                     &nbsp; JConnect &nbsp;
                                  </li>
-                                 <li>
+                                 {/* <li>
                                     <i className="fa fa-star" />
                                  </li>
                                  <li>
@@ -159,7 +160,7 @@ export default function Project(props) {
                                  </li>
                                  <li>
                                     <i className="fa fa-star" />
-                                 </li>
+                                 </li> */}
                               </ul>
                            </div>
                         </div>
@@ -170,7 +171,7 @@ export default function Project(props) {
          </section>
 
          <div className="footer-image">
-            <img src="img/Testimonial/shape-bg.png" alt="gambar footer" />
+            <img src={BgFooter} alt="gambar footer" />
          </div>
       </div>
    );

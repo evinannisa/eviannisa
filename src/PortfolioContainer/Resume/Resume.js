@@ -50,15 +50,18 @@ export default function Resume(props) {
 
    const programmingSklisDetails = [
       { skill: "React JS", ratingPercentage: 80 },
-      { skill: "HTML, CSS", ratingPercentage: 85 },
-      // { skill: "CSS", ratingPercentage: 80 },
-      { skill: "JavaScript", ratingPercentage: 70 },
-      { skill: "TypeScript", ratingPercentage: 55 },
-      { skill: "Tailwind", ratingPercentage: 85 },
-      { skill: "Material UI", ratingPercentage: 75 },
-      { skill: "Styled Component", ratingPercentage: 75 },
+      { skill: "HTML, CSS", ratingPercentage: 90 },
+      { skill: "JavaScript/TypeScript", ratingPercentage: 60 },
+      { skill: "GIT", ratingPercentage: 75 },
+      { skill: "Responsive Web", ratingPercentage: 90 },
       { skill: "Next JS", ratingPercentage: 60 },
       { skill: "Figma", ratingPercentage: 70 },
+      // { skill: "Tailwind", ratingPercentage: 90 },
+      // { skill: "Material UI", ratingPercentage: 80 },
+      { skill: "Micro Frontend", ratingPercentage: 60 },
+      // { skill: "Styled Component", ratingPercentage: 60 },
+      { skill: "Problem Solving", ratingPercentage: 70 },
+      { skill: "Teamwork", ratingPercentage: 90 },
    ];
 
    const projectDetails = [
@@ -233,12 +236,16 @@ export default function Resume(props) {
             description="I also love music because it keeps loneliness away and brings me peace."
          />
          <ResumeHeading
-            heading="Competitive Gaming"
+            heading="Gaming"
             description="I enjoy playing competitive games because I like improving my skills in competition, strategy, and tactics within the game."
          />
          <ResumeHeading
             heading="Design UI/UX"
             description="I have a goal to level up my design skills."
+         />
+         <ResumeHeading
+            heading="Coding"
+            description="I am always interested in new experiences."
          />
       </div>,
    ];
