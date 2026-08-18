@@ -1,0 +1,10 @@
+{
+  "description": "Showcase your creative work with a unique doodle-inspired portfolio that engages viewers and highlights your artistic style.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

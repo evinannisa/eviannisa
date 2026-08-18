@@ -1,0 +1,476 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --bg-color: #0d1117;
+  --surface-color: #161b22;
+  --surface2-color: #1c2333;
+  --fg-color: #e6edf3;
+  --muted-color: #8b949e;
+  --green-color: #3fb950;
+  --amber-color: #d29922;
+  --blue-color: #58a6ff;
+  --purple-color: #bc8cff;
+  --red-color: #ff7b72;
+  --teal-color: #79c0ff;
+  --orange-color: #ffa657;
+  --border-color: #30363d;
+  --nav-bg: rgba(13, 17, 23, 0.7);
+  --nav-bg-scrolled: rgba(13, 17, 23, 0.96);
+  --sub: #7a6a55;
+  --line: #c4b49a;
+  --yellow: #e8a838;
+  --display: "Caveat", cursive;
+  --quote-color: #3fb950;
+}
+
+:root.light {
+  /* --bg-color: #f5ece1; */
+  --bg-color: #fdf8f0;
+  --surface-color: #fffdf7;
+  --surface2-color: #f5ede0;
+  --fg-color: #2a2118;
+  --muted-color: #7a6a55;
+  --green-color: #7a9e6a;
+  --amber-color: #e8a838;
+  --blue-color: #4a8fa8;
+  --purple-color: #9b7ec8;
+  --red-color: #e05c4a;
+  --teal-color: #c4a35a;
+  --orange-color: #e8a838;
+  --border-color: #c4b49a;
+  --nav-bg: rgba(253, 248, 240, 0.7);
+  /* --nav-bg: rgba(245, 236, 225, 0.7); */
+  --nav-bg-scrolled: rgba(253, 248, 240, 0.96);
+  /* --nav-bg-scrolled: rgba(245, 236, 225, 0.96); */
+  --sub: #7a6a55;
+  --quote-color: #e8a838;
+}
+
+@theme inline {
+  --color-background: var(--bg-color);
+  --color-surface: var(--surface-color);
+  --color-surface2: var(--surface2-color);
+  --color-foreground: var(--fg-color);
+  --color-muted: var(--muted-color);
+  --color-green: var(--green-color);
+  --color-amber: var(--amber-color);
+  --color-blue: var(--blue-color);
+  --color-purple: var(--purple-color);
+  --color-red: var(--red-color);
+  --color-teal: var(--teal-color);
+  --color-border: var(--border-color);
+  --font-mono: "JetBrains Mono", monospace;
+  --font-hand: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(63, 185, 80, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(63, 185, 80, 0.6);
+  }
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: #3fb950;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+.glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* scanline overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sketchy-hand {
+  font-family: "Inter", sans-serif;
+}
+
+/* token colors */
+.tok-keyword {
+  color: #ff7b72;
+}
+.tok-fn {
+  color: #d2a8ff;
+}
+.tok-string {
+  color: #a5d6ff;
+}
+.tok-comment {
+  color: #8b949e;
+  font-style: italic;
+}
+.tok-number {
+  color: #79c0ff;
+}
+.tok-type {
+  color: #ffa657;
+}
+.tok-variable {
+  color: #e6edf3;
+}
+
+/* ── Doodle Design notebook layout and features ─────────────────────────── */
+.notebook {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 31px,
+    rgba(196, 180, 154, 0.15) 31px,
+    rgba(196, 180, 154, 0.15) 32px
+  );
+  background-position: 0 60px;
+}
+
+.margin-line {
+  position: absolute;
+  top: 54px;
+  bottom: 0;
+  left: 72px;
+  width: 1px;
+  background-color: rgba(224, 92, 74, 0.28);
+  pointer-events: none;
+}
+.margin-line.faint {
+  background-color: rgba(224, 92, 74, 0.15);
+}
+
+.wiggle {
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+/* .sketch {
+  position: relative;
+  --frame: var(--border-color);
+  --frame-fill: transparent;
+}
+.sketch > .frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sketch > .frame rect {
+  stroke: var(--frame);
+  fill: var(--frame-fill);
+}
+.sketch > .frame circle {
+  fill: var(--frame);
+}
+.sketch > .inner {
+  position: relative;
+  z-index: 1;
+} */
+
+.mark {
+  background: linear-gradient(180deg, transparent 55%, rgba(232, 168, 56, 0.25) 55%);
+}
+
+/* custom scrollbar reset for layout */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Hero Right Panel (Doodle Design style) ─────────────────────────────── */
+.hero-card-col {
+  display: flex;
+  justify-content: end;
+  width: 90%;
+}
+.hero-photo-stack {
+  position: relative;
+}
+.hero-photo {
+  position: relative;
+  width: 16rem;
+  height: 18rem;
+}
+.hero-photo-frame-light,
+.hero-photo-frame-dark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-photo-frame-light rect {
+  stroke: #e8d5b8;
+  fill: #f5ede0;
+}
+
+.hero-photo-frame-dark rect {
+  stroke: #3e3320;
+  fill: var(--surface-color);
+}
+
+.hero-photo-frame-light circle {
+  fill: #e8d5b8;
+}
+
+.hero-photo-frame-dark circle {
+  fill: #3e3320;
+}
+.hero-photo-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+  border-radius: 2px;
+  margin-left: 10px;
+
+  overflow: visible;
+  transform: rotate(2deg);
+}
+.hero-photo-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: sepia(15%) contrast(1.05); */
+  /* filter: sepia(15%) contrast(1.05) brightness(0.8); */
+  mix-blend-mode: multiply;
+}
+.hero-sticky-note {
+  position: absolute;
+  bottom: -1.25rem;
+  right: -2rem;
+  transform: rotate(2deg);
+  background-color: #4a8fa8;
+  color: #fffdf7;
+  padding: 8px 12px;
+  border: 1.5px solid #c4b49a;
+  font-family: "Caveat", cursive;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 130px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  z-index: 4;
+}
+.hero-doodle {
+  position: absolute;
+}
+.hero-exp {
+  position: absolute;
+  left: -2.3rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(-8deg);
+  z-index: 2;
+}
+.hero-exp-box {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+}
+.hero-exp-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-exp-frame rect {
+  stroke: #e05c4a;
+  fill: var(--bg-color);
+}
+.hero-exp-frame circle {
+  fill: #e05c4a;
+}
+.hero-exp-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+.hero-exp-num {
+  font-family: "Caveat", cursive;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e05c4a;
+  line-height: 1;
+}
+.hero-exp-lbl {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #7a6a55;
+}
+
+.pen {
+  color: var(--yellow);
+  position: relative;
+}
+.pen svg {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.4;
+}
+.scroll-hint span {
+  font-size: 0.7rem;
+  color: var(--muted-color);
+}
+.scroll-hint i {
+  width: 1px;
+  height: 2rem;
+  background: linear-gradient(to bottom, var(--amber-color), transparent);
+}
+
+.sketch {
+  position: relative;
+  --frame: var(--line);
+  --frame-fill: transparent;
+}
+.sketch > .frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sketch > .frame rect {
+  stroke: var(--frame);
+  fill: var(--frame-fill);
+}
+.sketch > .frame circle {
+  fill: var(--frame);
+}
+.sketch > .inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+.sketch.rounded > .frame rect {
+  rx: 8px;
+}
+
+.quote {
+  --frame: var(--quote-color);
+  --frame-fill: var(--color-background);
+  padding: 1rem;
+}
+.quote p:first-child {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.quote p:last-child {
+  font-size: 0.78rem;
+  color: var(--border-color);
+  margin: 0;
+}
