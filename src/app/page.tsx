@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useTheme } from "@/components/ThemeProvider";
+import { CodingArt } from "@/components/CodingArt";
+import { PageDoodles } from "@/components/PageDoodles";
 
 const C = {
   bg: "var(--bg-color)",
@@ -21,22 +22,24 @@ const C = {
 
 export default function Home() {
   const { theme } = useTheme();
-
   return (
-    <div className="mt-10 sm:mt-4">
+    <div className="mt-1 sm:mt-1">
       <section
-        className="min-h-screen flex items-center relative overflow-hidden px-6 py-16 notebook"
+        className="min-h-screen flex items-center relative overflow-hidden px-6 py-18 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
+        {/* doodle yang bertebaran di seluruh halaman, di bawah konten */}
+        <PageDoodles />
+
         {/* margin line */}
         <div
-          className="absolute top-7.5 sm:top-13.5 bottom-0 left-4 lg:left-18 w-px"
-          style={{ backgroundColor: "rgba(224, 92, 74, 0.28)", pointerEvents: "none" }}
+          className="absolute top-0 bottom-0 left-4 md:left-8 lg:left-16 xl:left-18 w-[0.1px] bg-blue-600/25"
+          style={{ pointerEvents: "none" }}
         />
 
         {/* floating doodles */}
         <svg
-          className="hero-doodle float hidden lg:block"
+          className="hero-doodle float hidden"
           style={{ top: "4rem", right: "3rem" }}
           width="56"
           height="56"
@@ -67,7 +70,7 @@ export default function Home() {
           />
         </svg>
         <svg
-          className="hero-doodle wiggle hidden sm:block"
+          className="hero-doodle wiggle hidden"
           style={{ bottom: "6rem", right: "7rem", opacity: 0.4 }}
           width="90"
           height="90"
@@ -85,7 +88,7 @@ export default function Home() {
           />
         </svg>
         <svg
-          className="hero-doodle"
+          className="hero-doodle hidden"
           style={{ top: "33.333%", right: "1.5rem", opacity: 0.3 }}
           width="100"
           height="14"
@@ -102,7 +105,7 @@ export default function Home() {
           />
         </svg>
         <svg
-          className="hero-doodle hidden sm:block"
+          className="hero-doodle hidden"
           style={{ bottom: "18rem", left: "6.5rem", opacity: 0.3 }}
           width="56"
           height="56"
@@ -132,9 +135,9 @@ export default function Home() {
             strokeLinejoin="round"
           />
         </svg>
-        {/* <svg
+        <svg
           style={{ opacity: 0.3 }}
-          className="hero-doodle mb-35 bottom-0 right-160 hidden lg:block"
+          className="hero-doodle mb-35 bottom-0 right-160"
           width="80"
           height="14"
           viewBox="0 0 80 14"
@@ -143,119 +146,112 @@ export default function Home() {
         >
           <path
             d="M2,7 Q12,2 22,7 Q32,12 42,7 Q32,2 42,7 Q52,12 62,7 Q52,2 62,7 Q72,12 82,7 Q72,2 82,7 Q92,12 102,7"
-            stroke={theme === "dark" ? C.green : C.amber}
+            stroke={theme === "dark" ? C.green : "#B4A899"}
             strokeWidth="2"
             strokeLinecap="round"
             fill="none"
           />
-        </svg> */}
+        </svg>
 
         <div className="scroll-hint">
-          <span>scroll</span>
+          <span className="hidden">scroll</span>
           <i></i>
         </div>
 
-        <div className="max-w-5xl mx-auto w-full grid-cols-1 grid lg:grid-cols-[1fr_auto] items-center relative z-10">
+        <div className="max-w-5xl mx-auto w-full grid-cols-1 grid md:grid-cols-2 xl:grid-cols-[1fr_auto] items-center relative z-10">
           {/* ── left ── */}
           <div className="mb-14 lg:mb-0">
-            {/* headline */}
-            <h1
-              style={{
-                fontFamily: "'Caveat', cursive",
-                fontSize: "clamp(2.6rem,6vw,4rem)",
-                fontWeight: 700,
-                color: C.fg,
-                lineHeight: 1.05,
-                marginBottom: "1rem",
-              }}
-            >
-              Software{" "}
-              <span className="pen" style={{ color: theme === "dark" ? C.green : "#e8a838" }}>
-                Engineer
-                <svg viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative shrink-0" style={{ width: 72, height: 72 }}>
+                <svg
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  viewBox="0 0 72 72"
+                  fill="none"
+                >
                   <path
-                    d="M0,6 Q25,1 50,6 Q75,11 100,6 Q125,1 150,6 Q175,11 200,6"
-                    stroke={theme === "dark" ? "#3FB950" : "#e8a838"}
-                    strokeWidth="2.5"
-                    fill="none"
+                    d="M36,3 C54,2 69,15 69,36 C69,57 55,69 36,69 C17,69 3,56 3,36 C3,16 18,3 36,3 Z"
+                    stroke={C.green}
+                    strokeWidth="1.5"
+                    strokeDasharray="5 3"
                     strokeLinecap="round"
+                    fill="none"
                   />
                 </svg>
-              </span>
-            </h1>
+                <img
+                  src="/assets/images/foto.jpg"
+                  alt="Profile"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    filter: "grayscale(15%)",
+                  }}
+                />
+                <span
+                  className="absolute bottom-1 right-1 w-3 h-3 rounded-full border-2 animate-pulse"
+                  style={{
+                    backgroundColor: C.green,
+                    borderColor: C.bg,
+                  }}
+                />
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "'Caveat', cursive",
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    color: C.fg,
+                  }}
+                >
+                  Evi Nur Annisa
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.66rem",
+                    color: C.muted,
+                  }}
+                >
+                  Software Engineer
+                </div>
+              </div>
+            </div>
 
+            {/* headline */}
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Poppins', sans-serif",
                 fontSize: "0.88rem",
-                lineHeight: "1.8",
+                lineHeight: "1.95",
+                letterSpacing: "0.012em",
                 color: C.muted,
-                maxWidth: "600px",
-                marginBottom: "1.75rem",
               }}
+              className="mb-7 lg:max-w-150"
             >
               I build things, learn new stuff, and turn little ideas into something real. I’m always
-              curious, trying something new, and seeing how it goes.
+              curious, trying something new, and seeing where it takes me.
               <br />
-              This is a little space where I keep the things I’ve been working on.
+              This is my little space for the things I’ve been working on.
             </p>
 
             {/* status */}
             <div
-              className="inline-flex items-center gap-2 mb-6 px-3 py-1.5"
+              className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 bg-blue-600/10 border border-blue-600/5 rounded text-blue-500"
               style={{
-                border: `1px solid ${C.green}/40`,
-                borderRadius: "4px",
-                backgroundColor: "rgba(63,185,80,0.06)",
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: "0.68rem",
-                color: C.green,
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-              status: open_to_work = true
-            </div>
-
-            {/* CTA */}
-            <div className="flex-wrap gap-3 mb-8 flex">
-              <Link
-                href="/projects"
-                className="transition-all duration-200 hover:-translate-y-0.5"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.78rem",
-                  fontWeight: 600,
-                  padding: "9px 20px",
-                  backgroundColor: theme === "dark" ? C.green : C.fg,
-                  color: theme === "dark" ? "#0d1117" : "white",
-                  borderRadius: "4px",
-                  textDecoration: "none",
-                }}
-              >
-                $ View Resume
-              </Link>
-              <Link
-                href="/chat"
-                className="transition-all duration-200 hover:-translate-y-0.5"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.78rem",
-                  fontWeight: 600,
-                  padding: "9px 20px",
-                  backgroundColor: "transparent",
-                  color: C.fg,
-                  borderRadius: "4px",
-                  textDecoration: "none",
-                  border: `2px dashed ${C.border}`,
-                }}
-              >
-                💬 Ask About Me
-              </Link>
+              Available to Opportunity
             </div>
 
             {/* socials */}
             <div className="flex gap-2 flex-wrap items-center">
               <svg
+                className="hidden sm:block"
                 style={{ opacity: 0.4 }}
                 width="48"
                 height="38"
@@ -295,8 +291,8 @@ export default function Home() {
                     height: "fit-content",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = C.green;
-                    e.currentTarget.style.borderColor = C.green;
+                    e.currentTarget.style.color = "#3B82F6";
+                    e.currentTarget.style.borderColor = "#3B82F6";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = C.muted;
@@ -309,131 +305,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ── right (Doodle Design style) ── */}
+          {/* ── right ── */}
           <div className="flex justify-center lg:justify-end w-11/12">
             <div className="hero-photo-stack">
-              <div className="hero-photo">
-                {/* sketch frame */}
-                <svg
-                  className={theme === "dark" ? "hero-photo-frame-dark " : "hero-photo-frame-light"}
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <rect
-                    x="3"
-                    y="3"
-                    style={{
-                      width: "calc(100% - 6px)",
-                      height: "calc(100% - 6px)",
-                    }}
-                    strokeWidth="2"
-                    strokeDasharray="8 3 5 2 9 4"
-                    strokeLinecap="round"
-                    rx="2"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <circle cx="6" cy="6" r="1.8" opacity="0.4" />
-                  <circle cy="6" r="1.8" style={{ cx: "calc(100% - 6px)" }} opacity="0.4" />
-                  <circle cx="6" r="1.8" style={{ cy: "calc(100% - 6px)" }} opacity="0.4" />
-                  <circle
-                    r="1.8"
-                    style={{
-                      cx: "calc(100% - 6px)",
-                      cy: "calc(100% - 6px)",
-                    }}
-                    opacity="0.4"
-                  />
-                </svg>
-                <div className="hero-photo-inner">
-                  <img
-                    src="/assets/images/foto.jpg"
-                    alt="Software engineer portrait"
-                    width="400"
-                    height="450"
-                    style={{
-                      filter:
-                        theme === "dark"
-                          ? "brightness(0.8) contrast(1.15) saturate(1)"
-                          : "brightness(0.8) contrast(1.15) saturate(1)",
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="hero-sticky-note">👩‍💻 I code stuff too!</div>
-
-              <svg
-                className="hero-doodle hidden lg:block"
-                style={{
-                  top: "-1.25rem",
-                  left: "-1.25rem",
-                  opacity: 0.35,
-                }}
-                width="56"
-                height="56"
-                viewBox="0 0 90 90"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M45,8 C65,6 84,22 84,45 C84,68 67,83 45,83 C23,83 6,67 6,45 C6,24 22,9 45,8 Z"
-                  stroke="#e8a838"
-                  strokeWidth="2"
-                  strokeDasharray="6 3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </svg>
-
-              <div className="hero-exp hidden sm:block">
-                <div className="hero-exp-box">
-                  {/* sketch frame */}
-                  <svg className="hero-exp-frame" preserveAspectRatio="none" aria-hidden="true">
-                    <rect
-                      x="3"
-                      y="3"
-                      style={{
-                        width: "calc(100% - 6px)",
-                        height: "calc(100% - 6px)",
-                      }}
-                      strokeWidth="2"
-                      strokeDasharray="8 3 5 2 9 4"
-                      strokeLinecap="round"
-                      rx="2"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                    <circle cx="6" cy="6" r="1.8" opacity="0.4" />
-                    <circle
-                      cy="6"
-                      r="1.8"
-                      style={{
-                        cx: "calc(100% - 6px)",
-                      }}
-                      opacity="0.4"
-                    />
-                    <circle
-                      cx="6"
-                      r="1.8"
-                      style={{
-                        cy: "calc(100% - 6px)",
-                      }}
-                      opacity="0.4"
-                    />
-                    <circle
-                      r="1.8"
-                      style={{
-                        cx: "calc(100% - 6px)",
-                        cy: "calc(100% - 6px)",
-                      }}
-                      opacity="0.4"
-                    />
-                  </svg>
-                  <div className="hero-exp-inner">
-                    <span className="hero-exp-num">3</span>
-                    <span className="hero-exp-lbl">yrs exp</span>
-                  </div>
-                </div>
-              </div>
+              <CodingArt />
             </div>
           </div>
         </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeProvider";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
-import { Footer } from "@/components/Footer";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
+import { FloatingContacts } from "@/components/FloatingContacts";
+import { SideMenu } from "@/components/SideMenu";
 
 const C = {
   bg: "var(--bg-color)",
@@ -24,16 +24,17 @@ const C = {
 };
 
 const navItems = [
-  // { href: "/", label: "home", exact: true },
-  { href: "/about", label: "about_me" },
-  { href: "/experience", label: "experience" },
+  { href: "/", label: "home", exact: true },
+  { href: "/about", label: "about" },
   { href: "/projects", label: "projects" },
-  { href: "/writing", label: "notes" },
+  { href: "/writing", label: "writing" },
 ];
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
+  const [hoverResume, setHoverResume] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -56,172 +57,105 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
-  function Cursor() {
-    return (
-      <span
-        style={{
-          display: "inline-block",
-          width: 2,
-          height: "1.1em",
-          backgroundColor: C.green,
-          verticalAlign: "text-bottom",
-          marginLeft: 2,
-          animation: "blink 1s step-end infinite",
-        }}
-      />
-    );
-  }
-
-  function Typing({ text, speed = 50 }: { text: string; speed?: number }) {
-    const [displayed, setDisplayed] = useState("");
-    const [done, setDone] = useState(false);
-    useEffect(() => {
-      let i = 0;
-      const iv = setInterval(() => {
-        setDisplayed(text.slice(0, i + 1));
-        i++;
-        if (i >= text.length) {
-          setDone(true);
-          clearInterval(iv);
-        }
-      }, speed);
-      return () => clearInterval(iv);
-    }, [text, speed]);
-    return (
-      <span style={{ color: C.fg }}>
-        {displayed}
-        {!done && <Cursor />}
-      </span>
-    );
-  }
-
-  const pageCommands: Record<string, string> = {
-    "/": "portfolio",
-    "/about": "whoami",
-    "/projects": "projects",
-    "/writing": "writing",
-  };
-
   return (
     <div
+      className="bg-background min-h-screen"
       style={{
-        backgroundColor: C.bg,
-        minHeight: "100vh",
         transition: "background-color 0.2s ease",
       }}
     >
-      {/* Nav */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+          !isHome && scrolled ? "border-border" : "border-transparent"
+        }`}
         style={{
-          backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : "var(--nav-bg)",
-          backdropFilter: "blur(10px)",
-          borderBottom: `1px solid ${scrolled ? C.border : "transparent"}`,
+          backgroundColor: isHome
+            ? "transparent"
+            : scrolled
+              ? "var(--nav-bg-scrolled)"
+              : "var(--nav-bg)",
+          backdropFilter: isHome ? "none" : "blur(10px)",
         }}
       >
-        <div className="max-w-5xl mx-auto px-4 pt-5 pb-3 flex items-center justify-between gap-2">
-          {/* logo */}
-          <Link
-            href="/"
+        <div className="max-w-5xl mx-auto px-4 pt-3 pb-3 flex items-center justify-between gap-2">
+          <a
+            href="#"
+            className="sketch relative shrink-0 py-2 px-2.75 no-underline"
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "0.9rem",
-              fontWeight: 500,
-              color: theme === "dark" ? C.green : C.red,
-              textDecoration: "none",
-              whiteSpace: "nowrap",
+              // @ts-expect-error -- custom property dipakai oleh .sketch
+              "--frame": hoverResume ? C.orange : C.border,
+              "--frame-fill": "transparent",
+              transform: hoverResume ? "rotate(0deg)" : "rotate(-1.5deg)",
+              borderRadius: 5,
+              boxShadow: hoverResume
+                ? theme === "dark"
+                  ? "0 5px 12px -5px rgba(0, 0, 0, 0.55)"
+                  : "0 5px 12px -5px rgba(122, 106, 85, 0.45)"
+                : theme === "dark"
+                  ? "0 2px 6px -3px rgba(0, 0, 0, 0.4)"
+                  : "0 2px 6px -3px rgba(122, 106, 85, 0.3)",
+              transition: "transform 0.18s ease, box-shadow 0.18s ease",
             }}
-            className="flex items-center gap-1"
+            onMouseEnter={() => setHoverResume(true)}
+            onMouseLeave={() => setHoverResume(false)}
           >
-            <span>
-              <span style={{ color: C.muted }}>~/</span>
-              dev
-            </span>
-            <span style={{ color: C.muted }}>(main)</span>
-            <span style={{ color: C.fg }}>$</span>
-            <Typing text={pageCommands[pathname] || "whoami"} speed={90} />
-          </Link>
-
-          {/* nav items & theme toggle */}
-          <div className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar">
-            <ul className="flex items-center gap-1 list-none m-0 p-0">
-              {navItems.map((item) => {
-                const isActive = pathname.startsWith(item.href);
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.7rem",
-                        fontWeight: isActive ? 600 : 400,
-                        padding: "5px 8px",
-                        borderRadius: "4px",
-                        textDecoration: "none",
-                        display: "block",
-                        color: isActive ? C.fg : C.muted,
-                        backgroundColor: isActive ? C.surface2 : "transparent",
-                        border:
-                          item.label === "live_chat"
-                            ? `1px solid ${isActive ? C.green : C.border}`
-                            : "none",
-                        transition: "all 0.15s",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {item.label === "live_chat" ? (
-                        <span className="flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-                          live_chat
-                        </span>
-                      ) : (
-                        <>
-                          <span
-                            style={{
-                              color: theme === "dark" ? C.red : C.red,
-                            }}
-                          >
-                            ./
-                          </span>
-                          {item.label}
-                        </>
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* theme toggle button */}
-            <button
-              onClick={toggleTheme}
+            <svg className="frame" preserveAspectRatio="none" aria-hidden="true">
+              <rect
+                x="3"
+                y="3"
+                style={{ width: "calc(100% - 6px)", height: "calc(100% - 6px)" }}
+                strokeWidth="1.6"
+                strokeDasharray="8 3 5 2 9 4"
+                strokeLinecap="round"
+                rx="3"
+                vectorEffect="non-scaling-stroke"
+              />
+              <circle cx="6" cy="6" r="1.5" opacity="0.4" />
+              <circle cy="6" r="1.5" style={{ cx: "calc(100% - 6px)" }} opacity="0.4" />
+              <circle cx="6" r="1.5" style={{ cy: "calc(100% - 6px)" }} opacity="0.4" />
+              <circle
+                r="1.5"
+                style={{ cx: "calc(100% - 6px)", cy: "calc(100% - 6px)" }}
+                opacity="0.4"
+              />
+            </svg>
+            <span
+              className="inner"
               style={{
-                background: C.surface,
-                border: `1px solid ${C.border}`,
-                borderRadius: "4px",
-                color: C.fg,
-                cursor: "pointer",
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.7rem",
-                padding: "5px 10px",
-                display: "flex",
+                flexDirection: "row",
                 alignItems: "center",
-                gap: "4px",
-                transition: "all 0.15s",
+                gap: 5,
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.66rem",
+                fontWeight: 500,
                 whiteSpace: "nowrap",
+                color: hoverResume ? C.fg : C.muted,
+                transition: "color 0.18s ease",
               }}
-              title="Toggle theme"
             >
-              {theme === "light" ? (
-                <Moon className="size-4" style={{ color: C.muted }} />
-              ) : (
-                <Sun className="size-4" style={{ color: C.muted }} />
-              )}
-            </button>
+              <svg
+                width="11"
+                height="12"
+                viewBox="0 0 11 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5.5,1 C5.3,3 5.6,5.4 5.5,7.4" />
+                <path d="M2.6,5.2 C3.6,6.2 4.7,7.2 5.5,7.8 C6.2,7.1 7.2,6.1 8.4,5.1" />
+                <path d="M1.4,10.6 C4,11.1 7.4,11 9.7,10.5" />
+              </svg>
+              resume
+            </span>
+          </a>
+
+          <div className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar">
+            <span className="hidden sm:flex sm:mr-40 lg:mr-38 xl:mr-0">
+              <ThemeSwitch />
+            </span>
           </div>
         </div>
       </nav>
@@ -229,7 +163,10 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       {/* page content */}
       <main>{children}</main>
 
-      <Footer path={pathname} />
+      <SideMenu />
+      <FloatingContacts />
+
+      {/* <Footer path={pathname} /> */}
     </div>
   );
 }

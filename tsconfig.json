@@ -37,10 +37,16 @@
   },
   "include": [
     "src",
-    "vite.config.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*copy*",
+    "src/bak",
+    "src/pages",
+    "vite.config.ts",
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/app/routes.ts"
   ]
 }

@@ -1,18 +1,8 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeProvider";
-import {
-  Container,
-  Database,
-  FlaskConical,
-  GitFork,
-  GitPullRequest,
-  Monitor,
-  Network,
-  Server,
-} from "lucide-react";
+import { GitFork, GitPullRequest, Monitor } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 
 const C = {
   bg: "var(--bg-color)",
@@ -115,78 +105,22 @@ function TermWindow({
   );
 }
 
-const facts = [
-  { emoji: Server, label: "Backend", value: "Golang · Express.js · Prisma ORM" },
-  { emoji: Monitor, label: "Frontend", value: "Next.js · Vue.js · MapLibre" },
-  { emoji: Database, label: "Data & Storage", value: "Postgre · MongoDB · Minio" },
-  { emoji: Container, label: "DevOps", value: "Docker · Jenkins · Nginx" },
-  { emoji: FlaskConical, label: "Testing", value: "Jest · Playwright · Katalon" },
-  {
-    emoji: Network,
-    label: "Architecture",
-    value: "Microfrontend · Monolith · Client Server",
-  },
-];
-
 const jsDoc = [
   "/**",
   " * @name     Evi Nur Annisa",
-  " * @role     Software Engineer",
-  " * @location Remote-first · Anywhere",
+  " * @role     Fullstack Engineer",
+  " * @location Remote-first · Onsite · Anywhere",
   " * @focus    Web development · Product thinking · Problem solving",
   " * @values   Clean code · Simplicity · Good UX",
   " * @fun      Collects ideas like browser tabs 😭",
   " */",
 ];
 
-function ProfBar({ label, level, color }: { label: string; level: number; color: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [fill, setFill] = useState(0);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setFill(level);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.4 },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [level]);
-  return (
-    <div ref={ref} className="mb-4">
-      <div className="flex justify-between mb-1">
-        <span
-          style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem", color: C.fg }}
-        >
-          {label}
-        </span>
-        <span
-          style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: color }}
-        >
-          {level}%
-        </span>
-      </div>
-      <div
-        className="relative h-2.5 rounded-sm overflow-hidden"
-        style={{ backgroundColor: C.surface2, border: `1px solid ${C.border}` }}
-      >
-        <div
-          className="h-full rounded-sm transition-all duration-700 ease-out"
-          style={{ width: `${fill}%`, backgroundColor: color }}
-        />
-      </div>
-    </div>
-  );
-}
-
 const skillGroups = [
   {
     label: "Frontend",
     color: C.teal,
-    emoji: "🖥️",
+    emoji: Monitor,
     items: [
       "Next.js",
       "Vue.js",
@@ -205,7 +139,7 @@ const skillGroups = [
   {
     label: "Backend",
     color: C.green,
-    emoji: "⚙️",
+    emoji: Monitor,
     items: [
       "Golang",
       "Express.js",
@@ -221,25 +155,25 @@ const skillGroups = [
   {
     label: "Database",
     color: C.orange,
-    emoji: "🗄️",
+    emoji: Monitor,
     items: ["PostgreSQL", "MongoDB", "Prisma ORM", "ERD", "Database Design"],
   },
   {
     label: "DevOps & Infra",
     color: C.purple,
-    emoji: "🐳",
+    emoji: Monitor,
     items: ["Docker", "MinIO", "Nginx", "Jenkins", "Git", "GitHub", "GitLab"],
   },
   {
     label: "Testing",
     color: C.amber,
-    emoji: "🧪",
+    emoji: Monitor,
     items: ["Jest", "Playwright", "Katalon Studio"],
   },
   {
     label: "Architecture",
     color: C.blue,
-    emoji: "🏗️",
+    emoji: Monitor,
     items: [
       "Microfrontend",
       "Component-Based Architecture",
@@ -248,17 +182,6 @@ const skillGroups = [
       "SDLC",
     ],
   },
-];
-
-const proficiency = [
-  { label: "Next.js / Vue.js", level: 92, color: C.teal },
-  { label: "TypeScript / JavaScript", level: 90, color: C.teal },
-  { label: "Golang", level: 85, color: C.green },
-  { label: "MapLibre / Google Maps API", level: 83, color: C.blue },
-  { label: "PostgreSQL / MongoDB", level: 84, color: C.orange },
-  { label: "Docker / Nginx / Jenkins", level: 78, color: C.purple },
-  { label: "Playwright / Jest / Katalon", level: 80, color: C.amber },
-  { label: "REST API / JWT / OAuth 2.0", level: 88, color: C.green },
 ];
 
 const githubStats = [
@@ -275,6 +198,11 @@ const githubStats = [
   {
     icon: GitFork,
     label: "Commit",
+    value: "24",
+  },
+  {
+    icon: GitFork,
+    label: "Commits",
     value: "24",
   },
 ];
@@ -440,7 +368,7 @@ export default function About() {
                     color: C.muted,
                   }}
                 >
-                  Software Engineer
+                  Fullstack Engineer
                 </div>
               </div>
             </div>
@@ -453,14 +381,16 @@ export default function About() {
                 color: C.muted,
               }}
             >
-              A Software Engineer focused on{" "}
-              <span style={{ color: theme === "dark" ? C.blue : C.blue }}>web development</span> and
-              always curious about new technologies, with experience across projects in{" "}
+              Fullstack Engineer with 3+ years of experience in{" "}
+              <span style={{ color: theme === "dark" ? C.blue : C.blue }}>web development</span>,
+              with a passion for exploring new ideas and staying curious about new technologies.
+              Always learning, building, and growing through every project. Experienced across
+              projects in{" "}
               <span style={{ color: theme === "dark" ? C.green : C.amber }}>
                 banking, geospatial, and carbon certification
               </span>
-              . I have a strong eye for UI details, write clean code, and care about usability. Take
-              a moment to check my resume and see what I can do. Thanks for stopping by!
+              . Strong eye for UI details, write clean code, and care about usability. Take a moment
+              to explore the resume and see what fun things have been built. Thanks for stopping by!
             </p>
 
             <div className="grid grid-cols-2 gap-2.5">
@@ -501,6 +431,42 @@ export default function About() {
                 );
               })}
             </div>
+
+            <div className="grid grid-cols-2 gap-2.5">
+              <Link
+                href="/projects"
+                className="transition-all duration-200 hover:-translate-y-0.5"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  padding: "9px 20px",
+                  backgroundColor: theme === "dark" ? C.green : C.fg,
+                  color: theme === "dark" ? "#0d1117" : "white",
+                  borderRadius: "4px",
+                  textDecoration: "none",
+                }}
+              >
+                $ View Resume
+              </Link>
+              <Link
+                href="/chat"
+                className="transition-all duration-200 hover:-translate-y-0.5"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  padding: "9px 20px",
+                  backgroundColor: "transparent",
+                  color: C.fg,
+                  borderRadius: "4px",
+                  textDecoration: "none",
+                  border: `2px dashed ${C.border}`,
+                }}
+              >
+                💬 See my Playground
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -525,68 +491,66 @@ export default function About() {
           </span>
           skills_map
         </h2>
+
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-            {skillGroups.map((g) => (
-              <div
-                key={g.label}
-                className="rounded-md p-4"
-                style={{ backgroundColor: C.bg, border: `1px solid ${C.border}` }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${g.color}60`)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = C.border)}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-base">{g.emoji}</span>
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      color: g.color,
-                    }}
-                  >
-                    {g.label}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {g.items.map((item) => (
+            {skillGroups.map((g) => {
+              const Icon = g.emoji;
+              return (
+                <div
+                  key={g.label}
+                  className="rounded-md p-4"
+                  style={{ backgroundColor: C.bg, border: `1px solid ${C.border}` }}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${g.color}60`)}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = C.border)}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    {/* <span className="text-base">{g.emoji}</span> */}
+                    <Icon size={16} style={{ color: C.muted }} />
                     <span
-                      key={item}
-                      className="transition-all duration-200 cursor-default"
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.65rem",
-                        padding: "3px 8px",
-                        borderRadius: "2px",
-                        backgroundColor: `${g.color}10`,
-                        border: `1px solid ${g.color}30`,
-                        color: C.fg,
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLSpanElement).style.backgroundColor = `${g.color}25`;
-                        (e.currentTarget as HTMLSpanElement).style.color = g.color;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLSpanElement).style.backgroundColor = `${g.color}10`;
-                        (e.currentTarget as HTMLSpanElement).style.color = C.fg;
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        color: g.color,
                       }}
                     >
-                      {item}
+                      {g.label}
                     </span>
-                  ))}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {g.items.map((item) => (
+                      <span
+                        key={item}
+                        className="transition-all duration-200 cursor-default"
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.65rem",
+                          padding: "3px 8px",
+                          borderRadius: "2px",
+                          backgroundColor: `${g.color}10`,
+                          border: `1px solid ${g.color}30`,
+                          color: C.fg,
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLSpanElement).style.backgroundColor =
+                            `${g.color}25`;
+                          (e.currentTarget as HTMLSpanElement).style.color = g.color;
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLSpanElement).style.backgroundColor =
+                            `${g.color}10`;
+                          (e.currentTarget as HTMLSpanElement).style.color = C.fg;
+                        }}
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-
-          {/* proficiency bars */}
-          <TermWindow title="proficiency.json">
-            <div className="p-6 grid md:grid-cols-2 gap-x-10">
-              {proficiency.map((p) => (
-                <ProfBar key={p.label} {...p} />
-              ))}
-            </div>
-          </TermWindow>
         </div>
       </div>
     </div>
