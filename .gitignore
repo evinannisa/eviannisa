@@ -13,3 +13,4 @@ logs/
 .tmp-*
 src/bak/
 * copy*.tsx
+.next/
