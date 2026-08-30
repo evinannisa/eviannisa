@@ -110,13 +110,16 @@ export function ChatPopup({ open, onClose }: ChatPopupProps) {
       role="dialog"
       aria-label="live chat with dev_assistant"
       inert={!open}
-      className="fixed z-20 min-h-65 bottom-16 right-15 sm:right-22 w-[min(240px,calc(100vw-3rem))] h-[min(360px,calc(100dvh-92px))] sm:w-[min(380px,calc(100vw-3rem))] md:h-[min(420px,calc(100dvh-92px))] md:right-[8.3rem]"
+      // className="fixed z-20 min-h-65 bottom-40 right-15 sm:right-22 w-[min(240px,calc(100vw-3rem))] h-[min(360px,calc(100dvh-92px))] sm:w-[min(380px,calc(100vw-3rem))] md:h-[min(420px,calc(100dvh-92px))] md:right-[8.3rem]"
+      className="fixed z-60 min-h-65 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[min(360px,calc(100dvh-92px))] sm:top-auto sm:left-auto sm:bottom-16 sm:right-22 sm:w-[min(380px,calc(100vw-3rem))] sm:translate-y-0 sm:translate-x-0  md:h-[min(420px,calc(100dvh-92px))] md:right-[8.3rem]"
+
       style={{
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         transition: dragging ? "none" : "transform 0.18s ease",
         pointerEvents: open ? "auto" : "none",
       }}
     >
+      {/* top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] */}
       <div
         className="chat-popup h-full"
         style={{

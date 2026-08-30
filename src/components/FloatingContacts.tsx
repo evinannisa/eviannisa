@@ -90,7 +90,7 @@ export function FloatingContacts() {
 
       <div className="fixed z-50 flex flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8">
         <div
-          className="flex flex-col items-end pr-1 pointer-events-none"
+          className="hidden lg:flex flex-col items-end pr-1 pointer-events-none"
           style={{
             opacity: mounted ? 0.75 : 0,
             transition: "opacity 0.4s ease 0.1s",
