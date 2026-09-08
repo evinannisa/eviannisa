@@ -1,5 +1,8 @@
 "use client";
 
+import { SkillList } from "@/components/SkillList";
+import { RING } from "@/components/AboutDoodles";
+import { Monitor } from "lucide-react";
 import React from "react";
 
 const C = {
@@ -23,57 +26,87 @@ export const timeline = [
     year: "March 2026 - Current",
     title: "Software Engineer",
     place: "TAN Digital",
-    desc: "When I first joined, I started with a project for Mitratel, building data visualizations and geospatial features around tower data. Then, I moved to PMT, where I worked on revamping the UI. After that, I joined a TSEL project, working on network analysis using reports from Ookla and Speedtest.",
+    desc: "After that, I joined a TSEL project, working on network analysis using reports from Ookla and Speedtest. It was a different kind of challenge, working with network data and turning those reports into useful insights through the application.",
+    skills: [
+      "Next.js",
+      "TypeScript",
+      "TanStack Query",
+      "Tailwind CSS",
+      "MapLibre GL JS",
+      "GeoJSON",
+      "RESTful API",
+    ],
   },
   {
     year: "Dec 2024 - Feb 2026",
     title: "Frontend Engineer",
     place: "TAN Digital",
-    desc: "Built real-time fleet tracking with MapLibre + Vue.js. Led microfrontend architecture migration across 3 teams.",
+    desc: "When I first joined, I started with a project for Mitratel, building data visualizations and geospatial features around tower data. Then came PMT, where I worked on revamping the UI and finding ways to make the application cleaner and easier to use. Moving between these projects gave me a chance to work with different types of products and learn something new each time.",
+    skills: [
+      "Next.js",
+      "TypeScript",
+      "TanStack Query",
+      "Tailwind CSS",
+      "MapLibre GL JS",
+      "GeoJSON",
+      "Microfrontend",
+    ],
   },
   {
     year: "Feb 2023 - Nov 2024",
     title: "Frontend Developer",
     place: "Infosys Solusi Terpadu",
-    desc: "Built real-time fleet tracking with MapLibre + Vue.js. Led microfrontend architecture migration across 3 teams.",
+    desc: "This was my first official role as a developer, where I started working on real projects for Bank Jatim and Bank Victoria. I worked on turning designs and requirements into working interfaces, while learning how to build clean and responsive banking applications. It was also my first time working closely with senior developers. Seeing their skills and how they worked made me realize there was still a lot for me to learn, and it pushed me to keep growing. Along the way, I also learned how different roles work together, from designers and developers to QA and other teams, and how everyone plays a part in building a project.",
+    skills: [
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Styled Components",
+      "RESTful API",
+      "JWT",
+      "Katalon Studio",
+      "GitLab",
+    ],
   },
   {
     year: "Oct 2022 - Jan 2023",
     title: "React Js Developer",
     place: "Infosys Solusi Terpadu",
-    desc: "Built real-time fleet tracking with MapLibre + Vue.js. Led microfrontend architecture migration across 3 teams.",
+    desc: "I started this journey through a React.js bootcamp that combined learning with a team-based competition for a chance to join the company. For the final challenge, my team worked on a study case called Evil Corps, turning the given requirements into a working web application while learning how to collaborate, solve problems, and build with React.js",
+    skills: ["React", "JavaScript", "RESTful API", "Component-Based Architecture", "Git"],
   },
   {
     year: "Feb 2022 - Jul 2022",
     title: "Frontend Developer",
     place: "Media Kreasi Abadi",
-    desc: "Delivered Next.js + Golang SaaS with Google OAuth 2.0, Prisma ORM, Docker, Nginx. Full Playwright E2E coverage.",
+    desc: "As part of the MSIB program, I had the opportunity to join Media Kreasi Abadi as a Frontend Developer. I learned React.js and TypeScript by working on a study case based on our own brainstorming and ideas. I worked with the team to turn those ideas into a real web application, while collaborating with backend, UI/UX, and mobile developers. I also met and made friends with people from different parts of Indonesia, which made the experience even more memorable.",
+    skills: [
+      "Next.js",
+      "Golang",
+      "Google OAuth 2.0",
+      "Prisma ORM",
+      "PostgreSQL",
+      "Docker",
+      "Nginx",
+      "Playwright",
+    ],
   },
   {
     year: "Sep 2021 - Jan 2022",
     title: "Frontend Developer",
     place: "Geeschool Cendekia Mandiri",
-    desc: "Developed Vue.js & Next.js apps. Integrated Google Maps JS API and Places API for logistics clients.",
+    desc: "This was my first internship, as part of a program from my university. I worked on landing pages for schools while learning the basics of web development with HTML, CSS, and JavaScript. More than the technical side, this was my first experience working on a real project and understanding how work is organized, from receiving tasks to completing them as part of a team.",
+    skills: ["Vue.js", "Next.js", "JavaScript", "Google Maps JS API", "Places API"],
   },
   {
     year: "Feb 2021 - Jul 2021",
     title: "Web Programming Practicum Assistant",
-    place: "Forum Asisten",
-    desc: "Started with React, fell in love with maps. Built first GeoJSON visualizer and REST API in Express.js.",
+    place: "Forum Asisten — Amikom Yogyakarta University",
+    desc: "This was my first experience as a teaching assistant, where I helped run web programming practical sessions based on the lecturer’s syllabus. I explained the materials and helped students during the sessions. What made this experience special was receiving good feedback from the students at the end of the semester. It was really nice to know that they enjoyed the sessions and found my help useful.",
+    skills: ["React", "JavaScript", "Express.js", "RESTful API", "GeoJSON", "MongoDB"],
   },
 ];
 
-/* Entri dikelompokkan per perusahaan.
-
-   Alasannya ada di datanya sendiri: dari 7 entri, hanya ada 5 perusahaan —
-   TAN Digital dan Infosys Solusi Terpadu masing-masing muncul dua kali sebagai
-   dua jabatan berbeda. Daftar rata membuat kedua nama itu terulang dan
-   menyembunyikan fakta yang justru paling berarti, yaitu adanya kenaikan
-   jabatan di tempat yang sama.
-
-   Yang digabung hanya entri BERURUTAN. Kalau suatu saat ada perusahaan yang
-   dimasuki lagi setelah jeda di tempat lain, menggabungkannya jadi satu blok
-   akan menyalahi urutan waktunya. */
 function groupByPlace(rows: typeof timeline) {
   const out: { place: string; roles: typeof timeline }[] = [];
   for (const r of rows) {
@@ -84,25 +117,28 @@ function groupByPlace(rows: typeof timeline) {
   return out;
 }
 
-/* Rentang gabungan satu perusahaan, diturunkan dari entrinya — bukan ditulis
-   ulang di data. Barisnya terurut dari yang terbaru, jadi awalnya diambil dari
-   entri TERAKHIR dan akhirnya dari entri PERTAMA. */
 function placeSpan(roles: typeof timeline) {
   const first = roles[roles.length - 1].year.split(" - ")[0];
   const last = roles[0].year.split(" - ")[1] ?? roles[0].year;
   return `${first} - ${last}`;
 }
 
-/* Hanya TAN Digital yang punya berkas logo di repo ini. Peta, bukan diturunkan
-   dari namanya, karena nama berkas tidak mengikuti aturan apa pun. Perusahaan
-   yang tidak ada di sini otomatis memakai inisial. */
 const PLACE_LOGO: Record<string, string> = {
   "TAN Digital": "/assets/images/logo-tan.webp",
+  "Infosys Solusi Terpadu": "/assets/images/ist-logo.png",
+  "Media Kreasi Abadi": "/assets/images/logo-mka.png",
+  "Geeschool Cendekia Mandiri": "/assets/images/logo-geschool.webp",
+  "Forum Asisten — Amikom Yogyakarta University": "/assets/images/forum_asisten_logo.jpeg",
 };
 
-/* Inisial untuk perusahaan tanpa logo. Dipotong 3 huruf supaya lebarnya tetap
-   sepadan di plakat 34px: "Geeschool Cendekia Mandiri" jadi GCM, bukan tiga
-   huruf yang memenuhi kotaknya. */
+const PLACE_LOCATION: Record<string, string> = {
+  "TAN Digital": "Jakarta Selatan, Indonesia",
+  "Infosys Solusi Terpadu": "Jakarta Selatan, Indonesia",
+  "Media Kreasi Abadi": "Jakarta Selatan, Indonesia",
+  "Geeschool Cendekia Mandiri": "Jakarta Selatan, Indonesia",
+  "Forum Asisten — Amikom Yogyakarta University": "Jakarta Selatan, Indonesia",
+};
+
 function initials(name: string) {
   return name
     .split(/\s+/)
@@ -113,14 +149,77 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-const MONO = "'JetBrains Mono', monospace";
-
-/* Lebar plakat dan jarak-jarak yang bergantung padanya, ditulis sekali di sini.
-   Relnya turun dari TITIK TENGAH plakat, jadi ketiga angka ini saling terikat:
-   ubah BADGE, dua lainnya ikut. */
 const BADGE = 34;
 const RAIL_X = BADGE / 2; // rel sejajar tengah plakat
 const ROLE_PAD = 29; // isi jabatan sejajar dengan nama perusahaan di kepala
+
+const DOT = 11; // sisi kotak gambar penanda
+const DOT_TOP = 4; // turunnya penanda supaya sejajar tengah baris judul
+const DOT_MID = DOT_TOP + DOT / 2; // pusat penanda, tempat rel bermula
+const ROLE_GAP = 24; // jarak antar jabatan, dulu `mb-6`
+
+const skillGroups = [
+  {
+    label: "Frontend & Styling",
+    color: C.teal,
+    emoji: Monitor,
+    items: [
+      "Next.js",
+      "Vue.js",
+      "TypeScript",
+      "JavaScript",
+      "TanStack Query",
+      "Tailwind CSS",
+      "Styled Components",
+      "MapLibre GL JS",
+      "Google Maps JS API",
+      "Places API",
+      "GeoJSON",
+    ],
+  },
+  {
+    label: "Backend & Database",
+    color: C.green,
+    emoji: Monitor,
+    items: [
+      "Golang",
+      "Express.js",
+      "RESTful API",
+      "JWT",
+      "Auth & Authorization",
+      "API Design",
+      "Google OAuth 2.0",
+      "Swagger",
+      "Postman",
+      "PostgreSQL",
+      "MongoDB",
+      "Prisma ORM",
+      "ERD",
+      "Database Design",
+    ],
+  },
+  {
+    label: "Infrastructure & Tools",
+    color: C.purple,
+    emoji: Monitor,
+    items: ["Docker", "MinIO", "Nginx", "Jenkins", "Git", "GitHub", "GitLab"],
+  },
+  {
+    label: "Testing & Architecture",
+    color: C.amber,
+    emoji: Monitor,
+    items: [
+      "Jest",
+      "Playwright",
+      "Katalon Studio",
+      "Microfrontend",
+      "Component-Based Architecture",
+      "Client-Server Architecture",
+      "TRD",
+      "SDLC",
+    ],
+  },
+];
 
 export default function Experience() {
   const groups = groupByPlace(timeline);
@@ -128,35 +227,33 @@ export default function Experience() {
   return (
     <div className="relative mt-8" style={{ backgroundColor: C.bg, minHeight: "100vh" }}>
       <div className="px-6 pt-12 pb-12 max-w-5xl mx-auto">
-        <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
-          Skill & Experiences
-        </h1>
-        <p
-          className="mt-2 mb-10"
-          style={{ fontFamily: MONO, fontSize: "0.72rem", color: C.muted, opacity: 0.75 }}
-        >
-          {timeline.length} roles across {groups.length} places
+        <div>
+          <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
+            Work & Stacks
+          </h1>
+          {/* <p className="font-mono text-[0.7rem] text-muted">
+            <span className="text-red">./</span>things i've built · click to expand
+          </p> */}
+        </div>
+        <div className="flex gap-2.5 items-center mb-2 mt-8">
+          <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
+            Where I&apos;ve Worked
+          </div>
+        </div>
+
+        <p className="mb-4 sm:mb-6 lg:max-w-160 text-xs sm:text-sm text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
+          The roles I&apos;ve held, the teams I worked alongside, and the products I helped bring to
+          production.
         </p>
 
-        {groups.map((g) => (
+        {groups.map((g, gi) => (
           <section key={g.place} className="mb-11 last:mb-0">
             <div className="flex items-center gap-3 mb-4">
-              {/* Plakat perusahaan: logo kalau ada, kalau tidak inisialnya.
-                  Kotaknya sengaja berukuran sama untuk keduanya, jadi kelima
-                  kepala kelompok tetap sejajar meski cuma satu yang punya logo.
-
-                  Kotak polos, bukan digambar tangan: di halaman ini yang bertugas
-                  jadi doodle adalah penanda jabatan di rel. Kalau plakatnya juga
-                  bergaya coretan, keduanya berebut peran dan tampilannya justru
-                  jadi ramai. */}
               <div
-                className="shrink-0 flex items-center justify-center overflow-hidden"
+                className="shrink-0 flex items-center justify-center overflow-hidden rounded-[9px] border border-border bg-surface"
                 style={{
                   width: BADGE,
                   height: BADGE,
-                  borderRadius: 9,
-                  border: `1px solid ${C.border}`,
-                  backgroundColor: C.surface,
                 }}
               >
                 {PLACE_LOGO[g.place] ? (
@@ -168,12 +265,9 @@ export default function Experience() {
                   />
                 ) : (
                   <span
+                    className="font-mono font-semibold tracking-[0.04em] text-muted"
                     style={{
-                      fontFamily: MONO,
                       fontSize: initials(g.place).length > 2 ? "0.62rem" : "0.72rem",
-                      fontWeight: 600,
-                      letterSpacing: "0.04em",
-                      color: C.muted,
                     }}
                   >
                     {initials(g.place)}
@@ -181,149 +275,102 @@ export default function Experience() {
                 )}
               </div>
 
-              {/* Nama di kiri, rentang tahun rata kanan. Tanpa garis penghubung:
-                  di kepala kelompok yang isinya cuma dua hal, jarak kosong sudah
-                  cukup memisahkan keduanya, dan garisnya justru menambah satu
-                  elemen bergaris lagi di samping rel putus-putus di bawahnya. */}
-              <h2
-                className="m-0 shrink-0"
-                style={{
-                  fontFamily: "'Poppins', sans-serif",
-                  fontSize: "1.02rem",
-                  fontWeight: 600,
-                  color: C.fg,
-                }}
-              >
-                {g.place}
-              </h2>
-              {/* `ml-auto` menggantikan pengisi ber-`flex-1` yang dulu ada di
-                  sini — rentang tahun tetap rata kanan, tapi tanpa elemen
-                  tambahan di DOM. */}
-              <span
-                className="shrink-0 ml-auto"
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.61rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: C.muted,
-                }}
-              >
-                {placeSpan(g.roles)}
-              </span>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col gap-1">
+                  <h2 className="m-0 font-poppins-sans text-sm sm:text-sm text-foreground">
+                    {g.place}
+                  </h2>
+                  {PLACE_LOCATION[g.place] && (
+                    <div className="font-mono text-xs text-muted leading-[1.4]">
+                      {PLACE_LOCATION[g.place]}
+                    </div>
+                  )}
+                </div>
+                <div className="ml-auto self-start text-xs font-poppins-sans text-foreground">
+                  {placeSpan(g.roles)}
+                </div>
+              </div>
             </div>
 
-            {/* Rel utuh per kelompok, turun dari tengah plakat di atasnya
-                supaya keduanya terbaca satu bagian. Panjang relnya jadi ikut
-                menerangkan lama bekerja di satu tempat, dan jeda antar kelompok
-                memberi halaman ini ritme yang tidak dimiliki daftar rata. */}
-            <div
-              className="relative"
-              style={{
-                marginLeft: RAIL_X,
-                paddingLeft: ROLE_PAD,
-                borderLeft: `1px solid ${C.border}`,
-              }}
-            >
-              {g.roles.map((t, i) => (
-                /* `relative` wajib: penanda di bawah `absolute`, dan tanpa ini
-                   ia mengacu ke pembungkus KELOMPOK sehingga semua penanda dalam
-                   satu kelompok menumpuk di baris pertama. */
-                <div key={t.year} className={`relative ${i < g.roles.length - 1 ? "mb-6" : ""}`}>
-                  {/* Penanda jabatan: lingkaran berongga bergaya coretan,
-                      menggantikan pita pembatas yang merah dan berisi.
+            <div className="relative" style={{ marginLeft: RAIL_X, paddingLeft: ROLE_PAD }}>
+              <span
+                aria-hidden="true"
+                className="absolute bg-border"
+                style={{
+                  left: -1,
+                  top: DOT_MID,
+                  bottom: 0,
+                  width: 1,
+                }}
+              />
+              {g.roles.map((t, i) => {
+                const top = gi === 0 && i === 0;
 
-                      Diganti karena sekarang tiap kelompok sudah punya plakat
-                      perusahaan. Pita yang berisi penuh itu berat, dan tujuh di
-                      antaranya menarik perhatian melebihi plakat yang justru
-                      seharusnya jadi jangkar.
-
-                      Warnanya merah, sama seperti pita tadi, tapi bobotnya jauh
-                      lebih ringan: garis 1.3px dengan isian 0.22, bukan bidang
-                      penuh. Merah dipilih karena satu-satunya yang kuat di KEDUA
-                      tema — rasio kontras 8.33 di dark (#ff7b72) dan 3.42 di
-                      light (#e05c4a); amber cuma 2.39 di light.
-
-                      Penanda ini juga satu-satunya yang berwarna di halaman ini,
-                      jadi ia yang menandai posisi tanpa perlu diperbesar.
-
-                      Tetap doodle, bukan bulatan CSS: sapuannya 380 derajat
-                      (melebihi satu putaran) sehingga ujungnya lewat sedikit
-                      dari pangkalnya, dan jari-jarinya bervariasi 3.2-3.8.
-                      Disambung Catmull-Rom supaya tetap mulus, bukan bergerigi.
-
-                      `left` dihitung, bukan dikira-kira: tepi kiri pembungkus
-                      jabatan ada di RAIL_X + 1 + ROLE_PAD dari tepi bagian ini,
-                      jadi -(1 + ROLE_PAD + 5.5) menaruh pusat lingkaran tepat di
-                      atas rel. */}
-                  <svg
-                    className="absolute overflow-visible"
-                    style={{ left: -(1 + ROLE_PAD + 5.5), top: 4, width: 11, height: 11 }}
-                    viewBox="0 0 11 11"
-                    fill="none"
-                    aria-hidden="true"
+                return (
+                  <div
+                    key={t.year}
+                    className="relative"
+                    style={{ marginBottom: i < g.roles.length - 1 ? ROLE_GAP : 0 }}
                   >
-                    <path
-                      d="M4.89,2.05 C5.26,2.05 6.51,1.75 7.08,2.04 C7.64,2.34 7.92,3.22 8.28,3.84 C8.64,4.45 9.26,5.13 9.21,5.74 C9.17,6.34 8.45,6.93 8.02,7.48 C7.58,8.02 7.18,8.82 6.59,9.01 C6.01,9.21 5.19,8.85 4.52,8.65 C3.85,8.45 2.96,8.31 2.54,7.82 C2.13,7.34 2.06,6.43 2.01,5.72 C1.96,5.01 1.88,4.08 2.24,3.55 C2.60,3.02 3.50,2.84 4.15,2.55 C4.81,2.27 5.81,1.96 6.15,1.84"
-                      stroke={C.red}
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill={C.red}
-                      fillOpacity="0.22"
-                    />
-                  </svg>
-
-                  <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-                    <span
+                    <svg
+                      className="absolute overflow-visible"
                       style={{
-                        fontFamily: "'Caveat', cursive",
-                        fontSize: "1.28rem",
-                        fontWeight: 700,
-                        lineHeight: 1.25,
-                        color: C.fg,
+                        left: -(1 + ROLE_PAD + DOT / 2),
+                        top: DOT_TOP,
+                        width: DOT,
+                        height: DOT,
                       }}
+                      viewBox="0 0 11 11"
+                      fill="none"
+                      aria-hidden="true"
                     >
-                      {t.title}
-                    </span>
-                    {/* Disembunyikan kalau kelompoknya cuma berisi satu jabatan:
-                        rentangnya pasti sama persis dengan yang sudah tertulis di
-                        kepala kelompok, dan mengulanginya membuat baris ini
-                        terbaca seperti ada dua keterangan waktu yang berbeda. */}
-                    {g.roles.length > 1 && (
-                      <span
-                        className="shrink-0"
-                        style={{
-                          fontFamily: MONO,
-                          fontSize: "0.6rem",
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          color: C.muted,
-                          opacity: 0.8,
-                        }}
-                      >
-                        {t.year}
+                      <path
+                        d={RING}
+                        stroke={top ? C.green : C.muted}
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill={top ? C.green : C.muted}
+                      />
+                    </svg>
+
+                    <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
+                      <span className="text-sm text-foreground font-mono leading-tight opacity-90">
+                        {t.title}
                       </span>
+                      {g.roles.length > 1 && (
+                        <span className="shrink-0 font-mono text-xs text-muted opacity-80">
+                          {t.year}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="m-0 font-poppins-sans text-sm leading-[1.75] tracking-[0.012em] text-muted max-w-155">
+                      {t.desc}
+                    </p>
+
+                    {t.skills.length > 0 && (
+                      <ul className="flex flex-wrap gap-2 m-0 mt-4 p-0 list-none">
+                        {t.skills.map((s) => (
+                          <li
+                            key={s}
+                            className="py-1.5 px-3 font-mono text-[0.68rem] leading-none text-muted rounded-ful border border-border bg-transparent"
+                          >
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
-
-                  <p
-                    className="m-0"
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "0.83rem",
-                      lineHeight: 1.75,
-                      color: C.muted,
-                      maxWidth: "620px",
-                    }}
-                  >
-                    {t.desc}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         ))}
+
+        <div className="mt-14 sm:mt-20">
+          <SkillList groups={skillGroups} title="What I Build With" />
+        </div>
       </div>
     </div>
   );

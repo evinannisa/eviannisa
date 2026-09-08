@@ -35,7 +35,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const [hoverResume, setHoverResume] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,16 +47,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "light") {
-      root.classList.add("light");
-    } else {
-      root.classList.remove("light");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
   return (
     <div
       className="bg-background min-h-screen"
@@ -65,7 +55,12 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       }}
     >
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        /* `transition-all` diganti daftar properti yang memang berubah: yang
+           berganti saat menggulir cuma latar dan garis bawahnya, sedangkan
+           `all` ikut menyertakan backdrop-filter dan properti tata letak - dan
+           itu yang bikin navbar terasa menyusul, bukan seiring, dengan
+           halamannya. */
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
           !isHome && scrolled ? "border-border" : "border-transparent"
         }`}
         style={{

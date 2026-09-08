@@ -1,10 +1,3 @@
-/* Bingkai goresan tangan: kotak putus-putus + titik di empat sudut. Memakai
-   ulang kelas `.sketch` yang sudah ada di src/index.css — pola yang sama
-   dengan tombol resume di navbar dan label FloatingContacts, jadi kartunya
-   sekeluarga dengan home dan bukan bentuk baru.
-
-   Geometri rect diberikan lewat `style`, bukan atribut: `calc()` tidak sah
-   sebagai nilai atribut presentasi SVG dan akan diabaikan browser. */
 export function SketchFrame() {
   return (
     <svg className="frame" preserveAspectRatio="none" aria-hidden="true">

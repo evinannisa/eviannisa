@@ -241,7 +241,7 @@ export default function About() {
         </div>
 
         {/* <div className="mt-12 sm:mt-16">
-          <SkillList groups={skillGroups} />
+          <SkillList groups={skillGroups} chapter="// 06" />
         </div> */}
       </div>
     </div>

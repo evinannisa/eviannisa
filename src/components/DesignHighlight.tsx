@@ -5,16 +5,10 @@ import gsap from "gsap";
 import { designs, DESIGN_MORE } from "@/data/designs";
 import { SketchFrame } from "@/components/SketchFrame";
 
-/* Bab 05: belajar desain.
-
-   Berdiri sendiri: kerangka, doodle, tautan, dan animasinya semua di file ini,
-   tanpa komponen Section bersama. Kelas ah-* tetap dipakai supaya pola
-   animasinya seragam dengan bagian lain di halaman. */
 const MONO = "'JetBrains Mono', monospace";
 const ACCENT = "var(--purple-color)";
 const CARD = "sketch sketch-card relative";
 
-/* satu kartu saja; sel keduanya diisi sketsa, bukan desain kedua */
 const TOP_DESIGNS = designs.slice(0, 1);
 
 export function DesignHighlight() {
@@ -52,9 +46,6 @@ export function DesignHighlight() {
             ease: "sine.inOut",
           });
 
-          /* Sketsa bernapas: naik-turun sekaligus miring tipis, durasinya bukan
-             kelipatan satu sama lain supaya tidak pernah sinkron — gerakan
-             berulang yang serempak terbaca mekanis. */
           const sketch = block.querySelector(".ah-sketch");
           if (sketch) {
             gsap.to(sketch, { y: -5, duration: 3.4, repeat: -1, yoyo: true, ease: "sine.inOut" });
@@ -68,7 +59,6 @@ export function DesignHighlight() {
             });
           }
 
-          /* dua marka lepas bergerak lebih jauh dan tidak sefase */
           gsap.to(block.querySelectorAll(".ah-sketch-mark"), {
             y: -4,
             rotation: 5,
@@ -100,10 +90,6 @@ export function DesignHighlight() {
 
   return (
     <section ref={rootRef} className="ah-block relative mt-16">
-      {/* Marka doodle di pita kosong sebelah kanan: paragraf dibatasi
-          lg:max-w-160 sementara grid kartunya selebar penuh, jadi hanya pita itu
-          yang benar-benar kosong. `hidden lg:block` karena batas max-w itu
-          sendiri baru berlaku dari lg. */}
       <svg
         className="ah-doodle hidden lg:block absolute pointer-events-none"
         style={{ top: "3.6rem", right: 0, width: 30 }}
@@ -177,8 +163,6 @@ export function DesignHighlight() {
                   style={{ aspectRatio: "16 / 10", objectFit: "cover" }}
                 />
               ) : (
-                /* Penampung selama gambarnya belum ada: bingkai putus-putus, tanpa
-                 <img> yang akan tampil sebagai gambar rusak. */
                 <div
                   className="flex items-center justify-center"
                   style={{ aspectRatio: "16 / 10", borderBottom: "1px solid var(--border-color)" }}
@@ -212,10 +196,6 @@ export function DesignHighlight() {
           </a>
         ))}
 
-        {/* Sel kedua sengaja bukan kartu: gambar lepas tanpa bingkai, jadi
-            barisnya tidak terbaca sebagai dua kartu kembar. Goresannya ikut
-            kelas ah-draw supaya masuk timeline gambar-sendiri milik bagian
-            ini, bukan animasi terpisah. */}
         <div className="ah-item flex flex-col items-center justify-center gap-3 py-2">
           <svg
             className="ah-sketch w-full"
@@ -229,10 +209,6 @@ export function DesignHighlight() {
             opacity="0.75"
             aria-hidden="true"
           >
-            {/* Bingkai layar ditarik satu goresan menerus dengan sudut yang
-                benar-benar membulat, lalu SEDIKIT MELEWATI titik awalnya di
-                kiri atas. Overshoot itu ciri paling khas garis tangan — tanpa
-                itu kotaknya kembali terbaca rapi meski dilengkungkan. */}
             <path
               className="ah-draw"
               strokeWidth="1.9"

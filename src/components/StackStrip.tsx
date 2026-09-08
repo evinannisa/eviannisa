@@ -2,31 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-
-/* Warna khas bagian ini. Tiap bagian di halaman about memakai satu token
-   berbeda, dan hanya di prefiks, marka, serta satu detail — tidak pernah di
-   teks isi — supaya warnanya terasa tanpa jadi pelangi. */
 const ACCENT = "var(--teal-color)";
 
-/* Memakai set glyph monokrom Simple Icons (public/assets/icons, CC0), bukan
-   artwork Wikimedia di public/assets/stack.
-
-   Alasannya bukan selera: logo Wikimedia multi-warna dan bentuknya bergantung
-   pada kontras internal. Begitu dipaksa jadi satu warna, detail dalamnya rata —
-   TypeScript jadi kotak pejal karena kotak biru dan huruf "TS" putihnya
-   sama-sama jadi opaque, PostgreSQL jadi siluet gajah tanpa detail. Glyph
-   Simple Icons digambar sebagai single path justru untuk diwarnai, jadi
-   bentuknya tetap terbaca.
-
-   Semua glyph viewBox 24x24, jadi tiap sel grid berukuran sama dan kolomnya
-   lurus — tidak lagi ragged seperti barisan wordmark dengan lebar berbeda.
-   Prisma juga ikut masuk di sini; di Wikimedia tidak ada. */
-/* `tilt` dan `size` ditulis eksplisit, bukan diacak: Math.random() akan
-   menghasilkan nilai berbeda di server dan di browser sehingga React melaporkan
-   hydration mismatch. Angkanya dipilih agar tidak ada dua tetangga yang miring
-   ke arah sama dengan besar sama, jadi barisnya terbaca ditempel tangan, bukan
-   berpola. Pola `tilt` ini mengikuti FloatingContacts yang sudah memakai cara
-   sama di halaman ini. */
 type Mark = { slug: string; name: string; tilt: number; size: number };
 
 const STACK: Mark[] = [
@@ -83,23 +60,9 @@ export function StackStrip() {
   return (
     <div ref={rootRef}>
       <div className="mb-4">
-        {/* Disamakan dengan dua pola label yang sudah ada di halaman ini:
-            judul kartu `hello_world.js` (JetBrains Mono 0.66rem muted) dan
-            baris `./who i am...` yang prefiksnya berwarna --red-color. Caveat
-            dilepas dari sini supaya blok ini terbaca satu keluarga dengan
-            kartu di atasnya, bukan sebagai bagian terpisah.
-
-            Perintahnya menunjuk sub-direktori, bukan `~/stack` polos: yang
-            tampil di bawah bukan seluruh stack melainkan yang paling sering
-            dipakai, dan `ls` pada satu folder memang mengeluarkan sebagian isi
-            saja — jadi labelnya jujur terhadap yang ditampilkan. Perintah git
-            (`git log`/`git fetch`) tidak dipakai karena keduanya melaporkan
-            commit dan remote, bukan daftar isi. */}
         <span
           style={{
             fontFamily: "'JetBrains Mono', monospace",
-            /* lebih besar dari label chrome kartu (0.66rem): ini judul bagian,
-               bukan metadata berkas, jadi boleh selangkah lebih tegas */
             fontSize: "0.8rem",
             color: "var(--muted-color)",
             lineHeight: 1,
@@ -114,8 +77,6 @@ export function StackStrip() {
         style={{ ["--accent" as string]: ACCENT }}
       >
         {STACK.map((m) => (
-          /* kemiringan dipegang pembungkus, warna dan mask dipegang anaknya:
-             kalau digabung, tween `y` milik GSAP menimpa rotate-nya */
           <span
             key={m.slug}
             className="stack-mark"

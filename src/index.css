@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Comic+Relief:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -22,8 +22,22 @@
   --teal-color: #79c0ff;
   --orange-color: #ffa657;
   --border-color: #30363d;
-  --nav-bg: black;
-  --nav-bg-scrolled: black;
+  /* Alfa navbar sengaja disamakan dengan tema terang (0.7 di puncak, 0.96 saat
+     tergulir), bukan hitam pekat seperti sebelumnya.
+
+     Alasannya soal transisi ganti tema, bukan selera: latar navbar dan latar
+     halaman diinterpolasi terpisah, dan warna PEKAT yang beranjak ke warna
+     ber-alfa-0.7 tidak menempuh jalur yang sama dengan latar halaman di
+     belakangnya. Di tengah transisi hasil komposit keduanya berbeda, dan
+     navbar - yang seharusnya tak kasatmata - muncul sebagai pita bergaris
+     selama sepersekian detik. Dengan alfa yang sama di kedua tema, kanal
+     warnanya bergerak persis seperti --bg-color dan pitanya tidak pernah
+     terbentuk.
+
+     Efek sampingnya dikehendaki: tema gelap ikut mendapat kaca buram yang
+     selama ini cuma dimiliki tema terang. */
+  --nav-bg: rgba(0, 0, 0, 0.7);
+  --nav-bg-scrolled: rgba(0, 0, 0, 0.96);
   --sub: #7a6a55;
   --line: #c4b49a;
   --yellow: #e8a838;
@@ -76,6 +90,7 @@
   --font-caveat: "Caveat", cursive;
   --font-poppins: "Poppins", monospace;
   --font-poppins-sans: "Poppins", sans-serif;
+  --font-comic: "Comic Relief", "Comic Sans MS", cursive;
 }
 
 * {
@@ -100,6 +115,53 @@ body {
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+/* Jendela transisi ganti tema.
+
+   Kelas `.theme-swapping` dipasang di <html> oleh ThemeProvider tepat saat tema
+   berganti, lalu dicabut lagi setelah `--theme-swap` (kedua nilainya berasal
+   dari satu konstanta di komponen itu).
+
+   Kenapa satu aturan menyapu `*` dan bukan transisi per komponen: warna tema
+   datang dari custom property yang dibaca RATUSAN elemen - latar kartu, garis
+   tepi, teks, stroke SVG doodle. Sebelumnya cuma <body> dan pembungkus halaman
+   yang punya transisi (0.2s), sementara navbar ikut `transition-all` 300ms
+   miliknya sendiri dan sisanya tidak beranimasi sama sekali. Hasilnya sekali
+   klik memicu tiga hal berbeda: halaman memudar 200ms, navbar 300ms, dan semua
+   yang lain melompat seketika.
+
+   `!important` memang perlu di sini: durasi milik komponen ditulis di `style`
+   sebaris (navbar, tombol resume, ThemeSwitch), dan tanpa ini masing-masing
+   tetap memakai durasinya sendiri - persis kepincangan yang mau dihilangkan.
+   Sapuan `*` hanya hidup selama jendela itu, jadi tidak membebani interaksi
+   biasa; transisi hover milik komponen kembali normal begitu kelasnya dicabut.
+
+   Sengaja TIDAK memakai `all`: transform, ukuran, dan posisi tidak boleh ikut
+   dianimasikan - knob ThemeSwitch, misalnya, punya lengkung pegasnya sendiri
+   dan akan tertimpa. */
+html.theme-swapping,
+html.theme-swapping *,
+html.theme-swapping *::before,
+html.theme-swapping *::after {
+  transition:
+    background-color var(--theme-swap) ease,
+    border-color var(--theme-swap) ease,
+    color var(--theme-swap) ease,
+    fill var(--theme-swap) ease,
+    stroke var(--theme-swap) ease,
+    box-shadow var(--theme-swap) ease,
+    outline-color var(--theme-swap) ease,
+    text-decoration-color var(--theme-swap) ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-swapping,
+  html.theme-swapping *,
+  html.theme-swapping *::before,
+  html.theme-swapping *::after {
+    transition: none !important;
+  }
 }
 
 @keyframes blink {
@@ -829,20 +891,39 @@ body {
 .stack-mark {
   display: inline-flex;
   transform: rotate(var(--tilt, 0deg));
-  transition: transform 0.2s ease;
+  /* 0.45s dengan kurva yang melandai panjang, naik dari `0.2s ease`.
+
+     Tiga gerakan terjadi bersamaan di sini - miring jadi lurus, terangkat, dan
+     membesar - dan pada durasi pendek ketiganya berebut waktu sampai terbaca
+     sebagai satu sentakan. Ekor kurva ini menahan beberapa persen terakhir
+     perjalanannya, jadi berhentinya melandai alih-alih mentok. */
+  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.24, 1);
 }
+/* Urutan fungsinya penting: `scale` ditulis TERAKHIR supaya pembesarannya
+   dihitung pada sumbu yang sudah lurus. Kalau ditaruh sebelum `rotate`,
+   perbesaran dan perputaran bertumpuk dan lambangnya sempat melenceng dari
+   titiknya di tengah perjalanan. */
 .stack-mark:hover {
-  transform: rotate(0deg) translateY(-2px);
+  transform: rotate(0deg) translateY(-2px) scale(1.18);
 }
 /* fallback --fg-color dipertahankan: kalau --accent tidak diset komponen,
    perilakunya kembali seperti semula, bukan hilang warnanya */
+/* Warnanya ikut ditransisikan, sebelumnya tidak sama sekali: lambangnya
+   melompat dari kelabu ke warna proyek dalam satu bingkai sementara badannya
+   bergerak halus - itu yang bikin gerakannya terasa patah meski perpindahan
+   posisinya sendiri sudah mulus. Durasinya disamakan supaya keduanya tiba
+   bersama. */
+.stack-logo {
+  transition: background-color 0.45s ease;
+}
 .stack-mark:hover .stack-logo {
   background-color: var(--accent, var(--fg-color));
   opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stack-mark {
+  .stack-mark,
+  .stack-logo {
     transition: none;
   }
   .stack-mark:hover {
@@ -886,6 +967,71 @@ body {
     display: none;
   }
 }
+/* Cabang pohon di daftar SkillList.
+
+   Digambar dengan dua garis, bukan ditulis pakai glif "├─"/"└─". Alasannya
+   jarak antar baris: glif cuma setinggi satu baris teks, jadi di antara dua
+   baris selalu tersisa celah dan batangnya patah-patah. Garis yang digambar
+   bisa dijulurkan melewati batas barisnya sendiri sepanjang --row-gap sampai
+   menyentuh baris berikutnya, jadi batangnya utuh berapa pun jaraknya.
+
+   --row-gap dipasok <ul> dari konstanta ROW_GAP yang juga jadi `gap`-nya, jadi
+   julurannya tidak bisa meleset dari jarak yang sebenarnya dipakai.
+
+   Lebar 13px dipilih menyerupai lebar "├─" pada mono 0.8rem yang dulu dipakai. */
+.sl-branch {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: 13px;
+  color: var(--muted-color);
+  opacity: 0.4;
+}
+.sl-branch::before,
+.sl-branch::after {
+  content: "";
+  position: absolute;
+  background-color: currentColor;
+}
+/* batang tegak, menjulur ke bawah menembus jarak antar baris */
+.sl-branch::before {
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: calc(100% + var(--row-gap, 0px));
+}
+/* ranting mendatar, di tengah barisnya */
+.sl-branch::after {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+}
+
+/* Baris terbawah tiap kolom: batangnya berhenti tepat di rantingnya sendiri —
+   itulah yang membedakan "└" dari "├".
+
+   Mana yang terbawah tergantung jumlah kolom, dan jumlah kolom cuma diketahui
+   CSS, bukan komponennya — karena itu aturannya di sini dan bukan berupa prop
+   `last` dari React.
+
+   Di bawah sm daftarnya DUA kolom, jadi yang terbawah ada dua: item terakhir
+   dan satu sebelumnya. Genap atau ganjil jumlah itemnya, keduanya selalu jatuh
+   di dasar kolomnya masing-masing. Tanpa aturan ini satu kolom menyisakan
+   batang menggantung ke ruang kosong. */
+.sl-list > li:nth-last-child(-n + 2) .sl-branch::before {
+  height: 50%;
+}
+@media (min-width: 640px) {
+  /* satu kolom: yang terbawah tinggal satu, sisanya kembali menjulur */
+  .sl-list > li:nth-last-child(-n + 2) .sl-branch::before {
+    height: calc(100% + var(--row-gap, 0px));
+  }
+  .sl-list > li:last-child .sl-branch::before {
+    height: 50%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stack-logo {
     transition: none;
@@ -938,3 +1084,4 @@ body {
   --wa-accent: #53a6d8;
   --wa-edge: #4aa5e0;
 }
+

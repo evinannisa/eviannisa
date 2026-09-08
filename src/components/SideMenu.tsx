@@ -3,7 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Briefcase, FolderGit2, Moon, RotateCcw, Sparkles, Sun, User } from "lucide-react";
+import {
+  Briefcase,
+  FolderGit2,
+  Handshake,
+  Moon,
+  RotateCcw,
+  Sparkles,
+  Sun,
+  User,
+} from "lucide-react";
 import gsap from "gsap";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { useTheme } from "@/components/ThemeProvider";
@@ -18,6 +27,13 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
+    href: "/",
+    label: "connect with me",
+    exact: true,
+    ink: "var(--green-color)",
+    icon: <Handshake size={15} strokeWidth={2.2} />,
+  },
+  {
     href: "/about",
     label: "about",
     ink: "var(--purple-color)",
@@ -25,7 +41,7 @@ const navItems: NavItem[] = [
   },
   {
     href: "/experience",
-    label: "works",
+    label: "experience",
     ink: "var(--amber-color)",
     icon: <Briefcase size={15} strokeWidth={2.2} />,
   },

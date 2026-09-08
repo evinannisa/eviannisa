@@ -1,13 +1,5 @@
 import { JsonBlock, type JsonRow } from "@/components/JsonBlock";
 
-/* Barisnya diterima apa adanya dari page.tsx supaya `jsDoc` tetap satu sumber
-   data, lalu `* @tag nilai` diurai jadi pasangan kunci/nilai. Kerangka komentar
-   dibuang karena bentuk yang diminta JSON, bukan JSDoc.
-
-   Nilai yang isinya lebih dari satu hal dipisah "·" di sumbernya dan di sini
-   dipecah jadi array. Aturannya ada pada pemisahnya, bukan pada nama kuncinya,
-   jadi baris `@apa-pun` yang baru ditambahkan ke `jsDoc` otomatis ikut aturan
-   yang sama tanpa menyentuh komponen ini. */
 function parse(lines: string[]): JsonRow[] {
   const out: JsonRow[] = [];
   for (const line of lines) {
