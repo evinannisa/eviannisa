@@ -3,10 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-/* Detik per karakter. Jauh lebih lambat dari typing paragraf: "about_me" cuma
-   8 karakter, dan pada 0.022s/karakter judulnya selesai dalam 0.18 detik —
-   terlalu singkat untuk terbaca sebagai sedang diketik. 0.095 memberi sekitar
-   0.76 detik, sepanjang satu ketukan judul. */
 const CHAR = 0.095;
 
 export function TypingText({
@@ -15,8 +11,6 @@ export function TypingText({
   delay = 0.25,
 }: {
   text: string;
-  /* Default true: kursor ditinggal berkedip di ujung judul seperti prompt
-     terminal. Set false kalau caret harus hilang setelah selesai. */
   keepCaret?: boolean;
   delay?: number;
 }) {
@@ -27,8 +21,6 @@ export function TypingText({
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      /* dipatok dari teks utuh sebelum dikosongkan, supaya baris judul tidak
-         mengempis lalu melompat balik saat karakter pertama masuk */
       el.style.minHeight = `${el.offsetHeight}px`;
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

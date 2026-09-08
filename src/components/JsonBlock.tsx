@@ -1,6 +1,3 @@
-/* Blok JSON polos — tanpa bingkai, tanpa latar, duduk langsung di atas
-   background halaman. Dipisah dari ProfileJson supaya bentuk yang sama bisa
-   dipakai bagian lain tanpa menyalin aturan pewarnaan dan penyejajarannya. */
 export type JsonRow = [key: string, value: string | string[]];
 
 const MONO = "'JetBrains Mono', monospace";
@@ -13,13 +10,8 @@ export function JsonBlock({
   keyWidth = "6.4rem",
 }: {
   rows?: JsonRow[];
-  /* Kalau diisi, bloknya dibungkus jadi satu deklarasi variabel:
-     `const <name> = { … }`. Pola ini mengikuti blok `const me = { … }` yang
-     sudah ada di halaman ini sebelumnya. Tanpa `name`, yang tampil objek
-     telanjang seperti isi berkas .json. */
   name?: string;
   className?: string;
-  /* disesuaikan per blok: kunci terpanjang menentukan di mana nilainya lurus */
   keyWidth?: string;
 }) {
   return (
@@ -40,11 +32,6 @@ export function JsonBlock({
       </div>
 
       {(rows ?? []).map(([k, v], i) => (
-        /* Kunci diberi lebar tetap, bukan disejajarkan dengan spasi: nilai jadi
-           lurus tanpa bergantung panjang kunci, dan nilai panjang bisa turun
-           baris di bawah kolomnya sendiri. Tanpa kotak tidak ada
-           `overflow-hidden` yang menyembunyikan luapan, jadi teks memang harus
-           boleh membungkus. */
         <div key={k} className="about-line flex" style={{ paddingLeft: "1.4rem" }}>
           <span className="shrink-0" style={{ width: keyWidth, color: "var(--red-color)" }}>
             &quot;{k}&quot;
@@ -65,7 +52,6 @@ export function JsonBlock({
             ) : (
               <>&quot;{v}&quot;</>
             )}
-            {/* koma dilewati di entri terakhir supaya tetap JSON yang sah */}
             {i < (rows ?? []).length - 1 && <span style={PUNCT}>,</span>}
           </span>
         </div>
