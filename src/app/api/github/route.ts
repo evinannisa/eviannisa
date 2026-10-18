@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 
 const USER = "eviannisaa";
 
-/* Di-cache satu jam di sisi server. Ini bukan optimasi opsional: Search API
-   GitHub tanpa token hanya mengizinkan 10 permintaan per menit per IP, dan
-   kalau tiap pengunjung memanggil sendiri dari browser, kuota itu habis oleh
-   segelintir orang lalu semua angkanya gagal muncul. Dengan revalidate, GitHub
-   dihubungi paling banyak sekali per jam berapa pun jumlah pengunjungnya. */
+/* Data di-cache satu jam di server. Ini wajib, bukan sekadar optimasi: Search API
+   GitHub tanpa token hanya mengizinkan 10 request per menit per IP. Jika setiap
+   pengunjung memanggilnya dari browser, kuota cepat habis dan semua angka gagal
+   tampil. Dengan revalidate, GitHub dipanggil paling banyak sekali per jam,
+   berapa pun jumlah pengunjungnya. */
 export const revalidate = 3600;
 
 const HEADERS = {
@@ -25,12 +25,11 @@ async function num(url: string, pick: (j: Record<string, unknown>) => unknown) {
   }
 }
 
-/* Grafik kontribusi tidak tersedia di REST API GitHub — hanya lewat GraphQL
-   yang mewajibkan token. Halaman /users/<user>/contributions ini publik dan
-   tidak butuh auth, tapi yang dibaca adalah HTML, jadi bisa berhenti bekerja
-   kalau GitHub mengubah markup-nya. Karena itu kegagalannya dibuat lunak:
-   `days` kosong dan panel tinggal menyembunyikan grafiknya, angka lain tetap
-   tampil. */
+/* Grafik kontribusi tidak tersedia di REST API GitHub, hanya di GraphQL yang
+   membutuhkan token. Halaman /users/<user>/contributions bersifat publik tanpa
+   auth, tetapi yang dibaca adalah HTML, sehingga bisa rusak jika GitHub mengubah
+   markup-nya. Karena itu kegagalannya ditangani dengan aman: `days` dikosongkan,
+   panel menyembunyikan grafik, dan angka lain tetap tampil. */
 async function contributions() {
   try {
     const r = await fetch(`https://github.com/users/${USER}/contributions`, {

@@ -98,7 +98,7 @@ export default function Writing() {
 
   return (
     <div style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
-      {/* header */}
+      {/* Header */}
       <div className="px-6 pt-12 pb-6 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: C.green }}>// 03</span>
@@ -110,7 +110,7 @@ export default function Writing() {
         </p>
       </div>
 
-      {/* tag filter */}
+      {/* Filter tag */}
       <div className="px-6 max-w-5xl mx-auto mb-8 flex flex-wrap gap-2">
         {tags.map(t => (
           <button key={t.key} onClick={() => setActiveTag(t.key)}
@@ -125,7 +125,7 @@ export default function Writing() {
         ))}
       </div>
 
-      {/* posts grid */}
+      {/* Grid tulisan */}
       <div className="px-6 pb-20 max-w-5xl mx-auto grid md:grid-cols-2 gap-5">
         {visible.map(post => (
           <article key={post.slug}
@@ -134,11 +134,11 @@ export default function Writing() {
             onMouseEnter={e => (e.currentTarget.style.borderColor = `${post.color}50`)}
             onMouseLeave={e => (e.currentTarget.style.borderColor = C.border)}>
 
-            {/* color bar */}
+            {/* Bar warna */}
             <div className="h-0.5 rounded-t-md" style={{ backgroundColor: post.color }} />
 
             <div className="p-5">
-              {/* meta */}
+              {/* Meta */}
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', fontWeight: 600, padding: '2px 7px', borderRadius: '2px', backgroundColor: `${post.color}18`, border: `1px solid ${post.color}35`, color: post.color }}>
                   #{post.tag}
@@ -155,7 +155,7 @@ export default function Writing() {
                 {post.excerpt}
               </p>
 
-              {/* topics */}
+              {/* Topik */}
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {post.topics.map(t => (
                   <span key={t} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.58rem', padding: '2px 6px', borderRadius: '2px', backgroundColor: C.surface2, color: C.muted, border: `1px solid ${C.border}` }}>{t}</span>

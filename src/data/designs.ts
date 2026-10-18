@@ -1,12 +1,12 @@
-/* Satu-satunya bagian di halaman about yang datanya belum ada di repo: tidak
-   ada berkas desain apa pun di public/. Isi `img` dengan path ke gambar yang
-   ditaruh di public/assets/designs/ (mis. "/assets/designs/nama.png"); selama
-   masih kosong, kartunya menggambar bingkai sketsa berisi judulnya, jadi
-   tata letaknya tetap benar dan tidak ada gambar rusak.
+/* Ini satu-satunya bagian halaman about yang datanya belum ada di repo, karena
+   belum ada file desain di public/. Isi `img` dengan path gambar di
+   public/assets/designs/ (misalnya "/assets/designs/nama.png"). Selama masih
+   kosong, kartu menampilkan bingkai sketsa berisi judul, sehingga tata letak
+   tetap rapi tanpa gambar rusak.
 
-   `MORE` adalah tujuan tautan "see more". Behance sudah disebut di baris
-   social home, tapi handle-nya belum ada di repo — ganti "#" dengan URL
-   profilnya. */
+   `DESIGN_MORE` adalah tujuan tautan "see more". Behance sudah disebut di
+   baris media sosial home, tetapi handle-nya belum ada di repo. Ganti "#"
+   dengan URL profilnya. */
 export const DESIGN_MORE = "#";
 
 export type Design = {

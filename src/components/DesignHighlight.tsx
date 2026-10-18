@@ -36,7 +36,7 @@ export function DesignHighlight() {
           { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut", stagger: 0.08 },
           0.15,
         )
-        /* melayang pelan setelah tergambar, sama seperti PageDoodles di home */
+        /* Melayang pelan setelah selesai digambar, sama seperti PageDoodles di home */
         .add(() => {
           gsap.to(block.querySelector(".ah-doodle"), {
             y: -6,
@@ -218,7 +218,7 @@ export function DesignHighlight() {
             />
             <path className="ah-draw" strokeWidth="1.6" d="M10,29 C56,26 106,31 150,27" />
 
-            {/* blok gambar, sudutnya ikut membulat */}
+            {/* Blok gambar dengan sudut membulat */}
             <path
               className="ah-draw"
               strokeWidth="1.6"
@@ -228,12 +228,12 @@ export function DesignHighlight() {
             />
             <path className="ah-draw" strokeWidth="1.5" d="M24,85 C42,69 60,56 90,44" />
 
-            {/* baris teks, lengkungnya dibedakan supaya tidak seragam */}
+            {/* Baris teks dengan lengkung berbeda agar tidak terlihat seragam */}
             <path className="ah-draw" strokeWidth="1.5" d="M104,49 C117,46 133,52 146,47" />
             <path className="ah-draw" strokeWidth="1.5" d="M104,61 C115,59 128,64 140,59" />
             <path className="ah-draw" strokeWidth="1.5" d="M104,73 C120,71 131,76 147,71" />
 
-            {/* dua marka lepas, memakai warna bagian ini dan bergerak sendiri */}
+            {/* Dua marka terpisah dengan warna bagian ini dan animasi sendiri */}
             <path
               className="ah-draw ah-sketch-mark"
               strokeWidth="2"
@@ -262,7 +262,7 @@ export function DesignHighlight() {
             <span style={{ fontFamily: MONO, fontSize: "0.7rem", color: "var(--muted-color)" }}>
               see more designs
             </span>
-            {/* panah tangan, bukan karakter panah: sejalan dengan goresan lain */}
+            {/* Panah gambar tangan, bukan karakter panah, agar serasi dengan goresan lain */}
             <svg width="17" height="9" viewBox="0 0 17 9" fill="none" aria-hidden="true">
               <path
                 d="M1,4.6 C5,4.1 10,4.9 15.4,4.4"

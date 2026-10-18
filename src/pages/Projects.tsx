@@ -104,7 +104,7 @@ export function Projects() {
 
   return (
     <div style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
-      {/* page header */}
+      {/* Header halaman */}
       <div className="px-6 pt-12 pb-6 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: C.green }}>// 02</span>
@@ -116,7 +116,7 @@ export function Projects() {
         </p>
       </div>
 
-      {/* filter tabs */}
+      {/* Tab filter */}
       <div className="px-6 max-w-5xl mx-auto mb-6">
         <div className="inline-flex rounded-md overflow-hidden" style={{ border: `1px solid ${C.border}` }}>
           {filterLabels.map(f => (
@@ -137,7 +137,7 @@ export function Projects() {
         </span>
       </div>
 
-      {/* project list */}
+      {/* Daftar proyek */}
       <div className="px-6 pb-20 max-w-5xl mx-auto flex flex-col gap-4">
         {visible.map(p => {
           const open = active === p.id
@@ -149,7 +149,7 @@ export function Projects() {
               onMouseEnter={e => { if (!open) (e.currentTarget as HTMLDivElement).style.borderColor = `${p.color}50` }}
               onMouseLeave={e => { if (!open) (e.currentTarget as HTMLDivElement).style.borderColor = C.border }}>
 
-              {/* header */}
+              {/* Header */}
               <div className="flex items-center justify-between gap-4 px-5 py-4 flex-wrap">
                 <div className="flex items-center gap-3 flex-wrap">
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', fontWeight: 600, padding: '2px 8px', borderRadius: '3px', backgroundColor: `${p.color}18`, border: `1px solid ${p.color}40`, color: p.color }}>
@@ -169,7 +169,7 @@ export function Projects() {
                 </div>
               </div>
 
-              {/* expanded */}
+              {/* Detail saat dibuka */}
               {open && (
                 <div className="px-5 pb-5 border-t" style={{ borderColor: `${p.color}25` }}>
                   <div className="grid md:grid-cols-5 gap-6 mt-5 items-start">

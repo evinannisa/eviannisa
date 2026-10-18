@@ -11,10 +11,10 @@ const KNOB_LEFT = H / 2;
 const KNOB_RIGHT = W - H / 2;
 
 /**
- * Hand-drawn theme switch. Same pencil vocabulary as the floating contact
- * buttons — every stroke drawn twice, the second pass offset and faded, with
- * irregular dashes so no line closes cleanly — but kept monochrome and thin so
- * it stays a quiet piece of nav furniture rather than an accent.
+ * Theme switch bergaya gambar tangan, mengikuti gaya pensil tombol kontak melayang:
+ * setiap goresan digambar dua kali dengan goresan kedua bergeser dan lebih pudar,
+ * serta dash tidak beraturan agar garisnya tidak tertutup rapi. Warnanya tetap
+ * monokrom dan tipis agar tidak menonjol di navigasi.
  */
 export function ThemeSwitch() {
   const { theme, setTheme } = useTheme();

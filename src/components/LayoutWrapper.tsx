@@ -55,11 +55,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       }}
     >
       <nav
-        /* `transition-all` diganti daftar properti yang memang berubah: yang
-           berganti saat menggulir cuma latar dan garis bawahnya, sedangkan
-           `all` ikut menyertakan backdrop-filter dan properti tata letak - dan
-           itu yang bikin navbar terasa menyusul, bukan seiring, dengan
-           halamannya. */
+        /* Transisi hanya untuk properti yang berubah saat scroll, yaitu latar dan
+           garis bawah. `transition-all` ikut menganimasikan backdrop-filter dan
+           properti tata letak, sehingga navbar terasa tertinggal dari halaman. */
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
           !isHome && scrolled ? "border-border" : "border-transparent"
         }`}
@@ -115,15 +113,8 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
               />
             </svg>
             <span
-              className="inner"
+              className="inner text-xs font-mono flex-row! items-center font-medium whitespace-nowrap gap-1.25"
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 5,
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.66rem",
-                fontWeight: 500,
-                whiteSpace: "nowrap",
                 color: hoverResume ? C.fg : C.muted,
                 transition: "color 0.18s ease",
               }}
@@ -155,7 +146,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      {/* page content */}
+      {/* Isi halaman */}
       <main>{children}</main>
 
       <SideMenu />

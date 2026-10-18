@@ -1,18 +1,18 @@
-/* Nama stack -> slug berkas di public/assets/icons.
+/* Pemetaan nama stack ke slug file di public/assets/icons.
 
-   Sengaja TIDAK memuat semua nama yang dipakai proyek: banyak entri (GeoJSON,
-   Places API, Playwright, Katalon Studio, Google OAuth 2.0) memang belum punya
-   berkas ikon. Yang tidak terdaftar bukan kesalahan - itu jalur normal, dan
-   pemakainya wajib menyiapkan tampilan tanpa ikon.
+   Peta ini sengaja TIDAK memuat semua nama yang dipakai proyek, karena banyak
+   entri (GeoJSON, Places API, Playwright, Katalon Studio, Google OAuth 2.0)
+   belum punya file ikon. Nama yang tidak terdaftar bukan error, dan pemakainya
+   harus menyiapkan tampilan tanpa ikon.
 
-   `stackIcon()` dipakai sebagai gerbang tunggal supaya tidak ada pemakai yang
-   merangkai `url(/assets/icons/${name}.svg)` langsung dari nama stack; nama
-   yang belum dipetakan akan menghasilkan URL 404 yang gagal diam-diam (mask
-   kosong = kotak transparan, bukan error yang terlihat).
+   `stackIcon()` menjadi satu-satunya jalan untuk mendapatkan URL ikon, agar
+   tidak ada yang merangkai `url(/assets/icons/${name}.svg)` langsung dari nama
+   stack. Nama yang belum dipetakan akan menghasilkan URL 404 tanpa error yang
+   terlihat (mask kosong = kotak transparan).
 
-   Catatan: src/components/SkillList.tsx masih menyimpan salinan peta ini,
-   tapi salinan itu mati - hanya dirujuk dari blok JSX yang dikomentari. Kalau
-   ikon di sana dihidupkan lagi, hapus salinannya dan pakai berkas ini. */
+   Catatan: src/components/SkillList.tsx masih menyimpan salinan peta ini, tetapi
+   salinan itu tidak dipakai karena hanya dirujuk dari blok JSX yang dikomentari.
+   Jika ikon di sana diaktifkan lagi, hapus salinannya dan gunakan file ini. */
 const STACK_ICON: Record<string, string> = {
   "Next.js": "nextdotjs",
   "Vue.js": "vuedotjs",
@@ -48,28 +48,28 @@ const STACK_ICON: Record<string, string> = {
   GitLab: "gitlab",
 };
 
-/* Koreksi optis, dipisah dari ukuran yang diminta pemakai.
+/* Koreksi optis, terpisah dari ukuran yang diminta pemakai.
 
-   `mask-size: contain` di `.stack-logo` memasang seluruh `viewBox` 24x24 ke
-   dalam kotaknya, BUKAN tintanya - jadi dua ikon berukuran kotak sama bisa
-   terbaca sangat berbeda besarnya, tergantung seberapa penuh tintanya mengisi
-   kanvas itu. Diukur dari berkasnya sendiri (persen piksel bertinta, median
+   `mask-size: contain` di `.stack-logo` memasukkan seluruh `viewBox` 24x24 ke
+   dalam kotak, BUKAN hanya tintanya. Akibatnya, dua ikon dengan ukuran kotak
+   yang sama bisa terlihat sangat berbeda, tergantung seberapa penuh tintanya
+   mengisi kanvas. Hasil pengukuran file ikon (persen piksel bertinta, median
    seluruh folder ~32%):
 
-     go       18% tinta, tingginya cuma 37% kanvas - lambangnya lebar dan
-              pendek, jadi lima per delapan kotaknya kosong di atas-bawah dan
-              ia terlihat kecil di antara yang lain
-     resend   41% tinta, mengisi 99% x 100% kanvas - tidak ada ruang kosong
-              sama sekali, jadi ia terbaca paling besar dan paling berat
+     go       18% tinta, tingginya hanya 37% kanvas. Lambangnya lebar dan
+              pendek, jadi lima per delapan kotak kosong di atas dan bawah,
+              sehingga ikon terlihat lebih kecil dari yang lain.
+     resend   41% tinta, mengisi 99% x 100% kanvas. Tidak ada ruang kosong,
+              sehingga ikon terlihat paling besar dan paling berat.
 
-   Faktornya mengejar median itu, bukan angka bulat asal: 18% x 1.25^2 ~= 28%,
-   41% x 0.85^2 ~= 30%. Yang tidak terdaftar tetap 1 - mayoritas ikon Simple
-   Icons sudah seimbang satu sama lain.
+   Faktor skalanya disesuaikan dengan median tersebut, bukan angka bulat asal:
+   18% x 1.25^2 ~= 28%, 41% x 0.85^2 ~= 30%. Ikon yang tidak terdaftar tetap 1,
+   karena sebagian besar ikon Simple Icons sudah seimbang.
 
-   Mengubah `--size`, bukan `mask-size`: memperbesar mask melewati `contain`
-   membuat lambangnya melewati kotak elemennya, dan bagian yang keluar itu
-   terpotong - pada `go` yang tintanya sudah selebar penuh kanvas, sisi kiri
-   dan kanannya yang hilang. Kotaknya yang harus tumbuh. */
+   Yang diubah adalah `--size`, bukan `mask-size`. Memperbesar mask melewati
+   `contain` membuat lambang keluar dari kotak elemen dan terpotong. Pada `go`
+   yang tintanya sudah selebar kanvas, sisi kiri dan kanannya akan hilang.
+   Karena itu kotaknya yang harus diperbesar. */
 const ICON_SCALE: Record<string, number> = {
   go: 1.25,
   resend: 0.85,

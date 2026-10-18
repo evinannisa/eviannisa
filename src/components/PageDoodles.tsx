@@ -16,7 +16,7 @@ type Mark = {
 };
 
 const MARKS: Mark[] = [
-  // pita atas
+  // Pita atas
   {
     top: "86%",
     left: "10%",
@@ -34,8 +34,8 @@ const MARKS: Mark[] = [
     paths: ["M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14"],
     ink: "#79c0ff",
   },
-  // sisi kiri
-  // sisi kanan
+  // Sisi kiri
+  // Sisi kanan
   {
     top: "84%",
     right: "12%",
@@ -47,7 +47,7 @@ const MARKS: Mark[] = [
     ink: "var(--purple-color)",
     hide: "hidden md:block",
   },
-  // pita bawah
+  // Pita bawah
   {
     top: "90%",
     left: "40%",

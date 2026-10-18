@@ -8,6 +8,7 @@ import {
   FolderGit2,
   Handshake,
   Moon,
+  PenLine,
   RotateCcw,
   Sparkles,
   Sun,
@@ -23,6 +24,8 @@ type NavItem = {
   exact?: boolean;
   ink: string;
   icon: React.ReactNode;
+  // Item tidak tampil di menu, tetapi halamannya tetap bisa diakses.
+  hidden?: boolean;
 };
 
 const navItems: NavItem[] = [
@@ -53,6 +56,14 @@ const navItems: NavItem[] = [
   },
   {
     href: "/writing",
+    label: "writing",
+    ink: "var(--orange-color)",
+    icon: <PenLine size={15} strokeWidth={2.2} />,
+    // Disembunyikan sementara sampai isinya siap. Hapus baris ini untuk menampilkannya lagi.
+    hidden: true,
+  },
+  {
+    href: "/fun",
     label: "fun",
     ink: "var(--teal-color)",
     icon: <Sparkles size={15} strokeWidth={2.2} />,
@@ -382,7 +393,7 @@ export function SideMenu() {
           ...edgeStyle(side),
           boxShadow: "0 3px 10px -4px rgba(0, 0, 0, 0.4)",
           cursor: dragging ? "grabbing" : "grab",
-          touchAction: "none", // supaya drag di layar sentuh tidak men-scroll halaman
+          touchAction: "none", // Agar drag di layar sentuh tidak ikut men-scroll halaman.
           userSelect: "none",
           transition: "background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease",
         }}
@@ -395,7 +406,7 @@ export function SideMenu() {
         aria-hidden="true"
       >
         <span
-          className={`text-[1.05rem] font-semibold font-caveat -rotate-6 ${theme === "dark" ? "text-blue" : "text-blue-500"}`}
+          className={`text-lg font-semibold font-caveat -rotate-6 ${theme === "dark" ? "text-blue" : "text-blue-500"}`}
         >
           {open ? "close menu" : "click menu"}
         </span>
@@ -436,7 +447,7 @@ export function SideMenu() {
           ...edgeStyle(side),
         }}
       >
-        {navItems.map((item) => {
+        {navItems.filter((item) => !item.hidden).map((item) => {
           const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           const lifted = hovered === item.href || isActive;
           return (
@@ -449,7 +460,7 @@ export function SideMenu() {
               onMouseLeave={() => setHovered(null)}
               onFocus={() => setHovered(item.href)}
               onBlur={() => setHovered(null)}
-              className={`flex items-center gap-2 py-2 pl-3 pr-4 font-mono text-[0.68rem] whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
+              className={`flex items-center gap-2 py-2 pl-3 pr-4 font-mono text-sm whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
               style={{
                 borderLeft: `2px solid ${isActive ? item.ink : "transparent"}`,
                 transition: "all 0.15s ease",

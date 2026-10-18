@@ -20,3 +20,4 @@ Doodle Design/
 # logs & env
 *.log
 .env*
+.claude

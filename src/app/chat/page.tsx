@@ -19,7 +19,7 @@ export default function LiveChat() {
         flexDirection: "column",
       }}
     >
-      {/* header */}
+      {/* Header */}
       <div className="px-6 pt-12 pb-5 max-w-5xl mx-auto w-full">
         <div className="flex items-center gap-3 mb-2">
           <span

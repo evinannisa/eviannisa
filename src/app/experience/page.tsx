@@ -150,13 +150,13 @@ function initials(name: string) {
 }
 
 const BADGE = 34;
-const RAIL_X = BADGE / 2; // rel sejajar tengah plakat
-const ROLE_PAD = 29; // isi jabatan sejajar dengan nama perusahaan di kepala
+const RAIL_X = BADGE / 2; // Rel sejajar dengan tengah plakat.
+const ROLE_PAD = 29; // Isi jabatan sejajar dengan nama perusahaan di header.
 
-const DOT = 11; // sisi kotak gambar penanda
-const DOT_TOP = 4; // turunnya penanda supaya sejajar tengah baris judul
-const DOT_MID = DOT_TOP + DOT / 2; // pusat penanda, tempat rel bermula
-const ROLE_GAP = 24; // jarak antar jabatan, dulu `mb-6`
+const DOT = 11; // Ukuran sisi kotak penanda.
+const DOT_TOP = 4; // Jarak turun penanda agar sejajar dengan tengah baris judul.
+const DOT_MID = DOT_TOP + DOT / 2; // Titik tengah penanda, tempat rel dimulai.
+const ROLE_GAP = 24; // Jarak antarjabatan, sebelumnya `mb-6`.
 
 const skillGroups = [
   {

@@ -1,11 +1,10 @@
 /* ISI DULU SEBELUM DIPAKAI.
 
-   Tidak ada data pendidikan di repo ini, jadi nilai di bawah sengaja ditulis
-   sebagai penampung yang kelihatan jelas ("20XX", "Nama kampus") — bukan
-   tebakan yang bisa disangka data sebenarnya. Ganti isinya di sini; komponen
-   EducationTimeline membacanya langsung.
+   Repo ini belum memiliki data pendidikan, jadi nilai di bawah sengaja berupa
+   placeholder yang jelas ("20XX", "Nama kampus") agar tidak dikira data asli.
+   Ganti isinya di sini, karena komponen EducationTimeline membacanya langsung.
 
-   `note` opsional; kalau kosong, barisnya tidak dirender. */
+   `note` bersifat opsional. Jika kosong, barisnya tidak dirender. */
 export type Education = {
   period: string;
   degree: string;

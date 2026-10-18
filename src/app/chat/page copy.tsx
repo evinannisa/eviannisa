@@ -137,14 +137,14 @@ export default function LiveChat() {
     if (!text.trim() || isTyping) return
     const userText = text.trim()
 
-    // Add user message locally
+    // Tambahkan pesan user ke state lokal.
     const userMsgId = ++idCounter
     setMessages(prev => [...prev, { id: userMsgId, role: 'user', text: userText }])
     setInput('')
     setIsTyping(true)
 
     try {
-      // Save user message to database via API
+      // Simpan pesan user ke database melalui API.
       await fetch('/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -163,7 +163,7 @@ export default function LiveChat() {
       setMessages(prev => [...prev, { id: botMsgId, role: 'bot', text: answer }])
 
       try {
-        // Save bot message to database via API
+        // Simpan pesan bot ke database melalui API.
         await fetch('/api/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -181,7 +181,7 @@ export default function LiveChat() {
 
   return (
     <div style={{ backgroundColor: C.bg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* header */}
+      {/* Header */}
       <div className="px-6 pt-12 pb-5 max-w-5xl mx-auto w-full">
         <div className="flex items-center gap-3 mb-2">
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: C.green }}>// 04</span>
@@ -194,9 +194,9 @@ export default function LiveChat() {
       </div>
 
       <div className="px-6 pb-10 max-w-5xl mx-auto w-full flex flex-col gap-4 flex-1">
-        {/* chat window */}
+        {/* Jendela chat */}
         <div className="rounded-md overflow-hidden flex flex-col" style={{ backgroundColor: C.surface, border: `1px solid ${C.border}`, height: '520px' }}>
-          {/* chrome bar */}
+          {/* Bilah atas jendela */}
           <div className="flex items-center gap-2 px-4 py-2.5 shrink-0"
             style={{ backgroundColor: C.surface2, borderBottom: `1px solid ${C.border}` }}>
             <div className="flex gap-1.5">
@@ -210,11 +210,11 @@ export default function LiveChat() {
             </div>
           </div>
 
-          {/* messages */}
+          {/* Daftar pesan */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3" style={{ scrollbarWidth: 'none' }}>
             {messages.map(msg => (
               <div key={msg.id} className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                {/* avatar */}
+                {/* Avatar */}
                 {msg.role === 'bot' && (
                   <div className="shrink-0 w-7 h-7 rounded flex items-center justify-center text-xs"
                     style={{ backgroundColor: C.surface2, border: `1px solid ${C.border}`, fontSize: '0.8rem' }}>
@@ -227,7 +227,7 @@ export default function LiveChat() {
                     👤
                   </div>
                 )}
-                {/* bubble */}
+                {/* Bubble pesan */}
                 <div style={{
                   maxWidth: '75%',
                   padding: '9px 13px',
@@ -245,7 +245,7 @@ export default function LiveChat() {
               </div>
             ))}
 
-            {/* typing indicator */}
+            {/* Indikator mengetik */}
             {isTyping && (
               <div className="flex gap-2.5">
                 <div className="shrink-0 w-7 h-7 rounded flex items-center justify-center text-xs"
@@ -263,7 +263,7 @@ export default function LiveChat() {
             <div ref={bottomRef} />
           </div>
 
-          {/* input bar */}
+          {/* Kolom input */}
           <div className="shrink-0 p-3" style={{ borderTop: `1px solid ${C.border}` }}>
             <div className="flex gap-2 items-center">
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.75rem', color: C.green, flexShrink: 0 }}>$</span>
@@ -291,7 +291,7 @@ export default function LiveChat() {
           </div>
         </div>
 
-        {/* suggestion chips */}
+        {/* Saran pertanyaan */}
         <div>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', color: C.muted, marginBottom: '8px' }}>
             <span style={{ color: C.red }}>//</span> suggested questions

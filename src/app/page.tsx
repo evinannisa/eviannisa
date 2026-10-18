@@ -28,16 +28,16 @@ export default function Home() {
         className="min-h-screen flex items-center relative overflow-hidden px-6 py-18 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
-        {/* doodle yang bertebaran di seluruh halaman, di bawah konten */}
+        {/* Doodle yang tersebar di seluruh halaman, di belakang konten */}
         <PageDoodles />
 
-        {/* margin line */}
+        {/* Garis margin */}
         <div
           className="absolute top-0 bottom-0 left-4 md:left-8 lg:left-16 xl:left-18 w-[0.1px] bg-blue-600/25"
           style={{ pointerEvents: "none" }}
         />
 
-        {/* floating doodles */}
+        {/* Doodle melayang */}
         <svg
           className="hero-doodle float hidden"
           style={{ top: "4rem", right: "3rem" }}
@@ -159,7 +159,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-5xl mx-auto w-full grid-cols-1 grid md:grid-cols-2 xl:grid-cols-[1fr_auto] items-center relative z-10">
-          {/* ── left ── */}
+          {/* ── kiri ── */}
           <div className="mb-14 lg:mb-0">
             <div className="flex items-center gap-4 mb-6">
               <div className="relative shrink-0" style={{ width: 72, height: 72 }}>
@@ -219,7 +219,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* headline */}
+            {/* Headline */}
             <p
               style={{
                 fontFamily: "'Poppins', sans-serif",
@@ -236,7 +236,7 @@ export default function Home() {
               This is my little space for the things I’ve been working on.
             </p>
 
-            {/* status */}
+            {/* Status */}
             <div
               className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 bg-blue-600/10 border border-blue-600/5 rounded text-blue-500"
               style={{
@@ -248,7 +248,7 @@ export default function Home() {
               Available to Opportunity
             </div>
 
-            {/* socials */}
+            {/* Media sosial */}
             <div className="flex gap-2 flex-wrap items-center">
               <svg
                 className="hidden sm:block"
@@ -305,7 +305,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ── right ── */}
+          {/* ── kanan ── */}
           <div className="flex justify-center lg:justify-end w-11/12">
             <div className="hero-photo-stack">
               <CodingArt />

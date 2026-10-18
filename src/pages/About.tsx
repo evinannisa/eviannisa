@@ -84,7 +84,7 @@ const jsDoc = [
 export function About() {
   return (
     <div style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
-      {/* page header */}
+      {/* Header halaman */}
       <div className="px-6 pt-12 pb-8 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: C.green }}>// 01</span>
@@ -98,7 +98,7 @@ export function About() {
 
       <div className="px-6 pb-20 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* jsdoc card */}
+          {/* Kartu JSDoc */}
           <TermWindow title="about.js">
             <div className="p-5">
               {jsDoc.map((line, i) => (
@@ -125,7 +125,7 @@ export function About() {
             </div>
           </TermWindow>
 
-          {/* bio + facts */}
+          {/* Bio dan fakta singkat */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <div className="relative shrink-0" style={{ width: 72, height: 72 }}>
@@ -165,7 +165,7 @@ export function About() {
           </div>
         </div>
 
-        {/* timeline */}
+        {/* Timeline */}
         <div className="mb-10">
           <h2 style={{ fontFamily: "'Caveat', cursive", fontSize: '1.8rem', fontWeight: 700, color: C.fg, marginBottom: '1.5rem' }}>
             <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.7rem', color: C.green, marginRight: '10px' }}>git log</span>
@@ -174,7 +174,7 @@ export function About() {
           <div className="relative pl-6" style={{ borderLeft: `1px dashed ${C.border}` }}>
             {timeline.map((t, i) => (
               <div key={i} className="relative mb-8 pl-6">
-                {/* dot */}
+                {/* Titik timeline */}
                 <div className="absolute -left-3 top-1.5 w-2.5 h-2.5 rounded-full border-2"
                   style={{ backgroundColor: t.color, borderColor: C.bg, boxShadow: `0 0 8px ${t.color}60` }} />
                 <div className="flex items-center gap-3 mb-1 flex-wrap">
@@ -188,7 +188,7 @@ export function About() {
           </div>
         </div>
 
-        {/* CTA row */}
+        {/* Baris CTA */}
         <div className="flex flex-wrap gap-3">
           <Link to="/projects"
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.78rem', fontWeight: 600, padding: '9px 20px', backgroundColor: C.green, color: '#0d1117', borderRadius: '4px', textDecoration: 'none' }}>

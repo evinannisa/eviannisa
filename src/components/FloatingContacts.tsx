@@ -88,7 +88,7 @@ export function FloatingContacts() {
     <>
       {!isChatRoute && <ChatPopup open={open} onClose={closeChat} />}
 
-      <div className="fixed z-50 flex flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8">
+      <div className="pointer-events-none fixed z-50 flex flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8">
         <div
           className="hidden lg:flex flex-col items-end pr-1 pointer-events-none"
           style={{

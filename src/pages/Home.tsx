@@ -274,7 +274,7 @@ export function Home() {
                className="min-h-screen flex items-center relative overflow-hidden px-6 py-16"
                style={{ backgroundColor: C.bg }}
           >
-               {/* grid bg */}
+               {/* Latar grid */}
                <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
@@ -283,7 +283,7 @@ export function Home() {
                     }}
                />
 
-               {/* doodle floaters */}
+               {/* Doodle melayang */}
                <svg
                     className="absolute top-24 right-14 opacity-50 float pointer-events-none"
                     width="52"
@@ -316,9 +316,9 @@ export function Home() {
                </svg>
 
                <div className="max-w-5xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
-                    {/* ── left ── */}
+                    {/* ── kiri ── */}
                     <div>
-                         {/* prompt */}
+                         {/* Prompt */}
                          <div
                               className="flex items-center gap-2 mb-5"
                               style={{
@@ -333,7 +333,7 @@ export function Home() {
                               <Typing text="whoami" speed={90} />
                          </div>
 
-                         {/* avatar + name */}
+                         {/* Avatar dan nama */}
                          <div className="flex items-center gap-4 mb-5">
                               <div
                                    className="relative shrink-0"
@@ -398,7 +398,7 @@ export function Home() {
                               </div>
                          </div>
 
-                         {/* headline */}
+                         {/* Headline */}
                          <h1
                               style={{
                                    fontFamily: "'Caveat', cursive",
@@ -435,7 +435,7 @@ export function Home() {
                               map.
                          </p>
 
-                         {/* status */}
+                         {/* Status */}
                          <div
                               className="inline-flex items-center gap-2 mb-6 px-3 py-1.5"
                               style={{
@@ -498,7 +498,7 @@ export function Home() {
                               </Link>
                          </div>
 
-                         {/* socials */}
+                         {/* Media sosial */}
                          <div className="flex gap-2 flex-wrap">
                               {["GitHub", "GitLab", "LinkedIn"].map((s) => (
                                    <a
@@ -534,7 +534,7 @@ export function Home() {
                          </div>
                     </div>
 
-                    {/* ── right ── */}
+                    {/* ── kanan ── */}
                     <div className="flex flex-col gap-4">
                          <TermWindow title="portfolio.go">
                               <div
@@ -575,7 +575,7 @@ export function Home() {
                               </div>
                          </TermWindow>
 
-                         {/* recent activity */}
+                         {/* Aktivitas terbaru */}
                          <TermWindow title="git log --oneline">
                               <div className="p-3">
                                    {recentActivity.map((a, i) => (

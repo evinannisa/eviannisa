@@ -189,7 +189,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* bio + facts */}
+          {/* Bio dan fakta singkat */}
           <div className="flex flex-col gap-2 sm:gap-4">
             <div>
               <div className="text-xl sm:text-2xl font-caveat font-bold tracking-[0.080em] text-foreground">

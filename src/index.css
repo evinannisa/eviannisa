@@ -8,12 +8,10 @@
   --fg-color: #e6edf3;
   --muted-color: #8b949e;
   --green-color: #3fb950;
-  /* Hijau khusus sel grafik kontribusi GitHub. Dipisah dari --green-color
-     karena kebutuhannya berbeda: --green-color dipakai untuk teks dan garis
-     yang selalu digambar pekat, sementara sel grafik digambar dengan opasitas
-     0.16-1.0, jadi tingkat terendahnya nyaris lenyap di latar hitam.
-     #39d353 (hijau tema gelap GitHub sendiri) menaikkan rasio kontras tiap
-     tingkat 4-28%. */
+  /* Hijau khusus untuk sel grafik kontribusi GitHub. Dipisah dari --green-color
+     karena sel grafik memakai opasitas 0.16-1.0, sehingga tingkat terendahnya
+     nyaris hilang di latar hitam. #39d353 (hijau tema gelap GitHub) menaikkan
+     kontras tiap tingkat sebesar 4-28%. */
   --gh-green: #39d353;
   --amber-color: #d29922;
   --blue-color: #58a6ff;
@@ -22,20 +20,16 @@
   --teal-color: #79c0ff;
   --orange-color: #ffa657;
   --border-color: #30363d;
-  /* Alfa navbar sengaja disamakan dengan tema terang (0.7 di puncak, 0.96 saat
-     tergulir), bukan hitam pekat seperti sebelumnya.
+  /* Alfa navbar sengaja disamakan dengan tema terang (0.7 di atas, 0.96 saat
+     halaman digulir), bukan hitam pekat.
 
-     Alasannya soal transisi ganti tema, bukan selera: latar navbar dan latar
-     halaman diinterpolasi terpisah, dan warna PEKAT yang beranjak ke warna
-     ber-alfa-0.7 tidak menempuh jalur yang sama dengan latar halaman di
-     belakangnya. Di tengah transisi hasil komposit keduanya berbeda, dan
-     navbar - yang seharusnya tak kasatmata - muncul sebagai pita bergaris
-     selama sepersekian detik. Dengan alfa yang sama di kedua tema, kanal
-     warnanya bergerak persis seperti --bg-color dan pitanya tidak pernah
-     terbentuk.
+     Alasannya transisi ganti tema. Latar navbar dan latar halaman
+     diinterpolasi terpisah. Jika navbar memakai warna pekat, warna campurannya
+     berbeda dengan latar halaman di tengah transisi, sehingga navbar sempat
+     terlihat sebagai pita. Dengan alfa yang sama di kedua tema, warnanya
+     bergerak persis seperti --bg-color dan pita itu tidak muncul.
 
-     Efek sampingnya dikehendaki: tema gelap ikut mendapat kaca buram yang
-     selama ini cuma dimiliki tema terang. */
+     Efek sampingnya diinginkan: tema gelap juga mendapat efek kaca buram. */
   --nav-bg: rgba(0, 0, 0, 0.7);
   --nav-bg-scrolled: rgba(0, 0, 0, 0.96);
   --sub: #7a6a55;
@@ -53,8 +47,8 @@
   --fg-color: #2a2118;
   --muted-color: #7a6a55;
   --green-color: #3fb950;
-  /* Tema light memakai hijau yang sama dengan token biasa: di latar krem,
-     hijau yang LEBIH terang justru menurunkan kontrasnya, bukan menaikkan. */
+  /* Tema light memakai hijau yang sama dengan token biasa. Di latar krem,
+     hijau yang lebih terang justru menurunkan kontras. */
   --gh-green: #3fb950;
   --amber-color: #d29922;
   --blue-color: #4a8fa8;
@@ -117,29 +111,24 @@ body {
   height: 0;
 }
 
-/* Jendela transisi ganti tema.
+/* Transisi saat ganti tema.
 
-   Kelas `.theme-swapping` dipasang di <html> oleh ThemeProvider tepat saat tema
-   berganti, lalu dicabut lagi setelah `--theme-swap` (kedua nilainya berasal
-   dari satu konstanta di komponen itu).
+   ThemeProvider memasang kelas `.theme-swapping` di <html> saat tema berganti,
+   lalu melepasnya setelah `--theme-swap`. Kedua nilainya berasal dari satu
+   konstanta di komponen tersebut.
 
-   Kenapa satu aturan menyapu `*` dan bukan transisi per komponen: warna tema
-   datang dari custom property yang dibaca RATUSAN elemen - latar kartu, garis
-   tepi, teks, stroke SVG doodle. Sebelumnya cuma <body> dan pembungkus halaman
-   yang punya transisi (0.2s), sementara navbar ikut `transition-all` 300ms
-   miliknya sendiri dan sisanya tidak beranimasi sama sekali. Hasilnya sekali
-   klik memicu tiga hal berbeda: halaman memudar 200ms, navbar 300ms, dan semua
-   yang lain melompat seketika.
+   Aturan ini menyasar `*`, bukan transisi per komponen, karena warna tema
+   berasal dari custom property yang dibaca ratusan elemen: latar kartu, garis
+   tepi, teks, dan stroke SVG doodle. Tanpa aturan ini, halaman, navbar, dan
+   elemen lain berganti warna dengan kecepatan yang berbeda-beda.
 
-   `!important` memang perlu di sini: durasi milik komponen ditulis di `style`
-   sebaris (navbar, tombol resume, ThemeSwitch), dan tanpa ini masing-masing
-   tetap memakai durasinya sendiri - persis kepincangan yang mau dihilangkan.
-   Sapuan `*` hanya hidup selama jendela itu, jadi tidak membebani interaksi
-   biasa; transisi hover milik komponen kembali normal begitu kelasnya dicabut.
+   `!important` diperlukan karena beberapa komponen (navbar, tombol resume,
+   ThemeSwitch) menulis durasi transisi di `style` inline. Aturan `*` hanya
+   aktif selama kelas terpasang, jadi transisi hover komponen kembali normal
+   setelah kelas dilepas.
 
-   Sengaja TIDAK memakai `all`: transform, ukuran, dan posisi tidak boleh ikut
-   dianimasikan - knob ThemeSwitch, misalnya, punya lengkung pegasnya sendiri
-   dan akan tertimpa. */
+   Sengaja TIDAK memakai `all` agar transform, ukuran, dan posisi tidak ikut
+   dianimasikan. Contohnya, knob ThemeSwitch punya animasi pegasnya sendiri. */
 html.theme-swapping,
 html.theme-swapping *,
 html.theme-swapping *::before,
@@ -220,7 +209,7 @@ html.theme-swapping *::after {
   animation: glow-pulse 2s ease-in-out infinite;
 }
 
-/* scanline overlay */
+/* Overlay scanline */
 .scanlines::after {
   content: "";
   position: absolute;
@@ -240,7 +229,7 @@ html.theme-swapping *::after {
   font-family: "Inter", sans-serif;
 }
 
-/* token colors */
+/* Warna token sintaks kode */
 .tok-keyword {
   color: #ff7b72;
 }
@@ -307,7 +296,7 @@ html.theme-swapping *::after {
   background: linear-gradient(180deg, transparent 55%, rgba(232, 168, 56, 0.25) 55%);
 }
 
-/* custom scrollbar reset for layout */
+/* Menyembunyikan scrollbar tanpa menghilangkan kemampuan scroll */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -327,50 +316,42 @@ html.theme-swapping *::after {
 }
 
 /* ── Polaroid (about) ────────────────────────────────────────────────────── */
-/* Proporsi mengikuti theodorusclarence.com/about: padding tipis di tiga sisi +
-   strip bawah tebal, foto di-crop persegi, kartu dimiringkan. */
+/* Proporsi mengikuti theodorusclarence.com/about: padding tipis di tiga sisi,
+   strip bawah tebal, foto di-crop persegi, dan kartu dimiringkan. */
 .polaroid {
   --mat: #090b0f;
   position: relative;
   width: 13.5rem;
   max-width: 100%;
   padding: 14px 14px 0;
-  /* Warna mat lewat custom property, dengan dua guna: kartu belakang di
-     .polaroid-stack::after bisa memakai nilai yang sama persis (di ss3.png
-     kartu belakangnya pekat, bukan garis tepi), dan tema light punya nilai
-     yang sah — style inline di page.tsx saat ini masih "#" yang diabaikan
-     browser, jadi tanpa ini kartunya tak berwarna di tema light. */
+  /* Warna mat disimpan di custom property agar tema light bisa menggantinya
+     tanpa menulis ulang aturan background. */
   background: var(--mat);
   border-radius: 2px;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.22),
     0 14px 26px -14px rgba(0, 0, 0, 0.5);
-  /* Kemiringan kartu depan, mengikuti ss3.png: tepi atasnya turun dari kanan
-     ke kiri sekitar 5 derajat. Hover cuma mengangkat, kemiringannya tetap —
-     kalau ikut diluruskan, tumpukannya bubar setiap kali disorot. */
+  /* Kartu depan dimiringkan sedikit. Hover hanya mengangkat kartu dan tidak
+     meluruskannya, agar tumpukan kartu tidak berantakan saat disorot. */
   transform: rotate(2deg);
 }
 :root.light .polaroid {
-  /* Mat tema light: PUTIH, dan sengaja lebih terang dari latar halaman.
+  /* Mat tema light dibuat PUTIH, sengaja lebih terang dari latar halaman.
 
-     Percobaan #e7d9c4 salah arah. Menggelapkan mat memang menaikkan kontras
-     (rasio 1.314 lawan 1.105), tapi krem yang digelapkan di atas latar krem
-     terbaca keruh — kartunya jadi bidang cokelat kusam, bukan kertas foto.
-     Polaroid asli bingkainya putih, jadi mat yang LEBIH TERANG dari halaman
-     adalah arah yang benar.
+     Mat krem yang lebih gelap (#e7d9c4) memang menaikkan kontras, tetapi
+     terlihat keruh seperti bidang cokelat kusam. Bingkai polaroid asli putih,
+     jadi mat yang lebih terang adalah pilihan yang tepat.
 
-     Konsekuensinya kontras bidang tidak bisa jadi andalan: putih di atas krem
-     cuma 1.057. Yang memisahkan kartu dari halaman dipindah ke dua hal lain —
-     garis tepi hangat 1px di ::after dan bayangan di bawah ini, yang keduanya
-     diperkuat. Itu juga cara kartu kertas terbaca di dunia nyata: dari tepi
-     dan bayangannya, bukan dari warna bidangnya. */
+     Karena kontras putih di atas krem sangat rendah (1.057), kartu dipisahkan
+     dari halaman lewat garis tepi hangat 1px di ::after dan bayangan di bawah
+     ini, seperti kertas foto yang terlihat dari tepi dan bayangannya. */
   --mat: #ffffff;
   box-shadow: 0 4px 12px rgba(42, 33, 24, 0.08);
 }
-/* garis tepi 1px, teknik mask-composite: gradasi diisi di area padding lalu
-   bagian dalamnya dilubangi, jadi hanya garis tepinya yang tersisa. Sorotan
-   putih transparan, bukan token palet — token border tema light (krem) jadi
-   garis mencolok di atas kartu sepekat ini. */
+/* Garis tepi 1px dengan teknik mask-composite: gradasi mengisi area padding,
+   lalu bagian dalamnya dilubangi sehingga hanya garis tepi yang tersisa.
+   Sorotannya putih transparan, bukan token palet, karena token border tema
+   light (krem) terlihat mencolok di atas kartu sepekat ini. */
 .polaroid::after {
   content: "";
   position: absolute;
@@ -393,11 +374,10 @@ html.theme-swapping *::after {
   mask-composite: exclude;
   pointer-events: none;
 }
-/* Di tema light gradasi putih di atas hilang sama sekali — mat-nya sendiri
-   sudah terang, jadi sorotan putih di atas terang tidak menghasilkan tepi apa
-   pun dan kartunya kehilangan garis batasnya. Diganti tinta hangat yang sama
-   dengan bayangannya (rgb 122,106,85 = --muted-color tema light), dengan arah
-   gradasi yang sama supaya sisi yang menonjol tetap sisi yang itu juga. */
+/* Di tema light, sorotan putih tidak terlihat karena mat-nya sudah terang,
+   sehingga kartu kehilangan garis batasnya. Sorotan diganti dengan tinta
+   hangat yang sama dengan bayangan (rgb 122,106,85 = --muted-color tema light),
+   dengan arah gradasi yang sama. */
 :root.light .polaroid::after {
   background: linear-gradient(
     to bottom right,
@@ -410,7 +390,7 @@ html.theme-swapping *::after {
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* terlihat hanya selagi gambar belum termuat */
+  /* Hanya terlihat selama gambar belum termuat */
   background: #050709;
 }
 .polaroid-photo img {
@@ -419,9 +399,8 @@ html.theme-swapping *::after {
   height: 100%;
   object-fit: cover;
 }
-/* strip bawah: tanda tangan di kiri, goresan tangan di kanan */
-/* Di ss3.png tanda tangan ada di KANAN bawah dengan sapuan garis di bawahnya,
-   bukan di kiri berhadapan dengan coretan di sisi seberang. */
+/* Strip bawah: tanda tangan dan sapuan garis berada di kanan bawah,
+   mengikuti ss3.png. */
 .polaroid-caption {
   height: 46px;
   display: flex;
@@ -431,18 +410,15 @@ html.theme-swapping *::after {
   color: var(--fg-color);
   transform: rotate(-1deg);
 }
-/* putih-alpha, bukan token palet: kartunya gelap pekat di kedua tema, jadi
-   satu warna ini sudah benar di light maupun dark. Sedikit lebih tegas dari
-   goresan di sebelahnya supaya terbaca sebagai tulisan, bukan ornamen. */
-/* Coretannya mewarisi `color` dari .polaroid-caption lewat currentColor, jadi
-   tintanya ikut tema sama seperti tanda tangan sebelumnya. */
+/* Coretan mewarisi `color` dari .polaroid-caption lewat currentColor, jadi
+   warnanya mengikuti tema seperti tanda tangan. */
 .polaroid-scribble {
   width: 74px;
 }
 
 .coding-art {
   position: relative;
-  /* mobile-first: ukuran kecil dipakai sampai lg, lalu kembali besar */
+  /* Ukuran dasar. Diperbesar mulai lg dan diperkecil di bawah sm. */
   width: 18rem;
   max-width: 100%;
   margin-right: -2rem;
@@ -622,9 +598,10 @@ html.theme-swapping *::after {
 }
 
 /* ── Typing heading ─────────────────────────────────────────────────────── */
-/* Batang tipis, bukan blok: judulnya Caveat (tulisan tangan), dan kursor blok
-   di atas huruf sambung terlihat seperti salah render. Ukurannya dalam `em`
-   supaya ikut `clamp()` di font-size judul. */
+/* Kursor berupa batang tipis, bukan blok, karena judul memakai Caveat
+   (tulisan tangan) dan kursor blok di atas huruf sambung terlihat seperti
+   salah render. Ukurannya memakai `em` agar mengikuti `clamp()` pada font-size
+   judul. */
 .typing-caret::after {
   content: "";
   display: inline-block;
@@ -652,10 +629,10 @@ html.theme-swapping *::after {
 }
 
 /* ── Kartu tidak sejajar (about) ─────────────────────────────────────────── */
-/* Menurunkan salah satu dari dua kartu supaya barisnya tidak terbaca sebagai
-   kisi. Bagian yang berbeda menurunkan kartu yang berbeda (`ah-grid-flip`),
-   jadi pergeserannya sendiri tidak berubah jadi pola baru. Hanya dari md:,
-   karena di bawah itu kartunya sudah menumpuk satu kolom. */
+/* Menurunkan salah satu dari dua kartu agar barisnya tidak terlihat seperti
+   grid kaku. Tiap bagian menurunkan kartu yang berbeda (`ah-grid-flip`) agar
+   pergeserannya tidak membentuk pola baru. Hanya berlaku mulai md, karena di
+   bawahnya kartu sudah tersusun satu kolom. */
 @media (min-width: 768px) {
   .ah-grid > *:nth-child(2) {
     margin-top: 1.9rem;
@@ -669,20 +646,15 @@ html.theme-swapping *::after {
 }
 
 /* ── Polaroid stack (about) ──────────────────────────────────────────────── */
-/* Dua kartu miring di belakang polaroid, mengikuti ss3.png. Digambar sebagai
-   pseudo-element supaya markup polaroid di page.tsx tidak perlu diubah.
-
-   Isiannya sengaja TRANSPARAN, hanya bergaris tepi: warna mat polaroid diset
-   inline lewat ternary tema di page.tsx dan tidak bisa dibaca dari CSS. Dengan
-   garis tepi saja, kartunya benar di kedua tema tanpa perlu tahu warna mat-nya
-   — dan di referensi pun kartu belakangnya memang terbaca sebagai garis tipis. */
+/* Kartu di belakang polaroid, mengikuti ss3.png. Digambar sebagai
+   pseudo-element agar markup polaroid di page.tsx tidak perlu diubah. */
 .polaroid-stack {
   position: relative;
   width: fit-content;
   margin-inline: auto;
 }
-/* SATU kartu di belakang, bukan dua: di ss3.png totalnya dua polaroid — yang
-   depan berisi foto, satu lagi menyembul di belakangnya. */
+/* Hanya SATU kartu di belakang, karena di ss3.png totalnya dua polaroid:
+   kartu depan berisi foto dan satu kartu lagi menyembul di belakangnya. */
 .polaroid-stack::after {
   content: "";
   position: absolute;
@@ -691,13 +663,12 @@ html.theme-swapping *::after {
   background: #090b0f;
   border: 1px solid var(--border-color);
   opacity: 0.9;
-  /* Tegak, tidak ikut dimiringkan. Transform tidak memengaruhi tata letak,
-     jadi `inset: 0` di sini tetap mengikuti jejak polaroid SEBELUM dirotasi —
-     itulah yang bikin kartu belakang menyembul rapi di kanan-atas seperti di
-     gambar, bukan menempel sejajar. */
+  /* Kartu ini tegak, tidak ikut dimiringkan. Transform tidak memengaruhi tata
+     letak, jadi `inset: 0` tetap mengikuti posisi polaroid sebelum dirotasi.
+     Hasilnya kartu belakang menyembul rapi di kanan atas. */
   transform: translate(9px, -6px);
-  /* di belakang polaroid; pembungkusnya tidak punya background sendiri jadi
-     tidak ada yang menutupi */
+  /* Berada di belakang polaroid. Pembungkusnya tidak punya background,
+     jadi tidak ada yang menutupi kartu ini. */
   z-index: -1;
   pointer-events: none;
 }
@@ -705,48 +676,41 @@ html.theme-swapping *::after {
 .polaroid-stack-wrap {
   position: relative;
 }
-/* Panah ditumpuk absolut, bukan didudukkan di aliran: kalau ikut aliran, ia
-   menggeser polaroid dari posisi tengahnya. Disembunyikan di bawah lg karena
-   di sana kolomnya menyempit dan panahnya akan menimpa kartu. */
 :root.light .polaroid-stack::after {
-  /* disamakan dengan --mat kartu depan; di ss3.png keduanya sewarna. Kartu ini
-     sudah punya `border: 1px solid var(--border-color)` sendiri, jadi meski
-     putih di atas krem ia tetap terbaca sebagai kartu terpisah. */
+  /* Disamakan dengan --mat kartu depan, sesuai ss3.png. Kartu ini sudah punya
+     border sendiri, jadi tetap terlihat terpisah meskipun putih di atas krem. */
   background: #ffffff;
 }
 
-/* Diposisikan terhadap .polaroid-stack, jadi separuh lebarnya (46 dari 92px)
-   menjorok ke luar kiri dan separuh lagi menimpa gambar — persis seperti di
-   ss3.png. z-index perlu karena kartu polaroid punya latar sendiri yang kalau
-   tidak akan menutupinya. */
+/* Panah diposisikan absolut terhadap .polaroid-stack agar tidak menggeser
+   polaroid dari posisi tengahnya. z-index diperlukan karena latar kartu
+   polaroid akan menutupinya. */
 .polaroid-arrow {
   position: absolute;
   width: 88px;
-  /* -60 dari lebar 88: 60px menjorok ke luar kiri, 28px sisanya menimpa
-     gambar (dari sebelumnya 44/44). */
+  /* Dari lebar 88px, 60px menjorok ke luar kiri dan 28px menimpa gambar. */
   left: -60px;
   top: 36%;
   z-index: 3;
   pointer-events: none;
 }
-/* Di bawah sm kartunya menyusut mengikuti kolom dan pangkal panah keluar dari
-   layar; lebih baik disembunyikan daripada terpotong. */
+/* Di bawah sm, kartu menyusut mengikuti kolom dan pangkal panah keluar dari
+   layar. Panah disembunyikan agar tidak terpotong. */
 @media (max-width: 639px) {
   .polaroid-arrow {
     display: none;
   }
 }
-/* Garis putus-putus statis, tanpa animasi. Polanya dirapatkan jadi 5 garis +
-   4 jeda: panjang lengkungnya sekitar 85 satuan, jadi periode 9 memberi ~9
-   ruas — mendekati jumlah ruas di ss3.png. Dengan pola 7+6 sebelumnya cuma
-   dapat ~6 ruas dan garisnya terbaca terlalu panjang. */
+/* Garis putus-putus statis dengan pola 5 garis + 4 jeda. Panjang lengkungnya
+   sekitar 85 satuan, jadi periode 9 menghasilkan sekitar 9 ruas, mendekati
+   jumlah ruas di ss3.png. */
 .polaroid-arrow .ps-dash {
   stroke-dasharray: 5 4;
 }
 
 /* ── Grafik kontribusi GitHub ────────────────────────────────────────────── */
-/* Di md ke atas grafik mengisi lebar kolom: tinggi mengikuti aspek viewBox,
-   tidak ada yang meluber. */
+/* Mulai md, grafik mengisi lebar kolom dan tingginya mengikuti rasio
+   viewBox, jadi tidak ada yang meluber. */
 .gh-graph-wrap {
   width: 100%;
 }
@@ -755,27 +719,23 @@ html.theme-swapping *::after {
   width: 100%;
   height: auto;
 }
-/* Di bawah md, memaksanya muat selebar kolom membuat selnya menyusut:
-   viewBox-nya ~739 satuan, sementara kolomnya jauh lebih sempit.
+/* Di bawah md, memaksa grafik muat selebar kolom membuat selnya terlalu kecil
+   karena viewBox-nya sekitar 739 satuan:
 
      360px  skala 0.45 -> sel  5.0px
      640px  skala 0.80 -> sel  8.8px
      767px  skala 0.97 -> sel 10.7px
 
-   Batasnya dinaikkan dari 639px ke 767px: di rentang sm (640-767px) selnya
-   masih di bawah ukuran asli 11px, jadi tidak ada alasan memperlakukannya beda
-   dari layar yang lebih sempit.
-
-   Di rentang ini arahnya dibalik: TINGGI yang dipatok, lebarnya dibiarkan
-   mengikuti aspek. Tinggi viewBox 95 satuan, dipasang 104px, jadi skalanya 1.09
-   dan selnya jadi 12px di SEMUA lebar di bawah md — bukan mengecil mengikuti
-   layar. Lebarnya jadi ~810px dan digulung ke samping. */
+   Karena itu, di rentang ini yang dikunci adalah TINGGI, sedangkan lebarnya
+   mengikuti rasio. Tinggi viewBox 95 satuan dipasang 104px (skala 1.09),
+   sehingga sel selalu 12px di semua lebar di bawah md. Lebar grafik menjadi
+   sekitar 810px dan bisa di-scroll ke samping. */
 @media (max-width: 767px) {
   .gh-graph-wrap {
     overflow-x: auto;
-    /* inersia gulir di iOS; tanpa ini gulirannya terasa kaku */
+    /* Scroll dengan inersia di iOS agar tidak terasa kaku */
     -webkit-overflow-scrolling: touch;
-    /* ruang untuk bilah gulir supaya tidak menutupi baris paling bawah */
+    /* Ruang untuk scrollbar agar tidak menutupi baris paling bawah */
     padding-bottom: 6px;
   }
   .gh-graph {
@@ -785,15 +745,13 @@ html.theme-swapping *::after {
 }
 
 /* ── Timeline rows (about) ──────────────────────────────────────────── */
-/* Dipakai bersama oleh EducationTimeline dan WorkHighlight, karena keduanya
-   memakai bentuk yang sama: rel putus-putus dengan titik per entri, tanpa
-   kotak. Warna titiknya diset per komponen lewat atribut SVG, jadi kelas ini
-   tidak perlu tahu aksen bagian mana pun.
+/* Dipakai bersama oleh EducationTimeline dan WorkHighlight karena bentuknya
+   sama: rel putus-putus dengan titik per entri, tanpa kotak. Warna titik
+   diatur per komponen lewat atribut SVG.
 
-   Satu variabel mengatur posisi rel, satu lagi mengatur jarak antar entri, dan
-   keduanya dipakai bersama oleh rel maupun titiknya. Versi sebelumnya memakai
-   tiga angka lepas (`pl-7`, `left-1`, `left: -1.72rem`) yang harus disetel
-   manual supaya sejajar, dan akan melenceng begitu salah satunya diubah. */
+   Satu variabel mengatur posisi rel dan satu lagi mengatur jarak antar entri.
+   Keduanya dipakai oleh rel maupun titik, sehingga posisinya selalu sejajar
+   tanpa perlu menyetel beberapa angka secara manual. */
 .tl-list {
   --rail: 5px;
   --gap: 1.6rem;
@@ -804,36 +762,31 @@ html.theme-swapping *::after {
 .tl-row {
   position: relative;
 }
-/* Rel digambar ANTAR entri supaya berhenti tepat di titik terakhir, tidak
-   menggantung melewatinya sampai ujung blok.
+/* Rel digambar di antara entri agar berhenti tepat di titik terakhir, tidak
+   menggantung sampai ujung blok.
 
-   Aturan `:only-child` wajib ada: dengan satu entri saja, entri itu sekaligus
-   anak terakhir, jadi `:not(:last-child)` tidak cocok dan relnya tidak
-   tergambar sama sekali. Kedua selektor ini saling eksklusif karena
-   `:only-child` selalu juga `:last-child`. */
+   Aturan `:only-child` tetap diperlukan. Jika hanya ada satu entri, entri itu
+   juga anak terakhir, sehingga `:not(:last-child)` tidak cocok dan rel tidak
+   tergambar. */
 .tl-row:not(:last-child)::after,
 .tl-row:only-child::after {
   content: "";
   position: absolute;
   left: var(--rail);
-  /* mulai persis di bawah titik */
+  /* Dimulai tepat di bawah titik */
   top: 1.05rem;
   border-left: 1.5px dashed var(--border-color);
 }
-/* antar entri: menembus jarak ke baris berikutnya, memakai --gap yang sama */
+/* Antar entri: rel memanjang sampai baris berikutnya dengan --gap yang sama */
 .tl-row:not(:last-child)::after {
   bottom: calc(var(--gap) * -1);
 }
-/* entri tunggal: relnya menemani isinya saja, tanpa ekor */
+/* Entri tunggal: rel hanya sepanjang isinya, tanpa ekor */
 .tl-row:only-child::after {
   bottom: 0.4rem;
 }
-/* Titik dipusatkan ke rel lewat variabel yang sama, bukan angka tebakan.
-   `top` disetel agar pusat titik (5.5px dari atas kotaknya) jatuh sebaris
-   dengan tengah baris tanggal. */
-/* Titik dipusatkan ke rel lewat variabel yang sama, bukan angka tebakan.
-   `top` disetel agar pusat titik (5.5px dari atas kotaknya) jatuh sebaris
-   dengan tengah baris tanggal. */
+/* Titik dipusatkan ke rel lewat variabel yang sama. `top` diatur agar pusat
+   titik (5.5px dari atas kotaknya) sejajar dengan tengah baris tanggal. */
 .tl-dot {
   position: absolute;
   left: calc(var(--rail) - 4.5px);
@@ -842,28 +795,27 @@ html.theme-swapping *::after {
 }
 
 /* ── Logo tempat kerja ───────────────────────────────────────────────────── */
-/* Logonya bertulisan hitam di atas latar transparan, jadi di tema dark tulisan
-   itu nyaris hilang dan yang tersisa cuma segitiga birunya. Plakat putih ini
-   mengembalikan latar yang diasumsikan logonya, tanpa menyentuh warna logo itu
-   sendiri — beda dengan filter, yang akan ikut mengubah warna mereknya.
+/* Logo bertulisan hitam di atas latar transparan, jadi di tema dark tulisannya
+   nyaris tidak terlihat. Plakat putih ini memberi latar yang sesuai tanpa
+   mengubah warna logo, berbeda dengan filter yang ikut mengubah warna merek.
 
    Tema dark ditandai dengan TIDAK adanya kelas .light di :root (lihat
-   LayoutWrapper), jadi di tema light logonya dibiarkan apa adanya. */
+   LayoutWrapper), jadi di tema light logo ditampilkan apa adanya. */
 .place-logo {
   border-radius: 3px;
 }
 :root:not(.light) .place-logo {
   background-color: #fff;
-  /* box-sizing: border-box dari preflight Tailwind bikin padding ini memakan
-     tinggi 18px yang sudah diset, bukan menambahnya — jadi tinggi barisnya
-     tidak ikut berubah, logonya saja yang mengecil sedikit di dalam plakat. */
+  /* Karena box-sizing: border-box dari preflight Tailwind, padding ini masuk ke
+     dalam tinggi 18px. Tinggi baris tetap sama, hanya logonya yang sedikit
+     mengecil di dalam plakat. */
   padding: 2px;
 }
 
 /* ── Sketch card (about) ─────────────────────────────────────────────────── */
-/* Nilai --frame/--frame-fill dipisah ke sini, bukan inline di tiap kartu,
-   supaya state hover bisa mengubahnya lewat CSS. Custom property yang diset
-   inline tidak bisa ditimpa aturan :hover. */
+/* Nilai --frame/--frame-fill diatur di sini, bukan inline di tiap kartu, agar
+   state hover bisa mengubahnya. Custom property inline tidak bisa ditimpa
+   aturan :hover. */
 .sketch-card {
   --frame: var(--border-color);
   --frame-fill: transparent;
@@ -873,46 +825,36 @@ html.theme-swapping *::after {
 .sketch-card:hover {
   --frame: var(--muted-color);
 }
-/* `.sketch > .inner` bawaan memusatkan isinya secara vertikal; untuk kartu
-   yang isinya beberapa baris, isi harus mulai dari atas. */
+/* `.sketch > .inner` bawaan memusatkan isi secara vertikal. Kartu dengan
+   isi beberapa baris harus dimulai dari atas. */
 .sketch-card > .inner {
   justify-content: flex-start;
 }
 
 /* ── Stack logos (about) ─────────────────────────────────────────────────── */
-/* Glyph dipakai sebagai CSS mask dan diwarnai token palet, bukan <img> yang
-   ditimpa filter. Bedanya nyata: `background-color` bisa memakai
-   var(--muted-color) langsung, jadi warnanya ikut tema tanpa aturan terpisah,
-   dan tidak ada trik brightness/invert yang meratakan bentuk. */
-/* Pembawa kemiringan. Dipisah dari .stack-logo supaya rotate-nya tidak
-   bertabrakan dengan tween `y` GSAP yang menulis transform di elemen yang
-   sama. Hover meluruskan dan mengangkat — pola yang sama dengan ikon di
-   FloatingContacts. */
+/* Glyph dipakai sebagai CSS mask dan diwarnai token palet, bukan <img> dengan
+   filter. Dengan begitu `background-color` bisa langsung memakai
+   var(--muted-color) dan ikut tema tanpa trik brightness/invert. */
+/* Elemen pembawa kemiringan. Dipisah dari .stack-logo agar rotate tidak
+   bertabrakan dengan tween `y` GSAP yang juga menulis transform. Saat hover,
+   ikon diluruskan dan diangkat, sama seperti ikon di FloatingContacts. */
 .stack-mark {
   display: inline-flex;
   transform: rotate(var(--tilt, 0deg));
-  /* 0.45s dengan kurva yang melandai panjang, naik dari `0.2s ease`.
-
-     Tiga gerakan terjadi bersamaan di sini - miring jadi lurus, terangkat, dan
-     membesar - dan pada durasi pendek ketiganya berebut waktu sampai terbaca
-     sebagai satu sentakan. Ekor kurva ini menahan beberapa persen terakhir
-     perjalanannya, jadi berhentinya melandai alih-alih mentok. */
+  /* Durasi 0.45s dengan kurva yang melambat di akhir. Tiga gerakan terjadi
+     bersamaan (lurus, terangkat, membesar), dan pada durasi pendek ketiganya
+     terlihat seperti satu sentakan. Kurva ini membuat gerakan berhenti halus. */
   transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.24, 1);
 }
-/* Urutan fungsinya penting: `scale` ditulis TERAKHIR supaya pembesarannya
-   dihitung pada sumbu yang sudah lurus. Kalau ditaruh sebelum `rotate`,
-   perbesaran dan perputaran bertumpuk dan lambangnya sempat melenceng dari
-   titiknya di tengah perjalanan. */
+/* Urutan fungsi penting: `scale` ditulis TERAKHIR agar pembesaran dihitung
+   pada sumbu yang sudah lurus. Jika ditaruh sebelum `rotate`, ikon sempat
+   bergeser dari titik tengahnya selama animasi. */
 .stack-mark:hover {
   transform: rotate(0deg) translateY(-2px) scale(1.18);
 }
-/* fallback --fg-color dipertahankan: kalau --accent tidak diset komponen,
-   perilakunya kembali seperti semula, bukan hilang warnanya */
-/* Warnanya ikut ditransisikan, sebelumnya tidak sama sekali: lambangnya
-   melompat dari kelabu ke warna proyek dalam satu bingkai sementara badannya
-   bergerak halus - itu yang bikin gerakannya terasa patah meski perpindahan
-   posisinya sendiri sudah mulus. Durasinya disamakan supaya keduanya tiba
-   bersama. */
+/* Warna ikut ditransisikan dengan durasi yang sama seperti gerakannya, agar
+   perubahan warna dan posisi selesai bersamaan. Jika --accent tidak diatur
+   komponen, warnanya kembali ke --fg-color. */
 .stack-logo {
   transition: background-color 0.45s ease;
 }
@@ -953,15 +895,12 @@ html.theme-swapping *::after {
 
 /* Menyembunyikan ikon SkillList di bawah sm.
 
-   Harus lewat kelas ini, BUKAN `hidden sm:block` dari Tailwind. Keduanya
-   spesifisitasnya sama (satu kelas), dan di CSS keluaran `.stack-logo` berada
-   jauh di belakang `.hidden` (baris ~2262 lawan ~472) karena berkas ini
-   di-import setelah Tailwind. Yang belakangan menang, jadi `display: block`
-   milik .stack-logo mengalahkan `.hidden` dan ikonnya tetap tampil.
+   Harus memakai kelas ini, BUKAN `hidden sm:block` dari Tailwind. Spesifisitas
+   keduanya sama, dan file ini di-import setelah Tailwind, jadi `display: block`
+   milik .stack-logo mengalahkan `.hidden` dan ikon tetap tampil.
 
-   Ditaruh setelah .stack-logo supaya urutannya justru berpihak ke sini.
-   Dipakai juga oleh penanda bulat untuk stack tanpa ikon merek, supaya
-   keduanya disembunyikan oleh satu aturan yang sama. */
+   Aturan ini ditaruh setelah .stack-logo agar urutannya menang. Penanda bulat
+   untuk stack tanpa ikon merek juga memakai kelas ini. */
 @media (max-width: 639px) {
   .sl-ico {
     display: none;
@@ -969,16 +908,15 @@ html.theme-swapping *::after {
 }
 /* Cabang pohon di daftar SkillList.
 
-   Digambar dengan dua garis, bukan ditulis pakai glif "├─"/"└─". Alasannya
-   jarak antar baris: glif cuma setinggi satu baris teks, jadi di antara dua
-   baris selalu tersisa celah dan batangnya patah-patah. Garis yang digambar
-   bisa dijulurkan melewati batas barisnya sendiri sepanjang --row-gap sampai
-   menyentuh baris berikutnya, jadi batangnya utuh berapa pun jaraknya.
+   Digambar dengan dua garis, bukan glif "├─"/"└─". Glif hanya setinggi satu
+   baris teks, jadi selalu ada celah di antara baris dan batangnya terputus.
+   Garis yang digambar bisa diperpanjang sejauh --row-gap sampai menyentuh
+   baris berikutnya, sehingga batangnya utuh.
 
-   --row-gap dipasok <ul> dari konstanta ROW_GAP yang juga jadi `gap`-nya, jadi
-   julurannya tidak bisa meleset dari jarak yang sebenarnya dipakai.
+   --row-gap diisi oleh <ul> dari konstanta ROW_GAP yang juga menjadi `gap`,
+   jadi panjangnya selalu sesuai dengan jarak yang dipakai.
 
-   Lebar 13px dipilih menyerupai lebar "├─" pada mono 0.8rem yang dulu dipakai. */
+   Lebar 13px dipilih agar mirip lebar "├─" pada font mono 0.8rem. */
 .sl-branch {
   position: relative;
   flex: 0 0 auto;
@@ -993,14 +931,14 @@ html.theme-swapping *::after {
   position: absolute;
   background-color: currentColor;
 }
-/* batang tegak, menjulur ke bawah menembus jarak antar baris */
+/* Batang tegak, memanjang ke bawah melewati jarak antar baris */
 .sl-branch::before {
   left: 0;
   top: 0;
   width: 1px;
   height: calc(100% + var(--row-gap, 0px));
 }
-/* ranting mendatar, di tengah barisnya */
+/* Ranting mendatar, di tengah baris */
 .sl-branch::after {
   left: 0;
   top: 50%;
@@ -1008,22 +946,20 @@ html.theme-swapping *::after {
   height: 1px;
 }
 
-/* Baris terbawah tiap kolom: batangnya berhenti tepat di rantingnya sendiri —
-   itulah yang membedakan "└" dari "├".
+/* Baris terbawah tiap kolom: batangnya berhenti tepat di rantingnya sendiri.
+   Inilah yang membedakan "└" dari "├".
 
-   Mana yang terbawah tergantung jumlah kolom, dan jumlah kolom cuma diketahui
-   CSS, bukan komponennya — karena itu aturannya di sini dan bukan berupa prop
-   `last` dari React.
+   Baris terbawah bergantung pada jumlah kolom, yang hanya diketahui CSS,
+   karena itu aturannya ada di sini dan bukan berupa prop `last` dari React.
 
-   Di bawah sm daftarnya DUA kolom, jadi yang terbawah ada dua: item terakhir
-   dan satu sebelumnya. Genap atau ganjil jumlah itemnya, keduanya selalu jatuh
-   di dasar kolomnya masing-masing. Tanpa aturan ini satu kolom menyisakan
-   batang menggantung ke ruang kosong. */
+   Di bawah sm daftarnya DUA kolom, jadi ada dua baris terbawah: item terakhir
+   dan item sebelumnya. Tanpa aturan ini, salah satu kolom menyisakan batang
+   yang menggantung. */
 .sl-list > li:nth-last-child(-n + 2) .sl-branch::before {
   height: 50%;
 }
 @media (min-width: 640px) {
-  /* satu kolom: yang terbawah tinggal satu, sisanya kembali menjulur */
+  /* Satu kolom: hanya ada satu baris terbawah, sisanya kembali memanjang */
   .sl-list > li:nth-last-child(-n + 2) .sl-branch::before {
     height: calc(100% + var(--row-gap, 0px));
   }
@@ -1054,7 +990,7 @@ html.theme-swapping *::after {
   --wa-header: #1c6ea4;
   --wa-header-fg: #ffffff;
   --wa-canvas: #e9eff4;
-  --wa-ink: rgba(28, 110, 164, 0.11); /* doodle wallpaper stroke */
+  --wa-ink: rgba(28, 110, 164, 0.11); /* Warna garis doodle di wallpaper */
   --wa-in-bg: #ffffff;
   --wa-in-fg: #111b21;
   --wa-out-bg: #d4ebff;
@@ -1064,10 +1000,10 @@ html.theme-swapping *::after {
   --wa-border: rgba(0, 0, 0, 0.08);
   --wa-muted: #667781;
   --wa-accent: #1c6ea4;
-  --wa-edge: #2b8fd4; /* panel outline — own token so the send button keeps --wa-accent */
+  --wa-edge: #2b8fd4; /* Garis tepi panel. Token terpisah agar tombol kirim tetap memakai --wa-accent. */
 }
 
-/* light page → dark popup */
+/* Halaman terang → popup gelap */
 :root.light .chat-wa {
   --wa-header: #14425f;
   --wa-header-fg: #e6f2fa;
@@ -1085,3 +1021,227 @@ html.theme-swapping *::after {
   --wa-edge: #4aa5e0;
 }
 
+
+/* Bayangan di bawah gambar kartu proyek. Di tema gelap bayangan dibuat lebih
+   pekat agar ikon stack tetap terbaca. Di tema terang bayangan dibuat tipis
+   agar gambar tidak terlihat pudar. */
+:root {
+  --pj-shade: 95%;
+}
+:root.light {
+  --pj-shade: 85%;
+}
+
+/* ── Fun: Catch the Bugs ─────────────────────────────────────────────────── */
+/* Arena berpola kotak tipis seperti kertas buku tulis dan mengikuti tema. */
+.bc-arena {
+  background-color: var(--bg-color);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border-color) 28%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border-color) 28%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+/* Nilai --leg diubah dari loop animasi, sehingga skew pada kaki terlihat seperti
+   langkah merayap. */
+.bc-legs {
+  transform: skewX(var(--leg, 0deg));
+  transform-origin: 20px 20px;
+}
+.bc-mark {
+  animation: bc-fade 0.9s ease-out forwards;
+}
+.bc-plus {
+  animation: bc-rise 0.9s cubic-bezier(0.22, 0.8, 0.24, 1) forwards;
+}
+@keyframes bc-fade {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes bc-rise {
+  from {
+    transform: translate(-50%, 0) rotate(-6deg);
+  }
+  to {
+    transform: translate(-50%, -22px) rotate(-6deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bc-plus {
+    animation: none;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ── Fun: Build a PC ─────────────────────────────────────────────────────── */
+/* Komponen yang baru dipasang bergerak turun sedikit ke slotnya. */
+.pc-drop {
+  animation: pc-drop 0.55s cubic-bezier(0.22, 0.8, 0.24, 1) both;
+}
+@keyframes pc-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Kartu penjelasan masuk dari samping. Elemen lain muncul perlahan dengan fade. */
+.pc-slide {
+  animation: pc-slide 0.45s cubic-bezier(0.22, 0.8, 0.24, 1) both;
+}
+@keyframes pc-slide {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+.pc-fade {
+  animation: pc-fade 0.5s ease-out both;
+}
+@keyframes pc-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-slide,
+  .pc-fade {
+    animation: none;
+  }
+}
+/* Garis slot tujuan berdenyut perlahan sebagai penanda tujuan komponen. */
+.pc-pulse {
+  animation: pc-pulse 1.2s ease-in-out infinite;
+}
+@keyframes pc-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+.pc-shake {
+  animation: pc-shake 0.45s ease-in-out;
+}
+@keyframes pc-shake {
+  20%,
+  60% {
+    transform: translateX(-3px);
+  }
+  40%,
+  80% {
+    transform: translateX(3px);
+  }
+}
+/* Saat PC dinyalakan, casing berkedip sebentar seperti lampu yang baru menyala.
+   Setelah itu, komponen terpasang memancarkan cahaya biru tipis yang berdenyut. */
+.pc-on {
+  animation: pc-power 1.1s ease-out both;
+}
+@keyframes pc-power {
+  0% {
+    filter: brightness(0.6);
+  }
+  12% {
+    filter: brightness(1.5);
+  }
+  22% {
+    filter: brightness(0.8);
+  }
+  40%,
+  100% {
+    filter: brightness(1.12);
+  }
+}
+.pc-on .pc-drop,
+.pc-on .pc-cable {
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--blue-color) 75%, transparent));
+  animation: pc-breathe 2.8s ease-in-out 1.1s infinite;
+}
+@keyframes pc-breathe {
+  50% {
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--blue-color) 85%, transparent));
+  }
+}
+/* Kipas mulai berputar setelah PC dinyalakan. */
+.pc-blades {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.pc-on .pc-blades {
+  animation: pc-spin 0.9s linear infinite;
+}
+@keyframes pc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.pc-boot {
+  animation: pc-drop 0.6s cubic-bezier(0.22, 0.8, 0.24, 1) both;
+}
+/* Kabel tergambar bertahap dari PSU ke port. Path memakai pathLength=1. */
+.pc-cable {
+  stroke-dasharray: 1;
+  animation: pc-route 0.9s cubic-bezier(0.22, 0.8, 0.24, 1) both;
+}
+@keyframes pc-route {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.pc-led {
+  filter: drop-shadow(0 0 4px var(--blue-color));
+}
+/* Adegan meja 3D setelah PC menyala. Warna meja dan dinding mengikuti tema,
+   sedangkan perangkat tetap hitam. --pc-bias adalah pantulan cahaya layar
+   di dinding belakang monitor. */
+.pc-desk {
+  --pc-wall: #101217;
+  --pc-bias: rgba(130, 105, 255, 0.34);
+  --pc-desk: #4a3324;
+  --pc-desk-far: #382618;
+  --pc-desk-edge: #2a1c12;
+  --pc-grain: rgba(0, 0, 0, 0.14);
+}
+:root.light .pc-desk {
+  --pc-wall: #ebe1d2;
+  --pc-bias: rgba(130, 105, 255, 0.26);
+  --pc-desk: #caa679;
+  --pc-desk-far: #b99369;
+  --pc-desk-edge: #9a7550;
+  --pc-grain: rgba(90, 60, 30, 0.12);
+}
+.pc-caret {
+  animation: pc-blink 0.9s steps(1) infinite;
+}
+@keyframes pc-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-drop,
+  .pc-pulse,
+  .pc-shake,
+  .pc-boot,
+  .pc-cable,
+  .pc-caret,
+  .pc-on,
+  .pc-on .pc-drop,
+  .pc-on .pc-cable,
+  .pc-on .pc-blades {
+    animation: none;
+  }
+}
+/* Saat papan di-zoom ke komponen yang sedang dipasang, ketebalan garis tetap sama. */
+.pc-zoomed :is(path, rect, circle) {
+  vector-effect: non-scaling-stroke;
+}

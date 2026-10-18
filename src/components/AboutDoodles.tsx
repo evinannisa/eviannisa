@@ -25,7 +25,7 @@ export const RING =
 export const DOTS = ["M6,10 L8,10", "M18,14 L20,14", "M30,10 L32,10"];
 
 const GRID_MARKS: Mark[] = [
-  // strip kiri kolom bio, sejajar bagian atas polaroid
+  // Strip kiri kolom bio, sejajar dengan bagian atas polaroid.
   {
     top: "3%",
     left: "0.5%",
@@ -36,7 +36,7 @@ const GRID_MARKS: Mark[] = [
     ],
     hide: "hidden sm:block",
   },
-  // strip kanan kolom bio, menghadap celah antar kolom
+  // Strip kanan kolom bio, menghadap celah antarkolom.
   {
     top: "20%",
     left: "44%",
@@ -45,7 +45,7 @@ const GRID_MARKS: Mark[] = [
     paths: ["M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14"],
     hide: "hidden md:block",
   },
-  // di bawah paragraf bio, memakai ruang mb-10 milik grid
+  // Di bawah paragraf bio, memakai ruang mb-10 milik grid.
   {
     top: "100%",
     left: "18%",

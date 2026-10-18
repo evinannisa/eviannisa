@@ -129,10 +129,10 @@ const SUGGESTIONS = [
 ];
 
 /**
- * Tiled doodle wallpaper for the messaging skin — the same hand-drawn language as
- * the floating buttons, but with marks drawn from this portfolio (map pin, braces,
- * a tag, a prompt) rather than generic ones. Strokes read from --wa-ink so the
- * pattern follows the theme; a data: URI could not.
+ * Wallpaper doodle berulang untuk tampilan chat. Gayanya sama dengan tombol melayang,
+ * tetapi motifnya diambil dari portfolio ini (pin peta, kurung kurawal, tag, prompt).
+ * Warna garis diambil dari --wa-ink agar pola mengikuti tema, hal yang tidak bisa
+ * dilakukan dengan data: URI.
  */
 function DoodleWallpaper({ id }: { id: string }) {
   return (
@@ -146,37 +146,37 @@ function DoodleWallpaper({ id }: { id: string }) {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {/* map pin */}
+            {/* Pin peta */}
             <g transform="rotate(-8 18 22)">
               <path d="M18 14c-3 0-5 2-5 5 0 4 5 9 5 9s5-5 5-9c0-3-2-5-5-5z" />
               <circle cx="18" cy="19" r="1.7" />
             </g>
-            {/* sparkle */}
+            {/* Kilau */}
             <path d="M65 8l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" transform="rotate(10 65 16)" />
-            {/* braces */}
+            {/* Kurung kurawal */}
             <g transform="rotate(-5 113 22)">
               <path d="M109 14c-3 0-3 3-3 4 0 2-1 3-2 3 1 0 2 1 2 3 0 1 0 4 3 4" />
               <path d="M117 14c3 0 3 3 3 4 0 2 1 3 2 3-1 0-2 1-2 3 0 1 0 4-3 4" />
             </g>
-            {/* circle */}
+            {/* Lingkaran */}
             <circle cx="25" cy="60" r="7" />
-            {/* tag </> */}
+            {/* Tag </> */}
             <g transform="rotate(6 72 58)">
               <path d="M66 52l-5 6 5 6" />
               <path d="M78 52l5 6-5 6" />
               <path d="M75 50l-5 16" />
             </g>
-            {/* squiggle */}
+            {/* Garis berkelok */}
             <path d="M106 62c3-4 6 4 9 0s6-4 9 0" />
-            {/* triangle */}
+            {/* Segitiga */}
             <path d="M20 98l7 12H13z" transform="rotate(-10 20 104)" />
-            {/* prompt window */}
+            {/* Jendela prompt */}
             <g transform="rotate(4 65 105)">
               <rect x="54" y="98" width="22" height="14" rx="2.5" />
               <path d="M58 103l3 2-3 2" />
               <path d="M64 107h6" />
             </g>
-            {/* heart */}
+            {/* Hati */}
             <path
               d="M112 114c-6-4-8-7-8-9 0-2 2-3 4-3 2 0 3 1 4 2 1-1 2-2 4-2 2 0 4 1 4 3 0 2-2 5-8 9z"
               transform="rotate(-7 112 108)"

@@ -28,10 +28,7 @@ function CardShell({
 }) {
   return (
     <div
-      className={`relative rounded-[5px] bg-surface ${className}`}
-      style={{
-        boxShadow: "0 1px 2px rgba(0, 0, 0, 0.10), 0 10px 22px -14px rgba(0, 0, 0, 0.30)",
-      }}
+      className={`relative rounded-[5px] border border-border bg-transparent transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted ${className}`}
     >
       {children}
     </div>
@@ -84,16 +81,52 @@ const IMG_FRAME = {
   whole: "object-cover -translate-y-[0px] scale-[1.06] ",
 } as const;
 
-const ROLE_INK: Partial<Record<FilterKey, string>> = {
-  fullstack: C.green,
-  frontend: C.blue,
-  backend: C.amber,
-};
+// Kartu tetap monokrom seperti halaman about & experience. Saat hover, warnanya cukup dipertegas ke warna teks.
+const ACCENT = C.fg;
 
 const linkHref = (u: string) => (/^https?:\/\//.test(u) ? u : `https://${u}`);
 const linkText = (u: string) => u.replace(/^https?:\/\//, "");
 
 export const projects = [
+  {
+    id: "signal",
+    title: "Signal",
+    role: "fullstack" as FilterKey,
+    year: "2026",
+    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
+    desc: "Learning Morse code in a more playful way, with practice sessions, listening exercises, quizzes, and a Morse game to test how well you can read the signals.",
+    img: "/assets/images/signal.png",
+    imgPos: "object-center" as const,
+    imgFrame: IMG_FRAME.fill,
+    repo: "https://github.com/eviannisaa/tilik",
+    demo: "https://github.com/eviannisaa/tilik",
+  },
+  {
+    id: "nook",
+    title: "Nook",
+    role: "fullstack" as FilterKey,
+    year: "2026",
+    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
+    desc: "Keeping your contacts and notes in one place you can open from any device, so when your phone is not around, you can just borrow one and still reach the people and things you need.",
+    img: "/assets/images/nook.png",
+    imgPos: "object-center" as const,
+    imgFrame: IMG_FRAME.fill,
+    repo: "https://github.com/eviannisaa/tilik",
+    demo: "https://github.com/eviannisaa/tilik",
+  },
+  {
+    id: "tilik",
+    title: "Tilik : Land and Property Check",
+    role: "fullstack" as FilterKey,
+    year: "2026",
+    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
+    desc: "Exploring locations and nearby areas, helping you get a better look at risks, disasters, and other important information around a place, based on data from InaRISK, GDACS, USGS, and DIBI.",
+    img: "/assets/images/tilik.png",
+    imgPos: "object-center" as const,
+    imgFrame: IMG_FRAME.fill,
+    repo: "https://github.com/eviannisaa/tilik",
+    demo: "https://github.com/eviannisaa/tilik",
+  },
   {
     id: "hrsync-fe",
     title: "HRSync : Human Resource Synchronization",
@@ -110,7 +143,7 @@ export const projects = [
   {
     id: "hrsync-be",
     title: "Hrsync : Human Resource Synchronization",
-    role: "frontend" as FilterKey,
+    role: "backend" as FilterKey,
     year: "2026",
     stack: ["Prisma ORM", "Golang", "MinIO", "PostgreSQL", "Resend API"],
     desc: "Bringing HR needs into one platform, making it easier to manage leave, overtime, reimbursements, KPIs, employee information, and feedback for a better workplace.",
@@ -121,13 +154,13 @@ export const projects = [
     demo: "https://github.com/eviannisaa/hrsync-be",
   },
   {
-    id: "tilik",
-    title: "Tilik : Land and Property Check",
-    role: "fullstack" as FilterKey,
-    year: "2026",
+    id: "digital-library",
+    title: "Digital Library",
+    role: "frontend" as FilterKey,
+    year: "2025",
     stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
     desc: "Exploring locations and nearby areas, helping you get a better look at risks, disasters, and other important information around a place, based on data from InaRISK, GDACS, USGS, and DIBI.",
-    img: "/assets/images/tilik.png",
+    img: "/assets/images/digital-library.png",
     imgPos: "object-center" as const,
     imgFrame: IMG_FRAME.fill,
     repo: "https://github.com/eviannisaa/tilik",
@@ -159,7 +192,7 @@ export default function Projects() {
       </div>
 
       <div className="px-6 max-w-5xl mx-auto mb-6">
-        <div className="inline-flex rounded-md overflow-hidden border border-border">
+        <div className="flex flex-col sm:flex-row sm:inline-flex rounded-md overflow-hidden border border-border">
           {filterLabels.map((f) => (
             <button
               key={f.key}
@@ -169,21 +202,23 @@ export default function Projects() {
               className="font-mono text-sm font-medium py-1.75 px-4 cursor-pointer border-none"
               style={{
                 transition: "all 0.15s",
-                backgroundColor: filter === f.key ? C.surface2 : "transparent",
-                color: filter === f.key ? C.green : C.muted,
+                backgroundColor:
+                  filter === f.key
+                    ? `color-mix(in srgb, ${C.blue} 10%, transparent)`
+                    : "transparent",
+                color: filter === f.key ? C.blue : C.muted,
                 borderRight: f.key !== "fullstack" ? `1px solid ${C.border}` : "none",
               }}
             >
-              {filter === f.key && <span style={{ color: C.red }}>▶ </span>}
+              {filter === f.key && <span style={{ color: C.blue }}>▶ </span>}
               {f.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="px-6 pb-20 max-w-5xl mx-auto grid gap-5 sm:grid-cols-2">
+      <div className="px-6 pb-20 max-w-5xl mx-auto grid gap-5 sm:grid-cols-2 lg:gap-8">
         {visible.map((p) => {
-          const roleInk = ROLE_INK[p.role];
           const withIcon = p.stack.filter((t) => stackIcon(t));
           const peek = [...withIcon, ...p.stack.filter((t) => !stackIcon(t))].slice(0, 5);
           const rest = p.stack.filter((t) => !peek.includes(t));
@@ -191,27 +226,46 @@ export default function Projects() {
           return (
             <CardShell key={p.id} className="group h-full">
               <div className="relative z-10 flex h-full flex-col">
-                <div className="relative mx-3 mt-3 overflow-hidden rounded-[3px] bg-surface2">
+                <div className="relative mx-3 mt-3 overflow-hidden rounded-[3px] border border-dashed border-border bg-background">
                   <img
                     src={p.img}
                     alt={p.title}
                     loading="lazy"
-                    className={`pj-reveal h-52 w-full origin-top ${p.imgPos} ${p.imgFrame} opacity-55 blur-[2px] saturate-[0.9] transition duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-100 group-has-[.pj-reveal:hover]:blur-[0px] group-has-[.pj-reveal:hover]:saturate-100`}
+                    className={`pj-reveal h-52 w-full origin-top ${p.imgPos} ${p.imgFrame} opacity-85 saturate-[0.9] transition duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-100 group-has-[.pj-reveal:hover]:saturate-100`}
                   />
 
                   <span
-                    className="absolute inset-x-0 bottom-0 flex items-center justify-end gap-2 px-2.5 pt-5 pb-2 transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-end gap-2 px-2.5 pt-20 pb-2 transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
                     style={{
-                      background: `linear-gradient(to top, color-mix(in srgb, ${C.bg} 92%, transparent), color-mix(in srgb, ${C.bg} 62%, transparent) 55%, transparent)`,
+                      // Color stop dibuat bertahap (eased) agar gelapnya memudar halus ke transparan,
+                      // bukan berhenti tiba-tiba seperti pita.
+                      background: `linear-gradient(to top, ${[
+                        [1, 0],
+                        [0.92, 22],
+                        [0.72, 40],
+                        [0.48, 56],
+                        [0.27, 70],
+                        [0.12, 83],
+                        [0.03, 93],
+                        [0, 100],
+                      ]
+                        .map(
+                          ([k, at]) =>
+                            `color-mix(in srgb, ${C.bg} calc(var(--pj-shade) * ${k}), transparent) ${at}%`,
+                        )
+                        .join(", ")})`,
                     }}
                   >
+                    {/* Area ikon selebar kartu sengaja menangkap kursor agar tidak memicu reveal gambar.
+                        Bagian bayangan di atasnya tetap meneruskan kursor. */}
+                    <span className="pointer-events-auto absolute inset-x-0 top-18 bottom-0" />
                     {peek.map((t, i) => (
-                      <span key={t} className="group/tip relative">
+                      <span key={t} className="group/tip pointer-events-auto relative">
                         <span
                           className="stack-mark"
                           style={{
                             ["--tilt" as string]: PEEK_TILT[i % PEEK_TILT.length],
-                            ["--accent" as string]: roleInk,
+                            ["--accent" as string]: ACCENT,
                           }}
                         >
                           <StackIcon name={t} size="0.95rem" />
@@ -222,8 +276,8 @@ export default function Projects() {
 
                     {rest.length > 0 && (
                       <span
-                        className="group/tip relative"
-                        style={{ ["--accent" as string]: roleInk }}
+                        className="group/tip pointer-events-auto relative"
+                        style={{ ["--accent" as string]: ACCENT }}
                       >
                         <span className="font-mono text-xs text-muted group-hover/tip:text-(--accent)">
                           +{rest.length}
@@ -245,10 +299,9 @@ export default function Projects() {
                   </span>
 
                   <span
-                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] px-2 py-0.5 font-mono text-xs font-medium transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
+                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] border border-border px-2 py-0.5 font-mono text-xs text-muted transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
                     style={{
-                      color: roleInk,
-                      backgroundColor: `color-mix(in srgb, ${C.surface} 92%, transparent)`,
+                      backgroundColor: `color-mix(in srgb, ${C.bg} 88%, transparent)`,
                     }}
                   >
                     {p.role}
@@ -271,7 +324,7 @@ export default function Projects() {
                         title={linkText(p.repo)}
                         aria-label={`${p.title} - source on GitHub`}
                         className="stack-mark"
-                        style={{ ["--accent" as string]: roleInk }}
+                        style={{ ["--accent" as string]: ACCENT }}
                       >
                         <span
                           className="stack-logo [--size:0.95rem]"
@@ -287,7 +340,7 @@ export default function Projects() {
                         title={linkText(p.demo)}
                         aria-label={`${p.title} - live demo`}
                         className="stack-mark [color:var(--muted-color)] hover:[color:var(--accent)]"
-                        style={{ ["--accent" as string]: roleInk }}
+                        style={{ ["--accent" as string]: ACCENT }}
                       >
                         <svg
                           width="15"
@@ -331,14 +384,14 @@ export default function Projects() {
               className="text-muted opacity-60"
               aria-hidden="true"
             >
-              {/* badan kotak */}
+              {/* Badan kotak */}
               <path d="M11.2,19.6 C10.9,25.6 11.6,32.1 12.6,36.3 C19.6,37.5 28.6,37.5 35.6,36.3 C36.6,32.1 37.2,25.6 36.9,19.6" />
-              {/* tepi dalam - ini yang bikin kotaknya terbaca kosong, bukan pejal */}
+              {/* Tepi dalam, agar kotak terlihat kosong dan tidak padat */}
               <path d="M11,19.7 C17,21 31,21 37.1,19.7" />
-              {/* dua tutup yang terbuka ke luar */}
+              {/* Dua tutup yang terbuka ke luar */}
               <path d="M11.1,19.5 C9.4,17.3 8.1,15 7.3,12.8 C9.9,11.9 13,11.6 15.7,11.9" />
               <path d="M37,19.5 C38.7,17.3 40,15 40.8,12.8 C38.2,11.9 35.1,11.6 32.4,11.9" />
-              {/* tiga goresan kecil di atasnya: isyarat "tidak ada apa-apa" */}
+              {/* Tiga goresan kecil di atasnya sebagai tanda "tidak ada apa-apa" */}
               <path d="M20.4,7.2 C20,5.9 19.9,4.7 20,3.8" />
               <path d="M24.1,6.6 C24.1,5.3 24,4.3 24,3.5" />
               <path d="M27.8,7.3 C28.2,6 28.5,4.9 28.8,4.1" />
