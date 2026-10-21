@@ -115,12 +115,12 @@ export function GithubPanel() {
 
       <div className="lg:ml-auto lg:max-w-160">
         <div className="flex gap-2.5 items-center sm:justify-end mb-2">
-          <div className="font-mono text-[0.72rem] text-muted opacity-[0.65]">// 04</div>
+          <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">// 04</div>
           <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
             What I’ve Been Coding
           </div>
         </div>
-        <p className="mb-4 sm:mb-6 lg:max-w-160 text-xs sm:text-sm text-muted sm:text-right font-poppins-sans leading-[1.8] tracking-[0.012em]">
+        <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted sm:text-right font-poppins-sans leading-[1.8] tracking-[0.012em]">
           Some of the things I build end up here. This part comes straight from GitHub, so you can
           see what I’ve been coding lately.
         </p>
@@ -156,7 +156,7 @@ export function GithubPanel() {
           </div>
 
           {data?.total !== null && data?.total !== undefined && (
-            <div className="mt-4 font-mono text-[10px] sm:text-xs text-muted sm:text-right">
+            <div className="mt-4 font-mono text-[12px] sm:text-sm text-muted sm:text-right">
               {data.total.toLocaleString("en-US")} contributions in the last year
             </div>
           )}

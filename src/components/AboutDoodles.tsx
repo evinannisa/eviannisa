@@ -57,7 +57,7 @@ const GRID_MARKS: Mark[] = [
   },
 ];
 
-function DoodleLayer({ marks }: { marks: Mark[] }) {
+function DoodleLayer({ marks, className = "" }: { marks: Mark[]; className?: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,7 +111,11 @@ function DoodleLayer({ marks }: { marks: Mark[] }) {
   }, []);
 
   return (
-    <div ref={rootRef} className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+    <div
+      ref={rootRef}
+      className={`absolute inset-0 z-0 pointer-events-none ${className}`}
+      aria-hidden="true"
+    >
       {marks.map((m, i) => (
         <svg
           key={i}
@@ -176,7 +180,7 @@ const PAGE_MARKS: Mark[] = [
 ];
 
 export function AboutPageDoodles() {
-  return <DoodleLayer marks={PAGE_MARKS} />;
+  return <DoodleLayer marks={PAGE_MARKS} className="about-bg-doodles" />;
 }
 
 export function AboutDoodles() {

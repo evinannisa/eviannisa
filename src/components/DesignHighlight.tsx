@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { designs, DESIGN_MORE } from "@/data/designs";
 import { SketchFrame } from "@/components/SketchFrame";
 
-const MONO = "'JetBrains Mono', monospace";
+const MONO = "var(--font-mono)";
 const ACCENT = "var(--purple-color)";
 const CARD = "sketch sketch-card relative";
 
@@ -132,7 +132,7 @@ export function DesignHighlight() {
       <p
         className="mb-5 lg:max-w-160"
         style={{
-          fontFamily: "'Poppins', sans-serif",
+          fontFamily: "var(--font-poppins-sans)",
           fontSize: "0.88rem",
           lineHeight: 1.8,
           letterSpacing: "0.012em",

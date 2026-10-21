@@ -62,7 +62,7 @@ export function StackStrip() {
       <div className="mb-4">
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: "0.8rem",
             color: "var(--muted-color)",
             lineHeight: 1,

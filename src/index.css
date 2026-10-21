@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Comic+Relief:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -65,6 +65,36 @@
   --quote-color: #e8a838;
 }
 
+/* Palet aksen halaman About di mode terang. Aksen bawaan tema terang (merah,
+   ungu, biru, hijau) terlalu jenuh dan saling bertabrakan di atas latar krem.
+   Di sini semuanya diganti ke keluarga warna tanah dengan kejenuhan dan
+   kecerahan yang mirip, supaya tiap bagian tetap punya warna sendiri tetapi
+   terasa satu palet.
+
+   Token --color-* ikut ditulis ulang karena nilainya sudah dihitung di :root.
+   Mengganti --blue-color saja tidak akan mengubah class seperti bg-blue.
+
+   Dipasang di :root lewat :has() agar menu dan tombol kontak melayang, yang
+   berada di luar halaman, ikut memakai palet ini selama About terbuka. */
+:root.light:has(.about-page) {
+  --red-color: #b8614a;
+  --orange-color: #c27d45;
+  --amber-color: #b5862f;
+  --teal-color: #a8894a;
+  --green-color: #74874f;
+  --blue-color: #5b7c8a;
+  --purple-color: #8c6b8a;
+  --color-red: var(--red-color);
+  --color-orange: var(--orange-color);
+  --color-amber: var(--amber-color);
+  --color-teal: var(--teal-color);
+  --color-green: var(--green-color);
+  --color-blue: var(--blue-color);
+  --color-purple: var(--purple-color);
+  /* Hijau merek WhatsApp diredam agar sejalan dengan palet */
+  --whatsapp-ink: var(--green-color);
+}
+
 @theme inline {
   --color-background: var(--bg-color);
   --color-surface: var(--surface-color);
@@ -78,13 +108,16 @@
   --color-red: var(--red-color);
   --color-teal: var(--teal-color);
   --color-border: var(--border-color);
-  --font-mono: "JetBrains Mono", monospace;
   --font-hand: "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-caveat: "Caveat", cursive;
-  --font-poppins: "Poppins", monospace;
-  --font-poppins-sans: "Poppins", sans-serif;
-  --font-comic: "Comic Relief", "Comic Sans MS", cursive;
+  --font-comic: "Comic Neue", "Comic Sans MS", cursive;
+  /* Nama token masih "poppins" dan "mono", tetapi isinya sekarang Comic Neue
+     agar semua teks yang memakai font-poppins / font-poppins-sans / font-mono
+     ikut berganti */
+  --font-mono: var(--font-comic);
+  --font-poppins: var(--font-comic);
+  --font-poppins-sans: var(--font-comic);
 }
 
 * {
@@ -97,7 +130,7 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--fg-color);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-comic);
   margin: 0;
   padding: 0;
   transition:
@@ -253,7 +286,7 @@ html.theme-swapping *::after {
   color: #e6edf3;
 }
 
-/* ── Doodle Design notebook layout and features ─────────────────────────── */
+/* ── Layout dan fitur notebook Doodle Design ─────────────────────────────── */
 .notebook {
   background-image: repeating-linear-gradient(
     180deg,
@@ -305,7 +338,7 @@ html.theme-swapping *::after {
   scrollbar-width: none;
 }
 
-/* ── Hero Right Panel (Doodle Design style) ─────────────────────────────── */
+/* ── Panel kanan hero (gaya Doodle Design) ───────────────────────────────── */
 .hero-card-col {
   display: flex;
   justify-content: end;
@@ -484,6 +517,41 @@ html.theme-swapping *::after {
 .coding-art {
   --ca-steam-ink: var(--orange-color);
 }
+/* Mode gelap: ilustrasi diredupkan agar tidak bersaing dengan teks profil.
+   Di bawah md sudah diatur 0.35, jadi aturan ini hanya berlaku mulai md. */
+@media (min-width: 768px) {
+  :root:not(.light) .coding-art {
+    opacity: 0.4;
+  }
+}
+/* Mode terang di About: semua doodle diredupkan lagi, kecuali doodle di sekitar
+   foto (AboutDoodles, panah, dan coretan polaroid) serta buku, laptop, dan lampu
+   yang sudah punya opacity sendiri di bawah. Dipakai filter opacity agar
+   berlipat dengan opacity masing-masing doodle, jadi perbandingan terang-redup
+   antardoodle tetap terjaga. */
+:root.light
+  .about-page
+  :is(.about-bg-doodles, .edu-doodle, .ah-doodle, .ph-dots, .ph-star, .gh-mark):not(
+    .edu-book,
+    .ah-laptop,
+    .ah-lamp
+  ) {
+  filter: opacity(0.55);
+}
+
+/* Doodle buku (Education), laptop (Experience), dan lampu (Projects),
+   diredupkan di kedua mode. Properti CSS ini menang atas atribut opacity="0.5"
+   di SVG-nya. */
+.edu-book,
+.ah-laptop,
+.ah-lamp {
+  opacity: 0.2;
+}
+:root.light .edu-book,
+:root.light .ah-laptop,
+:root.light .ah-lamp {
+  opacity: 0.12;
+}
 :root.light .coding-art {
   --ca-steam-ink: var(--red-color);
 }
@@ -597,7 +665,7 @@ html.theme-swapping *::after {
   margin: 0;
 }
 
-/* ── Typing heading ─────────────────────────────────────────────────────── */
+/* ── Judul dengan efek mengetik ──────────────────────────────────────────── */
 /* Kursor berupa batang tipis, bukan blok, karena judul memakai Caveat
    (tulisan tangan) dan kursor blok di atas huruf sambung terlihat seperti
    salah render. Ukurannya memakai `em` agar mengikuti `clamp()` pada font-size
@@ -744,7 +812,7 @@ html.theme-swapping *::after {
   }
 }
 
-/* ── Timeline rows (about) ──────────────────────────────────────────── */
+/* ── Baris timeline (about) ──────────────────────────────────────────────── */
 /* Dipakai bersama oleh EducationTimeline dan WorkHighlight karena bentuknya
    sama: rel putus-putus dengan titik per entri, tanpa kotak. Warna titik
    diatur per komponen lewat atribut SVG.
@@ -775,7 +843,7 @@ html.theme-swapping *::after {
   left: var(--rail);
   /* Dimulai tepat di bawah titik */
   top: 1.05rem;
-  border-left: 1.5px dashed var(--border-color);
+  border-left: 1.5px solid color-mix(in srgb, var(--border-color) 30%, transparent);
 }
 /* Antar entri: rel memanjang sampai baris berikutnya dengan --gap yang sama */
 .tl-row:not(:last-child)::after {
@@ -800,7 +868,7 @@ html.theme-swapping *::after {
    mengubah warna logo, berbeda dengan filter yang ikut mengubah warna merek.
 
    Tema dark ditandai dengan TIDAK adanya kelas .light di :root (lihat
-   LayoutWrapper), jadi di tema light logo ditampilkan apa adanya. */
+   ThemeProvider), jadi di tema light logo ditampilkan apa adanya. */
 .place-logo {
   border-radius: 3px;
 }
@@ -812,7 +880,7 @@ html.theme-swapping *::after {
   padding: 2px;
 }
 
-/* ── Sketch card (about) ─────────────────────────────────────────────────── */
+/* ── Kartu sketch (about) ────────────────────────────────────────────────── */
 /* Nilai --frame/--frame-fill diatur di sini, bukan inline di tiap kartu, agar
    state hover bisa mengubahnya. Custom property inline tidak bisa ditimpa
    aturan :hover. */
@@ -831,7 +899,7 @@ html.theme-swapping *::after {
   justify-content: flex-start;
 }
 
-/* ── Stack logos (about) ─────────────────────────────────────────────────── */
+/* ── Logo stack (about) ──────────────────────────────────────────────────── */
 /* Glyph dipakai sebagai CSS mask dan diwarnai token palet, bukan <img> dengan
    filter. Dengan begitu `background-color` bisa langsung memakai
    var(--muted-color) dan ikut tema tanpa trik brightness/invert. */
@@ -977,7 +1045,7 @@ html.theme-swapping *::after {
   }
 }
 
-/* ── Floating chat popup ─────────────────────────────────────────────────── */
+/* ── Popup chat melayang ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .chat-popup {
     transition: opacity 0.01s linear !important;
@@ -985,7 +1053,7 @@ html.theme-swapping *::after {
   }
 }
 
-/* ── Chat popup: messaging-app blue skin ─────────────────────────────────── */
+/* ── Popup chat: tampilan biru ala aplikasi pesan ────────────────────────── */
 .chat-wa {
   --wa-header: #1c6ea4;
   --wa-header-fg: #ffffff;
@@ -1090,6 +1158,21 @@ html.theme-swapping *::after {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+/* Amplop time capsule muncul sedikit memantul setelah surat disegel */
+.capsule-pop {
+  animation: capsule-pop 0.5s cubic-bezier(0.34, 1.4, 0.5, 1) both;
+}
+@keyframes capsule-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .capsule-pop {
+    animation: none;
   }
 }
 /* Kartu penjelasan masuk dari samping. Elemen lain muncul perlahan dengan fade. */

@@ -7,7 +7,7 @@ const ICON: Record<string, string> = {
   JavaScript: "javascript",
   "TanStack Query": "reactquery",
   "Tailwind CSS": "tailwindcss",
-  "Google Maps JS API": "googlemaps",
+  "Google Maps API": "googlemaps",
   Jest: "jest",
   Golang: "go",
   "Express.js": "express",
@@ -44,13 +44,13 @@ export function SkillList({
     <div>
       <div className="flex gap-2.5 items-center mb-2">
         {chapter && (
-          <div className="font-mono text-[0.72rem] text-muted opacity-[0.65]">{chapter}</div>
+          <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">{chapter}</div>
         )}
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           {title}
         </div>
       </div>
-      <p className="mb-4 sm:mb-6 lg:max-w-160 text-xs sm:text-sm text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
+      <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
         Tools and technologies I’ve used at work, in personal projects, and along the way.
       </p>
 
@@ -60,7 +60,7 @@ export function SkillList({
 
           return (
             <div key={g.label} className="sl-col">
-              <h3 className="text-[0.92rem] font-semibold text-foreground leading-[1.2] mb-[1.1rem] font-poppins-sans">
+              <h3 className="text-[1.045rem] font-semibold text-foreground leading-[1.2] mb-[1.1rem] font-poppins-sans">
                 {g.label}
               </h3>
 
@@ -88,7 +88,7 @@ export function SkillList({
                         <span className="w-[0.32rem] h-[0.32rem] sm:w-[0.42rem] sm:h-[0.42rem] rounded-full border-[1.5px] border-muted opacity-[0.55]" />
                       </span>
                     )} */}
-                    <span className="text-xs sm:text-[0.84rem] text-muted leading-[1.4] font-poppins-sans">
+                    <span className="text-sm sm:text-[0.965rem] text-muted leading-[1.4] font-poppins-sans">
                       {name}
                     </span>
                   </li>

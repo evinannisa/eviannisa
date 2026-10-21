@@ -40,7 +40,7 @@ const skillGroups = [
       "Tailwind CSS",
       "Styled Components",
       "MapLibre GL JS",
-      "Google Maps JS API",
+      "Google Maps API",
       "Places API",
       "GeoJSON",
     ],
@@ -132,11 +132,11 @@ export default function About() {
   }
 
   return (
-    <div className="relative mt-8" style={{ backgroundColor: C.bg, minHeight: "100vh" }}>
+    <div className="about-page relative mt-8" style={{ backgroundColor: C.bg, minHeight: "100vh" }}>
       <AboutPageDoodles />
       <div className="px-6 pt-12 pb-12 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
-          {/* <span className="font-mono text-[0.72rem] text-muted">// 01</span> */}
+          {/* <span className="font-mono text-[0.845rem] text-muted">// 01</span> */}
           <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
             About Me
           </h1>
@@ -145,7 +145,7 @@ export default function About() {
         </div>
 
         {/* <p
-          className={`font-mono text-xs sm:text-sm text-green ${theme === "dark" ? "opacity-[0.7]" : "opacity-100"}`}
+          className={`font-mono text-sm sm:text-base text-green ${theme === "dark" ? "opacity-[0.7]" : "opacity-100"}`}
         >
           <Typing text="# who i am, what i do, how i got here" speed={90} />
         </p> */}
@@ -195,11 +195,11 @@ export default function About() {
               <div className="text-xl sm:text-2xl font-caveat font-bold tracking-[0.080em] text-foreground">
                 Evi Nur Annisa
               </div>
-              <div className="text-[10px] sm:text-xs font-poppins text-muted font-normal tracking-[0.018em]">
+              <div className="text-[12px] sm:text-sm font-poppins text-muted font-normal tracking-[0.018em]">
                 Software Engineer
               </div>
             </div>
-            <p className="about-fx font-normal! text-xs sm:text-sm font-poppins leading-[1.8] tracking-[0.012em] text-muted">
+            <p className="about-fx font-normal! text-sm sm:text-base font-poppins leading-[1.8] tracking-[0.012em] text-muted">
               Hello! I'm <span className="text-foreground/90 font-medium">Evi</span>. I am a
               Software Engineer with 2+ years of experience in web development, with a passion for
               exploring new ideas and staying curious about new technologies.{" "}

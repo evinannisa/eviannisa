@@ -58,20 +58,20 @@ export function EducationTimeline() {
   return (
     <div ref={rootRef} className="relative lg:max-w-160">
       <div className="flex gap-2.5 items-center mb-2">
-        <div className="font-mono text-[0.72rem] text-muted opacity-[0.65]">// 01</div>
+        <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">// 01</div>
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Education
         </div>
       </div>
 
-      <p className="mb-4 sm:mb-6 lg:max-w-160 text-xs sm:text-sm text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
+      <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
         This is where it all started. It began with random campus assignments, then somehow turned
         into an internship where coding stopped being &ldquo;just homework&rdquo; and started
         feeling like I was actually building something.
       </p>
 
       <svg
-        className="edu-doodle hidden lg:block absolute pointer-events-none"
+        className="edu-doodle edu-book hidden lg:block absolute pointer-events-none"
         style={{ right: "-10.5rem", top: "5.5rem", width: 132 }}
         viewBox="0 0 120 92"
         fill="none"
@@ -156,13 +156,13 @@ export function EducationTimeline() {
           </svg>
 
           <div className="flex flex-col gap-1 ml-4">
-            <div className="font-mono text-xs sm:text-sm text-foreground">
+            <div className="font-mono text-sm sm:text-base text-foreground">
               Informatics Engineering
             </div>
-            <div className="font-mono text-[10px] sm:text-xs text-muted">
+            <div className="font-mono text-[12px] sm:text-sm text-muted">
               Amikom Yogyakarta Univesity | GPA 3,82 | 2019 - 2022
             </div>
-            <div className="mt-1.5 text-xs sm:text-sm text-muted flex flex-col gap-2.5 font-poppins-sans leading-[1.7]">
+            <div className="mt-1.5 text-sm sm:text-base text-muted flex flex-col gap-2.5 font-poppins-sans leading-[1.7]">
               <span>
                 I also joined a few events and organizations through HIMADITI and BEM. Before
                 getting into internships, I got to be a teaching assistant, helping students learn
@@ -171,15 +171,28 @@ export function EducationTimeline() {
                 program through Kampus Merdeka, where I got to collaborate with different teams and
                 meet people from different parts of Indonesia.
               </span>
-              <span>
-                More about those experiences in{" "}
-                <Link
-                  href="/experience"
-                  className="font-medium text-foreground underline hover:text-red"
-                >
-                  Experience
-                </Link>
-              </span>
+              <Link href="/experience" className="self-start">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-sm sm:text-base text-muted font-poppins-sans hover:text-foreground">
+                    See more experiences
+                  </span>
+                  <svg width="14" height="9" viewBox="0 0 17 9" fill="none" aria-hidden="true">
+                    <path
+                      d="M1,4.6 C5,4.1 10,4.9 15.4,4.4"
+                      stroke="var(--muted-color)"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M12.2,1.6 C13.4,2.8 14.6,3.9 15.8,4.5 C14.6,5.3 13.5,6.4 12.4,7.6"
+                      stroke="var(--muted-color)"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </Link>
             </div>
           </div>
         </div>

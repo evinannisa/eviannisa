@@ -7,6 +7,8 @@ type Theme = "dark" | "light";
 type ThemeContextType = {
   theme: Theme;
   setTheme: React.Dispatch<React.SetStateAction<Theme>>;
+  // Bernilai true setelah tema tersimpan dibaca. Sebelum itu, nilai `theme` belum tentu benar.
+  hydrated: boolean;
 };
 
 const SWAP_MS = 240;
@@ -15,6 +17,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
+  // Kelas tema awal sudah dipasang oleh script di layout, jadi DOM tidak diubah sebelum tema tersimpan dibaca.
+  const [hydrated, setHydrated] = useState(false);
 
   const byUser = useRef(false);
 
@@ -27,13 +31,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     let saved: Theme | null = null;
     try {
       saved = localStorage.getItem("theme") as Theme | null;
-    } catch {
-      return;
-    }
+    } catch {}
     if (saved === "light" || saved === "dark") setTheme(saved);
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     const root = document.documentElement;
 
     root.classList.toggle("light", theme === "light");
@@ -48,10 +52,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.classList.add("theme-swapping");
     const t = window.setTimeout(() => root.classList.remove("theme-swapping"), SWAP_MS);
     return () => window.clearTimeout(t);
-  }, [theme]);
+  }, [theme, hydrated]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: setThemeByUser }}>
+    <ThemeContext.Provider value={{ theme, setTheme: setThemeByUser, hydrated }}>
       {children}
     </ThemeContext.Provider>
   );

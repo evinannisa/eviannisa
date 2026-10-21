@@ -3,20 +3,22 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Link from "next/link";
-import { projects } from "@/app/projects/page";
+import { projects } from "@/data/projects";
 import { STAR } from "@/components/AboutDoodles";
 import { stackSlot } from "@/lib/stackSlot";
-
-const STACK_ICON: Record<string, string> = {
-  "Astro.js": "astro",
-  Python: "python",
-  Tailwind: "tailwindcss",
-  TypeScript: "typescript",
-  PostgreSQL: "postgresql",
-  Drizzle: "drizzle",
-};
+import { stackIcon } from "@/lib/stackIcon";
 
 const TOP_PROJECTS = projects.slice(0, 1);
+
+// Stack diambil dari proyek terbaru agar selalu sama dengan halaman /projects.
+const STACK_SHOWN = 5;
+
+// Cerita tambahan yang hanya tampil di halaman About, ditambahkan setelah
+// deskripsi proyek.
+const ABOUT_NOTE: Record<string, string> = {
+  signal:
+    "The idea came from Pramuka (scouts), where I first learned Morse code. You can challenge friends, send Morse messages for others to guess, or learn step by step with lessons, listening drills, and quizzes.",
+};
 
 export function ProjectsHighlight() {
   const rootRef = useRef<HTMLElement>(null);
@@ -134,13 +136,13 @@ export function ProjectsHighlight() {
       </svg>
 
       <div className="flex gap-2.5 items-center mb-2">
-        <div className="font-mono text-[0.72rem] text-muted opacity-[0.65]">// 03</div>
+        <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">// 03</div>
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Poject Playground
         </div>
       </div>
 
-      <p className="mb-4 sm:mb-6 lg:max-w-160 text-xs sm:text-sm text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
+      <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
         There’s always something new to explore, so I keep building little things on the side.
         Mostly random ideas, just for fun and to see what I can make.
       </p>
@@ -240,7 +242,7 @@ export function ProjectsHighlight() {
         </svg> */}
 
         <svg
-          className="ah-doodle hidden lg:block absolute pointer-events-none top-[50%] -mt-30 -right-58 w-28 rotate-[-8deg]"
+          className="ah-doodle ah-lamp hidden lg:block absolute pointer-events-none top-[50%] -mt-30 -right-58 w-28 rotate-[-8deg]"
           viewBox="0 0 100 128"
           fill="none"
           stroke="var(--muted-color)"
@@ -296,81 +298,85 @@ export function ProjectsHighlight() {
           <path className="ph-ray" strokeWidth="1.6" d="M14,49 C11.2,49.6 8.4,48.8 5.6,49.4" />
           <path className="ph-ray" strokeWidth="1.6" d="M86,49 C88.8,48.4 91.4,49.2 94.4,48.6" />
         </svg>
-        <div className="lg:max-w-160 sm:pl-2.5 lg:pl-6 font-mono text-xs sm:text-sm leading-[1.95]">
-          {TOP_PROJECTS.map((p, i) => {
-            const last = i === TOP_PROJECTS.length - 1;
-            return (
-              <div key={i} className="ah-item block mb-5 last:mb-0">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-blue">{last ? "└─" : "├─"}</span>
-                  <span className="text-foreground">{p.title}</span>
-                  <span className="text-blue">/</span>
-                  <span className="flex-1 translate-y-[-0.2rem] border-b border-dashed border-border" />
-                  <span className="shrink-0 text-muted">{p.year}</span>
-                </div>
+        {/* Timeline vertikal, sama seperti Education dan Work Experience */}
+        <div className="tl-list lg:max-w-160 pl-4 sm:pl-[1.85rem]">
+          {TOP_PROJECTS.map((p) => (
+            <div key={p.id} className="ah-item tl-row pb-0.5">
+              <svg
+                className="tl-dot"
+                width="11"
+                height="11"
+                viewBox="0 0 11 11"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle cx="5.5" cy="5.5" r="3.6" fill="var(--blue-color)" />
+              </svg>
 
-                <div className="flex gap-2">
-                  <span className="shrink-0 text-muted opacity-[0.45]">
-                    {last ? "\u00a0\u00a0" : "│\u00a0"}
-                  </span>
-                  <p className="min-w-0 text-xs sm:text-sm leading-[1.75] text-muted my-2 font-poppins-sans">
+              <div className="flex flex-col gap-1 ml-4">
+                <span className="font-mono text-sm sm:text-base text-foreground">{p.title}</span>
+                <span className="font-mono text-[12px] sm:text-sm text-muted">{p.year}</span>
+
+                {/* Jarak dan ukuran disamakan dengan Work Experience (WorkHighlight) */}
+                <div className="mt-1.5 text-sm sm:text-base flex flex-col gap-2 text-muted font-poppins-sans leading-[1.7]">
+                  <span>
                     {p.desc}
-                  </p>
+                    {ABOUT_NOTE[p.id] && ` ${ABOUT_NOTE[p.id]}`}
+                  </span>
+                  <span>Here’s the tech stack I’ve worked with :</span>
                 </div>
 
-                <div className="flex gap-2">
-                  <span className="shrink-0 text-muted opacity-[0.45]">
-                    {last ? "\u00a0\u00a0" : "│\u00a0"}
-                  </span>
-                  <span className="flex flex-wrap items-center gap-x-3.5 min-w-0">
-                    {Object.entries(STACK_ICON).map(([name, slug], i) => (
-                      <span key={name} className={`${stackSlot(i)} items-center gap-1.5`}>
-                        <span
-                          className="stack-logo [--size:0.7rem] sm:[--size:1.05rem]"
-                          aria-hidden="true"
-                          style={{
-                            ["--ico" as string]: `url(/assets/icons/${slug}.svg)`,
-                          }}
-                        />
-                        <span className="text-muted opacity-[0.85] text-[10px] sm:text-xs">
-                          {name}
-                        </span>
+                <div className="flex items-center justify-start gap-5 mt-2 flex-wrap">
+                  {p.stack.slice(0, STACK_SHOWN).map((name, i) => {
+                    const icon = stackIcon(name);
+                    return (
+                      <span
+                        key={name}
+                        className={`${stackSlot(i, "inline-flex")} items-center gap-2`}
+                      >
+                        {icon && (
+                          <span
+                            className="stack-logo [--size:0.7rem] sm:[--size:1.05rem]"
+                            aria-hidden="true"
+                            style={{ ["--ico" as string]: icon }}
+                          />
+                        )}
+                        <span className="font-mono text-[12px] sm:text-sm text-muted">{name}</span>
                       </span>
-                    ))}
-                    <span className="text-muted text-[10px] sm:text-xs">+3</span>
-                  </span>
-                </div>
-
-                <div className="flex gap-2 justify-start mt-2">
-                  <span className="shrink-0 text-muted opacity-[0.45]">
-                    {last ? "\u00a0\u00a0" : "│\u00a0"}
-                  </span>
-                  <Link href="/projects">
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="text-xs sm:text-sm text-muted font-poppins-sans hover:text-foreground">
-                        See more projects
-                      </span>
-                      <svg width="14" height="9" viewBox="0 0 17 9" fill="none" aria-hidden="true">
-                        <path
-                          d="M1,4.6 C5,4.1 10,4.9 15.4,4.4"
-                          stroke="var(--muted-color)"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M12.2,1.6 C13.4,2.8 14.6,3.9 15.8,4.5 C14.6,5.3 13.5,6.4 12.4,7.6"
-                          stroke="var(--muted-color)"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                    );
+                  })}
+                  {p.stack.length > STACK_SHOWN && (
+                    <span className="font-mono text-[12px] sm:text-sm text-muted">
+                      +{p.stack.length - STACK_SHOWN}
                     </span>
-                  </Link>
+                  )}
                 </div>
+
+                <Link href="/projects" className="mt-2 sm:mt-4 self-start">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="text-sm sm:text-base text-muted font-poppins-sans hover:text-foreground">
+                      See more projects
+                    </span>
+                    <svg width="14" height="9" viewBox="0 0 17 9" fill="none" aria-hidden="true">
+                      <path
+                        d="M1,4.6 C5,4.1 10,4.9 15.4,4.4"
+                        stroke="var(--muted-color)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M12.2,1.6 C13.4,2.8 14.6,3.9 15.8,4.5 C14.6,5.3 13.5,6.4 12.4,7.6"
+                        stroke="var(--muted-color)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </Link>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

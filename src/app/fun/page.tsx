@@ -9,7 +9,7 @@ export default function Fun() {
         <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
           Just for Fun
         </h1>
-        <p className="lg:max-w-160 text-xs sm:text-sm text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
+        <p className="lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
           I spend my days building software, so here&apos;s a chance to build the machine it runs
           on, one part at a time.
         </p>

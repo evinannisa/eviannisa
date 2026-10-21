@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { stackIcon, stackIconScale } from "@/lib/stackIcon";
+import { projects, type FilterKey } from "@/data/projects";
 
 const C = {
   bg: "var(--bg-color)",
@@ -35,13 +36,11 @@ function CardShell({
   );
 }
 
-type FilterKey = "all" | "frontend" | "fullstack" | "backend";
-
 function Tip({ children }: { children: React.ReactNode }) {
   return (
     <span
       role="tooltip"
-      className="bg-surface text-foreground border border-border pointer-events-none absolute bottom-full right-0 z-10 mb-2 translate-y-1 whitespace-nowrap rounded-[3px] px-2 py-1 font-mono text-[0.58rem] opacity-0 transition duration-400 ease-out group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-hover/tip:delay-300 motion-reduce:transition-none"
+      className="bg-surface text-foreground border border-border pointer-events-none absolute bottom-full right-0 z-10 mb-2 translate-y-1 whitespace-nowrap rounded-[3px] px-2 py-1 font-mono text-[0.705rem] opacity-0 transition duration-400 ease-out group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-hover/tip:delay-300 motion-reduce:transition-none"
     >
       {children}
     </span>
@@ -76,97 +75,11 @@ function StackIcon({ name, size }: { name: string; size: string }) {
 
 const PEEK_TILT = ["-7deg", "5deg", "-3deg", "8deg", "-5deg"];
 
-const IMG_FRAME = {
-  fill: "object-cover -translate-y-[4px] scale-[1.06] group-has-[.pj-reveal:hover]:translate-y-0 group-has-[.pj-reveal:hover]:scale-[1.12]",
-  whole: "object-cover -translate-y-[0px] scale-[1.06] ",
-} as const;
-
-// Kartu tetap monokrom seperti halaman about & experience. Saat hover, warnanya cukup dipertegas ke warna teks.
+// Kartu tetap monokrom seperti halaman about dan experience. Saat hover, warnanya hanya dipertegas menjadi warna teks.
 const ACCENT = C.fg;
 
 const linkHref = (u: string) => (/^https?:\/\//.test(u) ? u : `https://${u}`);
 const linkText = (u: string) => u.replace(/^https?:\/\//, "");
-
-export const projects = [
-  {
-    id: "signal",
-    title: "Signal",
-    role: "fullstack" as FilterKey,
-    year: "2026",
-    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
-    desc: "Learning Morse code in a more playful way, with practice sessions, listening exercises, quizzes, and a Morse game to test how well you can read the signals.",
-    img: "/assets/images/signal.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/tilik",
-    demo: "https://github.com/eviannisaa/tilik",
-  },
-  {
-    id: "nook",
-    title: "Nook",
-    role: "fullstack" as FilterKey,
-    year: "2026",
-    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
-    desc: "Keeping your contacts and notes in one place you can open from any device, so when your phone is not around, you can just borrow one and still reach the people and things you need.",
-    img: "/assets/images/nook.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/tilik",
-    demo: "https://github.com/eviannisaa/tilik",
-  },
-  {
-    id: "tilik",
-    title: "Tilik : Land and Property Check",
-    role: "fullstack" as FilterKey,
-    year: "2026",
-    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
-    desc: "Exploring locations and nearby areas, helping you get a better look at risks, disasters, and other important information around a place, based on data from InaRISK, GDACS, USGS, and DIBI.",
-    img: "/assets/images/tilik.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/tilik",
-    demo: "https://github.com/eviannisaa/tilik",
-  },
-  {
-    id: "hrsync-fe",
-    title: "HRSync : Human Resource Synchronization",
-    role: "frontend" as FilterKey,
-    year: "2026",
-    stack: ["TypeScript", "Next.js", "Tailwind", "TanStack Query", "MapLibre GL JS"],
-    desc: "Bringing HR needs into one platform, making it easier to manage leave, overtime, reimbursements, KPIs, employee information, and feedback for a better workplace.",
-    img: "/assets/images/hrsync.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/hrsync-fe",
-    demo: "https://github.com/eviannisaa/hrsync-fe",
-  },
-  {
-    id: "hrsync-be",
-    title: "Hrsync : Human Resource Synchronization",
-    role: "backend" as FilterKey,
-    year: "2026",
-    stack: ["Prisma ORM", "Golang", "MinIO", "PostgreSQL", "Resend API"],
-    desc: "Bringing HR needs into one platform, making it easier to manage leave, overtime, reimbursements, KPIs, employee information, and feedback for a better workplace.",
-    img: "/assets/images/hrsyncs.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/hrsync-be",
-    demo: "https://github.com/eviannisaa/hrsync-be",
-  },
-  {
-    id: "digital-library",
-    title: "Digital Library",
-    role: "frontend" as FilterKey,
-    year: "2025",
-    stack: ["TypeScript", "Astro.js", "Tailwind", "Python", "PostgreSQL", "MapLibre GL JS"],
-    desc: "Exploring locations and nearby areas, helping you get a better look at risks, disasters, and other important information around a place, based on data from InaRISK, GDACS, USGS, and DIBI.",
-    img: "/assets/images/digital-library.png",
-    imgPos: "object-center" as const,
-    imgFrame: IMG_FRAME.fill,
-    repo: "https://github.com/eviannisaa/tilik",
-    demo: "https://github.com/eviannisaa/tilik",
-  },
-];
 
 const filterLabels: { key: FilterKey; label: string }[] = [
   { key: "all", label: "all" },
@@ -185,7 +98,7 @@ export default function Projects() {
         <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
           Ideas in Code
         </h1>
-        <p className="lg:max-w-160 text-xs sm:text-sm text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
+        <p className="lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
           From simple ideas to working projects, here are a few things I’ve built while trying new
           things, learning, and having fun along the way.
         </p>
@@ -199,7 +112,7 @@ export default function Projects() {
               onClick={() => {
                 setFilter(f.key);
               }}
-              className="font-mono text-sm font-medium py-1.75 px-4 cursor-pointer border-none"
+              className="font-mono text-base font-medium py-1.75 px-4 cursor-pointer border-none"
               style={{
                 transition: "all 0.15s",
                 backgroundColor:
@@ -226,7 +139,7 @@ export default function Projects() {
           return (
             <CardShell key={p.id} className="group h-full">
               <div className="relative z-10 flex h-full flex-col">
-                <div className="relative mx-3 mt-3 overflow-hidden rounded-[3px] border border-dashed border-border bg-background">
+                <div className="relative mx-3 mt-3 overflow-hidden rounded-[3px] bg-background">
                   <img
                     src={p.img}
                     alt={p.title}
@@ -237,8 +150,8 @@ export default function Projects() {
                   <span
                     className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-end gap-2 px-2.5 pt-20 pb-2 transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
                     style={{
-                      // Color stop dibuat bertahap (eased) agar gelapnya memudar halus ke transparan,
-                      // bukan berhenti tiba-tiba seperti pita.
+                      // Color stop dibuat bertahap (eased) agar bayangan memudar halus ke transparan,
+                      // tidak berhenti tiba-tiba seperti pita.
                       background: `linear-gradient(to top, ${[
                         [1, 0],
                         [0.92, 22],
@@ -279,7 +192,7 @@ export default function Projects() {
                         className="group/tip pointer-events-auto relative"
                         style={{ ["--accent" as string]: ACCENT }}
                       >
-                        <span className="font-mono text-xs text-muted group-hover/tip:text-(--accent)">
+                        <span className="font-mono text-sm text-muted group-hover/tip:text-(--accent)">
                           +{rest.length}
                         </span>
                         <Tip>
@@ -299,7 +212,7 @@ export default function Projects() {
                   </span>
 
                   <span
-                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] border border-border px-2 py-0.5 font-mono text-xs text-muted transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
+                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] border border-border px-2 py-0.5 font-mono text-sm text-muted transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
                     style={{
                       backgroundColor: `color-mix(in srgb, ${C.bg} 88%, transparent)`,
                     }}
@@ -309,10 +222,10 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-1 flex-col px-4 pt-3 pb-3.5">
-                  <span className="font-mono text-xs text-muted">{p.year}</span>
+                  <span className="font-mono text-sm text-muted">{p.year}</span>
 
                   <div className="mt-1 flex items-start justify-between gap-2.5">
-                    <h3 className="font-poppins-sans text-base font-medium text-foreground m-0">
+                    <h3 className="font-poppins-sans text-lg font-medium text-foreground m-0">
                       {p.title}
                     </h3>
 
@@ -361,7 +274,7 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  <p className="mt-2 mb-0 font-poppins-sans text-sm leading-[1.75] text-muted line-clamp-3">
+                  <p className="mt-2 mb-0 font-poppins-sans text-base leading-[1.75] text-muted line-clamp-3">
                     {p.desc}
                   </p>
                 </div>
@@ -396,7 +309,7 @@ export default function Projects() {
               <path d="M24.1,6.6 C24.1,5.3 24,4.3 24,3.5" />
               <path d="M27.8,7.3 C28.2,6 28.5,4.9 28.8,4.1" />
             </svg>
-            <p className="mb-0 font-mono text-xs text-muted">
+            <p className="mb-0 font-mono text-sm text-muted">
               <span className="text-red">./</span>nothing here yet for this filter
             </p>
           </div>

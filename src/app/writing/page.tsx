@@ -101,11 +101,11 @@ export default function Writing() {
       {/* Header */}
       <div className="px-6 pt-12 pb-6 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: C.green }}>// 03</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: '0.72rem', color: C.green }}>// 03</span>
           <h1 style={{ fontFamily: "'Caveat', cursive", fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 700, color: C.fg, margin: 0 }}>writing</h1>
           <div className="flex-1 h-px" style={{ backgroundColor: C.border }} />
         </div>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.7rem', color: C.muted }}>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: '0.7rem', color: C.muted }}>
           <span style={{ color: C.red }}>./</span>things i've learned · written down so i don't forget
         </p>
       </div>
@@ -115,7 +115,7 @@ export default function Writing() {
         {tags.map(t => (
           <button key={t.key} onClick={() => setActiveTag(t.key)}
             style={{
-              fontFamily: "'JetBrains Mono', monospace", fontSize: '0.7rem', fontWeight: 500,
+              fontFamily: "var(--font-mono)", fontSize: '0.7rem', fontWeight: 500,
               padding: '5px 13px', borderRadius: '3px', cursor: 'pointer', border: `1px solid ${activeTag === t.key ? t.color : C.border}`,
               backgroundColor: activeTag === t.key ? `${t.color}15` : 'transparent',
               color: activeTag === t.key ? t.color : C.muted, transition: 'all 0.15s',
@@ -140,11 +140,11 @@ export default function Writing() {
             <div className="p-5">
               {/* Meta */}
               <div className="flex items-center gap-3 mb-3 flex-wrap">
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', fontWeight: 600, padding: '2px 7px', borderRadius: '2px', backgroundColor: `${post.color}18`, border: `1px solid ${post.color}35`, color: post.color }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: '0.6rem', fontWeight: 600, padding: '2px 7px', borderRadius: '2px', backgroundColor: `${post.color}18`, border: `1px solid ${post.color}35`, color: post.color }}>
                   #{post.tag}
                 </span>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', color: C.muted }}>{post.date}</span>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', color: C.muted }}>· {post.readTime} read</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: '0.6rem', color: C.muted }}>{post.date}</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: '0.6rem', color: C.muted }}>· {post.readTime} read</span>
               </div>
 
               <h2 style={{ fontFamily: "'Caveat', cursive", fontSize: '1.35rem', fontWeight: 700, color: C.fg, lineHeight: 1.2, marginBottom: '0.6rem' }}>
@@ -158,12 +158,12 @@ export default function Writing() {
               {/* Topik */}
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {post.topics.map(t => (
-                  <span key={t} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.58rem', padding: '2px 6px', borderRadius: '2px', backgroundColor: C.surface2, color: C.muted, border: `1px solid ${C.border}` }}>{t}</span>
+                  <span key={t} style={{ fontFamily: "var(--font-mono)", fontSize: '0.58rem', padding: '2px 6px', borderRadius: '2px', backgroundColor: C.surface2, color: C.muted, border: `1px solid ${C.border}` }}>{t}</span>
                 ))}
               </div>
 
               <a href="#"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.7rem', color: post.color, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                style={{ fontFamily: "var(--font-mono)", fontSize: '0.7rem', color: post.color, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
                 onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
                 read more →

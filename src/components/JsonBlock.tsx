@@ -1,6 +1,6 @@
 export type JsonRow = [key: string, value: string | string[]];
 
-const MONO = "'JetBrains Mono', monospace";
+const MONO = "var(--font-mono)";
 const PUNCT = { color: "var(--muted-color)", opacity: 0.5 };
 
 export function JsonBlock({

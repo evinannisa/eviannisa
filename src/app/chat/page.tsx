@@ -24,7 +24,7 @@ export default function LiveChat() {
         <div className="flex items-center gap-3 mb-2">
           <span
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
               fontSize: "0.72rem",
               color: C.green,
             }}
@@ -46,7 +46,7 @@ export default function LiveChat() {
         </div>
         <p
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: "0.7rem",
             color: C.muted,
           }}

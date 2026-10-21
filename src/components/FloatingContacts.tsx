@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Mail, MessageSquare, X } from "lucide-react";
+import { Hourglass, Mail, MessageSquare, X } from "lucide-react";
 import { ChatPopup } from "@/components/ChatPopup";
 import { SketchCircle } from "@/components/SketchCircle";
+import { TimeCapsulePopup } from "@/components/TimeCapsulePopup";
 
-const WHATSAPP_NUMBER = "6281234567890";
+// Nomor dengan kode negara tanpa "+", misalnya 6281234567890. Diatur lewat env WA_ME.
+const WHATSAPP_NUMBER = process.env.WA_ME ?? "";
 const WHATSAPP_MESSAGE = "Halo! Saya lihat portfolio kamu dan ingin ngobrol.";
-const EMAIL = "hellolilstarry@gmail.com";
+const EMAIL = "evinurannisa00@gmail.com";
 const EMAIL_SUBJECT = "Halo dari portfolio kamu";
 
 function WhatsAppIcon() {
@@ -25,11 +27,13 @@ type Contact = {
   note: string;
   href?: string;
   internal?: boolean;
-  action?: "chat";
+  action?: "chat" | "capsule";
   ink: string;
   tilt: number;
   live?: boolean;
   icon: React.ReactNode;
+  // Tombol tidak tampil, tetapi kodenya tetap ada agar mudah dipakai lagi.
+  hidden?: boolean;
 };
 
 const contacts: Contact[] = [
@@ -43,14 +47,29 @@ const contacts: Contact[] = [
     tilt: -6,
     live: true,
     icon: <MessageSquare size={19} strokeWidth={2.2} />,
+    // Disembunyikan sementara. Hapus baris ini untuk menampilkannya lagi.
+    hidden: true,
+  },
+  {
+    key: "capsule",
+    note: "time capsule",
+    action: "capsule",
+    ink: "var(--amber-color)",
+    tilt: -6,
+    icon: <Hourglass size={19} strokeWidth={2.2} />,
+    // Disembunyikan sementara sampai database siap. Hapus baris ini untuk menampilkannya lagi.
+    hidden: true,
   },
   {
     key: "whatsapp",
     note: "wa me ~",
     href: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`,
-    ink: "#25D366",
+    // Warna hijau WhatsApp, kecuali jika halaman menggantinya lewat --whatsapp-ink.
+    ink: "var(--whatsapp-ink, #25D366)",
     tilt: 5,
     icon: <WhatsAppIcon />,
+    // Tombol disembunyikan jika WA_ME belum diisi, agar tidak mengarah ke nomor kosong.
+    hidden: !WHATSAPP_NUMBER,
   },
   {
     key: "email",
@@ -66,6 +85,7 @@ export function FloatingContacts() {
   const [mounted, setMounted] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [capsuleOpen, setCapsuleOpen] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isChatRoute = pathname === "/chat";
@@ -83,10 +103,15 @@ export function FloatingContacts() {
     setOpen(false);
     launcherRef.current?.focus();
   };
+  const closeCapsule = () => {
+    setCapsuleOpen(false);
+    launcherRef.current?.focus();
+  };
 
   return (
     <>
       {!isChatRoute && <ChatPopup open={open} onClose={closeChat} />}
+      <TimeCapsulePopup open={capsuleOpen} onClose={closeCapsule} />
 
       <div className="pointer-events-none fixed z-50 flex flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8">
         <div
@@ -118,129 +143,159 @@ export function FloatingContacts() {
           </svg>
         </div>
 
-        {contacts.map((item, i) => {
-          const isHovered = hovered === item.key;
-          const isChatToggle = item.action === "chat" && !isChatRoute;
-          const isOpen = isChatToggle && open;
-          const isActive = isHovered || isOpen;
+        {contacts
+          .filter((item) => !item.hidden)
+          .map((item, i) => {
+            const isHovered = hovered === item.key;
+            const isChatToggle = item.action === "chat" && !isChatRoute;
+            const isCapsuleToggle = item.action === "capsule";
+            const isOpen = (isChatToggle && open) || (isCapsuleToggle && capsuleOpen);
+            const isActive = isHovered || isOpen;
 
-          const inner = (
-            <>
-              <SketchCircle ink={item.ink} />
-              <span className="relative" style={{ color: item.ink }}>
-                {isOpen ? <X size={19} strokeWidth={2.4} /> : item.icon}
-              </span>
-              {item.live && (
-                <span className="absolute h-2 w-2 animate-pulse rounded-full top-0.5 right-0.5 bg-green border-[1.5px] border-background" />
-              )}
-            </>
-          );
+            const inner = (
+              <>
+                <SketchCircle ink={item.ink} />
+                <span className="relative" style={{ color: item.ink }}>
+                  {isOpen ? <X size={19} strokeWidth={2.4} /> : item.icon}
+                </span>
+                {item.live && (
+                  <span className="absolute h-2 w-2 animate-pulse rounded-full top-0.5 right-0.5 bg-green border-[1.5px] border-background" />
+                )}
+              </>
+            );
 
-          const style: React.CSSProperties = {
-            transform: isActive ? "rotate(0deg) scale(1.12)" : `rotate(${item.tilt}deg) scale(1)`,
-            transition: "transform 0.2s ease",
-          };
-          const className =
-            "relative flex items-center justify-center pointer-events-auto w-9 h-9 sm:w-10.5 sm:h-10.5";
-          const handlers = {
-            onMouseEnter: () => setHovered(item.key),
-            onMouseLeave: () => setHovered(null),
-            "aria-label": item.key,
-          };
+            const style: React.CSSProperties = {
+              transform: isActive ? "rotate(0deg) scale(1.12)" : `rotate(${item.tilt}deg) scale(1)`,
+              transition: "transform 0.2s ease",
+            };
+            const className =
+              "relative flex items-center justify-center pointer-events-auto w-9 h-9 sm:w-10.5 sm:h-10.5";
+            const handlers = {
+              onMouseEnter: () => setHovered(item.key),
+              onMouseLeave: () => setHovered(null),
+              "aria-label": item.key,
+            };
 
-          return (
-            <div
-              key={item.key}
-              className="flex items-center gap-2 pointer-events-none"
-              style={{
-                opacity: mounted ? 1 : 0,
-                transform: mounted ? "translateY(0)" : "translateY(14px)",
-                transition: `opacity 0.35s ease ${i * 90}ms, transform 0.35s ease ${i * 90}ms`,
-              }}
-            >
+            return (
               <div
-                className="sketch relative hidden md:block pt-0.75 pb-1 px-2.25 pointer-events-none"
+                key={item.key}
+                className="flex items-center gap-2 pointer-events-none"
                 style={{
-                  // @ts-expect-error -- custom property dipakai oleh .sketch
-                  "--frame": item.ink,
-                  "--frame-fill": "var(--bg-color)",
-                  opacity: isActive ? 1 : 0,
-                  transform: isActive
-                    ? "rotate(-2deg) translateX(0)"
-                    : "rotate(-2deg) translateX(8px)",
-                  transition: "all 0.2s ease",
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? "translateY(0)" : "translateY(14px)",
+                  transition: `opacity 0.35s ease ${i * 90}ms, transform 0.35s ease ${i * 90}ms`,
                 }}
               >
-                <svg className="frame" preserveAspectRatio="none" aria-hidden="true">
-                  <rect
-                    x="3"
-                    y="3"
-                    style={{ width: "calc(100% - 6px)", height: "calc(100% - 6px)" }}
-                    strokeWidth="1.6"
-                    strokeDasharray="8 3 5 2 9 4"
-                    strokeLinecap="round"
-                    rx="3"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <circle cx="6" cy="6" r="1.5" opacity="0.4" />
-                  <circle cy="6" r="1.5" style={{ cx: "calc(100% - 6px)" }} opacity="0.4" />
-                  <circle cx="6" r="1.5" style={{ cy: "calc(100% - 6px)" }} opacity="0.4" />
-                  <circle
-                    r="1.5"
-                    style={{ cx: "calc(100% - 6px)", cy: "calc(100% - 6px)" }}
-                    opacity="0.4"
-                  />
-                </svg>
-                <span
-                  className="inner font-caveat text-[1rem] font-semibold whitespace-nowrap text-foreground"
+                <div
+                  className="sketch relative hidden md:block pt-0.75 pb-1 px-2.25 pointer-events-none"
                   style={{
-                    lineHeight: 1.3,
+                    // @ts-expect-error -- custom property dipakai oleh .sketch
+                    "--frame": item.ink,
+                    "--frame-fill": "var(--bg-color)",
+                    opacity: isActive ? 1 : 0,
+                    transform: isActive
+                      ? "rotate(-2deg) translateX(0)"
+                      : "rotate(-2deg) translateX(8px)",
+                    transition: "all 0.2s ease",
                   }}
                 >
-                  {isOpen ? "close" : item.note}
-                </span>
-              </div>
+                  <svg className="frame" preserveAspectRatio="none" aria-hidden="true">
+                    <rect
+                      x="3"
+                      y="3"
+                      style={{ width: "calc(100% - 6px)", height: "calc(100% - 6px)" }}
+                      strokeWidth="1.6"
+                      strokeDasharray="8 3 5 2 9 4"
+                      strokeLinecap="round"
+                      rx="3"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                    <circle cx="6" cy="6" r="1.5" opacity="0.4" />
+                    <circle cy="6" r="1.5" style={{ cx: "calc(100% - 6px)" }} opacity="0.4" />
+                    <circle cx="6" r="1.5" style={{ cy: "calc(100% - 6px)" }} opacity="0.4" />
+                    <circle
+                      r="1.5"
+                      style={{ cx: "calc(100% - 6px)", cy: "calc(100% - 6px)" }}
+                      opacity="0.4"
+                    />
+                  </svg>
+                  <span
+                    className="inner font-caveat text-[1rem] font-semibold whitespace-nowrap text-foreground"
+                    style={{
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {isOpen ? "close" : item.note}
+                  </span>
+                </div>
 
-              {isChatToggle ? (
-                <button
-                  type="button"
-                  ref={launcherRef}
-                  onClick={() => setOpen((o) => !o)}
-                  aria-expanded={open}
-                  aria-haspopup="dialog"
-                  aria-controls="chat-popup"
-                  className={className}
-                  style={{
-                    ...style,
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                  {...handlers}
-                  aria-label={open ? "close chat" : "open chat"}
-                >
-                  {inner}
-                </button>
-              ) : item.internal ? (
-                <Link href={item.href!} className={className} style={style} {...handlers}>
-                  {inner}
-                </Link>
-              ) : (
-                <a
-                  href={item.href!}
-                  target={item.href!.startsWith("mailto:") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  className={className}
-                  style={style}
-                  {...handlers}
-                >
-                  {inner}
-                </a>
-              )}
-            </div>
-          );
-        })}
+                {isCapsuleToggle ? (
+                  <button
+                    type="button"
+                    ref={launcherRef}
+                    onClick={() => {
+                      setOpen(false);
+                      setCapsuleOpen((o) => !o);
+                    }}
+                    aria-expanded={capsuleOpen}
+                    aria-haspopup="dialog"
+                    aria-controls="capsule-popup"
+                    className={className}
+                    style={{
+                      ...style,
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                    }}
+                    {...handlers}
+                    aria-label={capsuleOpen ? "close time capsule" : "open time capsule"}
+                  >
+                    {inner}
+                  </button>
+                ) : isChatToggle ? (
+                  <button
+                    type="button"
+                    ref={launcherRef}
+                    onClick={() => {
+                      setCapsuleOpen(false);
+                      setOpen((o) => !o);
+                    }}
+                    aria-expanded={open}
+                    aria-haspopup="dialog"
+                    aria-controls="chat-popup"
+                    className={className}
+                    style={{
+                      ...style,
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                    }}
+                    {...handlers}
+                    aria-label={open ? "close chat" : "open chat"}
+                  >
+                    {inner}
+                  </button>
+                ) : item.internal ? (
+                  <Link href={item.href!} className={className} style={style} {...handlers}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <a
+                    href={item.href!}
+                    target={item.href!.startsWith("mailto:") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    className={className}
+                    style={style}
+                    {...handlers}
+                  >
+                    {inner}
+                  </a>
+                )}
+              </div>
+            );
+          })}
       </div>
     </>
   );

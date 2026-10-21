@@ -25,7 +25,7 @@ type Mark = { id: number; x: number; y: number; points: number };
 
 const POINTS: Record<Kind, number> = { spider: 1, fast: 3 };
 
-// Laba-laba digambar menghadap ke atas (kepala di nilai y kecil), lalu dirotasi dari loop.
+// Laba-laba digambar menghadap ke atas (kepala di nilai y kecil), lalu diputar di dalam loop.
 // Delapan kakinya, empat di tiap sisi, ditekuk di bagian "lutut" agar siluetnya
 // terlihat seperti laba-laba, bukan kutu.
 function BugDoodle({ kind, size = BUG_SIZE }: { kind: Kind; size?: number }) {

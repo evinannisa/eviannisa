@@ -136,7 +136,7 @@ export function PcDesk({ caseArt, screen }: { caseArt: ReactNode; screen: ReactN
     return () => ro.disconnect();
   }, []);
 
-  // Kamera berpindah pelan seperti video produk dan berhenti saat pengguna mengatur sudut sendiri.
+  // Kamera berganti sudut otomatis seperti video produk, lalu berhenti saat pengguna memilih sudut sendiri.
   useEffect(() => {
     if (!touring) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

@@ -209,8 +209,8 @@ export default function Home() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.66rem",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.785rem",
                     color: C.muted,
                   }}
                 >
@@ -222,8 +222,8 @@ export default function Home() {
             {/* Headline */}
             <p
               style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: "0.88rem",
+                fontFamily: "var(--font-poppins-sans)",
+                fontSize: "1rem",
                 lineHeight: "1.95",
                 letterSpacing: "0.012em",
                 color: C.muted,
@@ -240,8 +240,8 @@ export default function Home() {
             <div
               className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 bg-blue-600/10 border border-blue-600/5 rounded text-blue-500"
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.68rem",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.805rem",
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
@@ -275,13 +275,18 @@ export default function Home() {
                   fill="none"
                 />
               </svg>
-              {["Behance", "GitHub", "LinkedIn"].map((s) => (
+              {[
+                { label: "Behance", href: "https://www.behance.net/evinurannisa" },
+                { label: "GitHub", href: "https://github.com/eviannisaa" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/evinannisa" },
+              ].map(({ label, href }) => (
                 <a
-                  key={s}
-                  href="#"
+                  key={label}
+                  href={href}
+                  {...(href.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.66rem",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.785rem",
                     padding: "3px 9px",
                     border: `1px solid ${C.border}`,
                     borderRadius: "3px",
@@ -299,7 +304,7 @@ export default function Home() {
                     e.currentTarget.style.borderColor = C.border;
                   }}
                 >
-                  ↗ {s}
+                  ↗ {label}
                 </a>
               ))}
             </div>

@@ -25,3 +25,14 @@ lingkaran dalamnya ikut terisi dan pin-nya jadi gumpalan padat.
 
 Lisensinya belum diverifikasi seperti berkas Simple Icons di atas; kalau
 portofolio ini dipakai komersial, konfirmasi dulu ke ketentuan merek MapLibre.
+
+## Pengecualian: `zustand.svg`
+
+Bukan dari Simple Icons, karena Zustand tidak ada di sana. Berkas ini di-trace
+dari `zustand.png` (ilustrasi beruang berwarna). Bidang berwarnanya (badan,
+telinga, cakar, dan moncong) dijadikan satu warna. Garis luar dan detail gelap
+(mata, hidung, mulut, bagian dalam telinga, dan garis cakar) dijadikan lubang.
+Hasilnya di-trace dengan potrace, lalu dipaskan ke `viewBox="0 0 24 24"`.
+
+Sama seperti `maplibre.svg`, lubangnya bergantung pada `fill-rule="evenodd"`.
+Lisensi logo Zustand juga belum diverifikasi.

@@ -55,9 +55,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       }}
     >
       <nav
-        /* Transisi hanya untuk properti yang berubah saat scroll, yaitu latar dan
-           garis bawah. `transition-all` ikut menganimasikan backdrop-filter dan
-           properti tata letak, sehingga navbar terasa tertinggal dari halaman. */
+        /* Transisi hanya untuk properti yang berubah saat scroll, yaitu background
+           dan garis bawah. `transition-all` ikut menganimasikan backdrop-filter dan
+           properti layout, sehingga navbar terasa tertinggal dari halaman. */
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
           !isHome && scrolled ? "border-border" : "border-transparent"
         }`}
@@ -113,7 +113,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
               />
             </svg>
             <span
-              className="inner text-xs font-mono flex-row! items-center font-medium whitespace-nowrap gap-1.25"
+              className="inner text-sm font-mono flex-row! items-center font-medium whitespace-nowrap gap-1.25"
               style={{
                 color: hoverResume ? C.fg : C.muted,
                 transition: "color 0.18s ease",

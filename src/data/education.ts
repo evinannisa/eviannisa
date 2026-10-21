@@ -1,8 +1,8 @@
 /* ISI DULU SEBELUM DIPAKAI.
 
-   Repo ini belum memiliki data pendidikan, jadi nilai di bawah sengaja berupa
-   placeholder yang jelas ("20XX", "Nama kampus") agar tidak dikira data asli.
-   Ganti isinya di sini, karena komponen EducationTimeline membacanya langsung.
+   Nilai di bawah sengaja berupa placeholder yang jelas ("20XX", "Nama kampus")
+   agar tidak dikira data asli. File ini belum dipakai, karena EducationTimeline
+   saat ini menulis datanya langsung di dalam komponen.
 
    `note` bersifat opsional. Jika kosong, barisnya tidak dirender. */
 export type Education = {

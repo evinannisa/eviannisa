@@ -97,7 +97,7 @@ const kb: { patterns: RegExp[]; answer: string }[] = [
   {
     patterns: [/skill|kemampuan|technology|tech stack|bisa apa/i],
     answer:
-      "Full skill set:\n🖥️ Frontend: Next.js, Vue.js, TypeScript, TanStack Query, Tailwind, Styled Components, MapLibre, Google Maps JS API\n⚙️ Backend: Golang, Express.js, REST API, JWT, OAuth 2.0, Swagger\n🗄️ DB: PostgreSQL, MongoDB, Prisma, ERD\n🐳 DevOps: Docker, Nginx, Jenkins, MinIO, Git\n🧪 Testing: Jest, Playwright, Katalon Studio",
+      "Full skill set:\n🖥️ Frontend: Next.js, Vue.js, TypeScript, TanStack Query, Tailwind, Styled Components, MapLibre, Google Maps API\n⚙️ Backend: Golang, Express.js, REST API, JWT, OAuth 2.0, Swagger\n🗄️ DB: PostgreSQL, MongoDB, Prisma, ERD\n🐳 DevOps: Docker, Nginx, Jenkins, MinIO, Git\n🧪 Testing: Jest, Playwright, Katalon Studio",
   },
   {
     patterns: [/blog|tulisan|writing|artikel|article/i],
@@ -131,7 +131,7 @@ const SUGGESTIONS = [
 /**
  * Wallpaper doodle berulang untuk tampilan chat. Gayanya sama dengan tombol melayang,
  * tetapi motifnya diambil dari portfolio ini (pin peta, kurung kurawal, tag, prompt).
- * Warna garis diambil dari --wa-ink agar pola mengikuti tema, hal yang tidak bisa
+ * Warna garis memakai --wa-ink agar pola mengikuti tema. Hal ini tidak bisa
  * dilakukan dengan data: URI.
  */
 function DoodleWallpaper({ id }: { id: string }) {
@@ -619,7 +619,7 @@ export function ChatPanel({
                     padding: 0,
                   }
                 : {
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-mono)",
                     fontSize: "0.7rem",
                     fontWeight: 600,
                     padding: "5px 12px",

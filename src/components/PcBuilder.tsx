@@ -28,9 +28,7 @@ function Fan({ cx, cy, r }: { cx: number; cy: number; r: number }) {
           // di digit terakhir, sehingga memicu hydration mismatch.
           const pt = (ang: number, len: number) =>
             `${(cx + Math.cos(ang) * len).toFixed(2)},${(cy + Math.sin(ang) * len).toFixed(2)}`;
-          return (
-            <path key={deg} d={`M${pt(a, hub)} Q${pt(a + 0.2, tip)} ${pt(a + 0.9, tip)}`} />
-          );
+          return <path key={deg} d={`M${pt(a, hub)} Q${pt(a + 0.2, tip)} ${pt(a + 0.9, tip)}`} />;
         })}
         <path d={O(cx, cy, r * 0.22)} />
       </g>
@@ -45,7 +43,7 @@ function Silk({ x, y, children }: { x: number; y: number; children: string }) {
       x={x}
       y={y}
       fontSize="5"
-      fontFamily="JetBrains Mono, ui-monospace, monospace"
+      style={{ fontFamily: "var(--font-mono)" }}
       fill="var(--muted-color)"
       stroke="none"
       opacity="0.85"
@@ -182,7 +180,7 @@ const CABLES: Cable[] = [
   },
 ];
 
-// Kenapa kabel ini tidak cocok di header itu, dengan bahasa teknisi.
+// Alasan kabel tidak cocok dengan header tujuan, ditulis dengan istilah teknisi.
 function cableMismatch(c: Cable, port: Cable) {
   if (c.id === "pcie" && port.id === "eps") {
     return "PCIe and EPS are both 8-pin but keyed differently, forcing a PCIe plug into CPU_8P can short the board";
@@ -190,8 +188,10 @@ function cableMismatch(c: Cable, port: Cable) {
   if (c.id === "eps" && port.id === "pcie") {
     return "that is the CPU EPS cable, the graphics card needs the PCIe 6+2 one";
   }
-  if (c.id === "atx") return "the 24-pin only fits the big ATX_24 header on the right edge of the board";
-  if (c.id === "fan") return "the 4-pin fan cable belongs in CPU_FAN, otherwise the BIOS stops with a CPU fan error";
+  if (c.id === "atx")
+    return "the 24-pin only fits the big ATX_24 header on the right edge of the board";
+  if (c.id === "fan")
+    return "the 4-pin fan cable belongs in CPU_FAN, otherwise the BIOS stops with a CPU fan error";
   if (c.id === "panel") return "front panel wires go to F_PANEL along the bottom edge of the board";
   if (port.id === "atx") return "ATX_24 only takes the 24-pin cable";
   if (port.id === "fan") return "CPU_FAN is a small 4-pin header for the cooler fan";
@@ -284,7 +284,13 @@ function Connector({ c, scale = 1.6, height }: { c: Cable; scale?: number; heigh
         Array.from({ length: cols }).map((_, k) => {
           // Pin kosong sebagai kunci, seperti header front panel asli.
           if (c.id === "panel" && r === 1 && k === 4) return null;
-          return <path key={`${r}-${k}`} d={pin(colX(k), top + 1.5 + r * pitch, r, k)} strokeWidth="0.5" />;
+          return (
+            <path
+              key={`${r}-${k}`}
+              d={pin(colX(k), top + 1.5 + r * pitch, r, k)}
+              strokeWidth="0.5"
+            />
+          );
         }),
       )}
     </svg>
@@ -313,13 +319,18 @@ const CPU_ART = (
   <>
     <rect x={181} y={70} width={48} height={48} rx="1.5" style={{ fill: "var(--bg-color)" }} />
     <rect x={184.5} y={73.5} width={41} height={41} rx="3.5" />
-    <path d="M182.6,116.4 V112 L187,116.4 Z" fill="var(--amber-color)" stroke="none" opacity="0.7" />
+    <path
+      d="M182.6,116.4 V112 L187,116.4 Z"
+      fill="var(--amber-color)"
+      stroke="none"
+      opacity="0.7"
+    />
     <text
       x={205}
       y={80.5}
       textAnchor="middle"
       fontSize="3.2"
-      fontFamily="JetBrains Mono, ui-monospace, monospace"
+      style={{ fontFamily: "var(--font-mono)" }}
       fill="var(--muted-color)"
       stroke="none"
     >
@@ -410,10 +421,23 @@ function Pins({
 }
 
 // Chip IC dengan kaki di keempat sisi (QFP) atau dua sisi (SOIC).
-function Chip({ x, y, w, h, quad = true }: { x: number; y: number; w: number; h: number; quad?: boolean }) {
+function Chip({
+  x,
+  y,
+  w,
+  h,
+  quad = true,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  quad?: boolean;
+}) {
   const legs: string[] = [];
   for (let i = 2; i < w - 1; i += 2.4) legs.push(`M${x + i},${y} v-1.6 M${x + i},${y + h} v1.6`);
-  if (quad) for (let i = 2; i < h - 1; i += 2.4) legs.push(`M${x},${y + i} h-1.6 M${x + w},${y + i} h1.6`);
+  if (quad)
+    for (let i = 2; i < h - 1; i += 2.4) legs.push(`M${x},${y + i} h-1.6 M${x + w},${y + i} h1.6`);
   return (
     <>
       <path d={legs.join(" ")} strokeWidth="0.6" />
@@ -428,8 +452,24 @@ function UsbPair({ y }: { y: number }) {
   return (
     <>
       <rect x={95} y={y} width={13} height={12} rx="0.6" />
-      <rect x={97} y={y + 2.2} width={7} height={2} fill="var(--muted-color)" stroke="none" opacity="0.6" />
-      <rect x={97} y={y + 7.8} width={7} height={2} fill="var(--muted-color)" stroke="none" opacity="0.6" />
+      <rect
+        x={97}
+        y={y + 2.2}
+        width={7}
+        height={2}
+        fill="var(--muted-color)"
+        stroke="none"
+        opacity="0.6"
+      />
+      <rect
+        x={97}
+        y={y + 7.8}
+        width={7}
+        height={2}
+        fill="var(--muted-color)"
+        stroke="none"
+        opacity="0.6"
+      />
     </>
   );
 }
@@ -543,7 +583,12 @@ function Motherboard({ leverD, leverStroke }: { leverD: string; leverStroke: str
       ))}
       <rect x={181} y={70} width={48} height={48} rx="1" />
       <rect x={186} y={75} width={38} height={38} fill="url(#pc-lga)" strokeWidth="0.6" />
-      <path d="M183,116 L183,110 L189,116 Z" stroke="var(--amber-color)" fill="var(--amber-color)" fillOpacity="0.35" />
+      <path
+        d="M183,116 L183,110 L189,116 Z"
+        stroke="var(--amber-color)"
+        fill="var(--amber-color)"
+        fillOpacity="0.35"
+      />
       <Silk x={180} y={131}>
         AM5 · LGA1718
       </Silk>
@@ -598,7 +643,15 @@ function Motherboard({ leverD, leverStroke }: { leverD: string; leverStroke: str
       {/* M.2: konektor M-key, tapak 2280 putus-putus, dudukan baut 2242/2260/2280 */}
       <rect x={146} y={149} width={8} height={16} rx="1" />
       <path d="M146,153 h8" strokeWidth="0.6" />
-      <rect x={154} y={150} width={104} height={14} strokeWidth="0.6" strokeDasharray="2 2" opacity="0.5" />
+      <rect
+        x={154}
+        y={150}
+        width={104}
+        height={14}
+        strokeWidth="0.6"
+        strokeDasharray="2 2"
+        opacity="0.5"
+      />
       <circle cx={206} cy={157} r="1.2" opacity="0.6" />
       <circle cx={228} cy={157} r="1.2" opacity="0.6" />
       <circle cx={258} cy={157} r="2.2" />
@@ -622,7 +675,12 @@ function Motherboard({ leverD, leverStroke }: { leverD: string; leverStroke: str
       </Silk>
       <rect x={PCIE4.x} y={PCIE4.y} width={PCIE4.w} height={PCIE4.h} rx="0.6" />
       <path d="M132,268 v8 M135,268 v8" strokeWidth="0.7" />
-      <path d="M112,272 H130 M137,272 H160" strokeWidth="1.4" strokeDasharray="0.6 1.4" opacity="0.6" />
+      <path
+        d="M112,272 H130 M137,272 H160"
+        strokeWidth="1.4"
+        strokeDasharray="0.6 1.4"
+        opacity="0.6"
+      />
       <Silk x={112} y={264}>
         PCIEX4_2
       </Silk>
@@ -645,14 +703,17 @@ function Motherboard({ leverD, leverStroke }: { leverD: string; leverStroke: str
 
       {/* Chipset dengan heatsink bersirip */}
       <rect x={250} y={254} width={56} height={40} rx="2" />
-      <path d={fins(12, (i) => `M${255 + i * 4},256 V261 M${255 + i * 4},287 V292`)} strokeWidth="0.7" />
+      <path
+        d={fins(12, (i) => `M${255 + i * 4},256 V261 M${255 + i * 4},287 V292`)}
+        strokeWidth="0.7"
+      />
       <rect x={256} y={264} width={44} height={20} rx="1" />
       <text
         x={278}
         y={276.5}
         textAnchor="middle"
         fontSize="6"
-        fontFamily="JetBrains Mono, ui-monospace, monospace"
+        style={{ fontFamily: "var(--font-mono)" }}
         fill="var(--muted-color)"
         stroke="none"
       >
@@ -663,7 +724,10 @@ function Motherboard({ leverD, leverStroke }: { leverD: string; leverStroke: str
       {range(4).map((k) => (
         <g key={`s${k}`}>
           <rect x={314} y={220 + k * 14} width={12} height={9} rx="0.6" />
-          <path d={`M316.5,${222.5 + k * 14} H323.5 V${226.5 + k * 14} H321 V${224.5 + k * 14} H316.5 Z`} strokeWidth="0.6" />
+          <path
+            d={`M316.5,${222.5 + k * 14} H323.5 V${226.5 + k * 14} H321 V${224.5 + k * 14} H316.5 Z`}
+            strokeWidth="0.6"
+          />
         </g>
       ))}
       <Silk x={306} y={282}>
@@ -841,7 +905,8 @@ const STEPS: Step[] = [
   {
     id: "cables",
     needs: ["psu", "gpu", "cooler"],
-    needsWhy: "the cables run from the PSU to the parts, including the graphics card and the cooler fan",
+    needsWhy:
+      "the cables run from the PSU to the parts, including the graphics card and the cooler fan",
     name: "Cables",
     spec: "ATX · EPS · PCIe · fan · front panel",
     kind: "cables",
@@ -902,17 +967,17 @@ function LearnCard({ step, note }: { step: Step; note?: string }) {
       <p className="m-0 font-caveat text-2xl font-bold leading-none text-foreground">
         {learnTitle(step)}
       </p>
-      {note && <p className="mt-1.5 mb-0 text-[0.66rem] text-muted">{note}</p>}
-      <p className="mt-3 mb-0 text-xs leading-[1.75] text-foreground">{step.learn.what}</p>
-      <p className="mt-3 mb-0 text-xs leading-[1.75] text-muted">
+      {note && <p className="mt-1.5 mb-0 text-[0.785rem] text-muted">{note}</p>}
+      <p className="mt-3 mb-0 text-sm leading-[1.75] text-foreground">{step.learn.what}</p>
+      <p className="mt-3 mb-0 text-sm leading-[1.75] text-muted">
         <span className="text-blue">pro tip</span> · {step.learn.tip}
       </p>
       <details className="group mt-3">
-        <summary className="cursor-pointer list-none text-[0.66rem] text-muted transition-colors duration-300 hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <summary className="cursor-pointer list-none text-[0.785rem] text-muted transition-colors duration-300 hover:text-foreground [&::-webkit-details-marker]:hidden">
           <span className="group-open:hidden">+ how it works</span>
           <span className="hidden group-open:inline">− how it works</span>
         </summary>
-        <p className="mt-1.5 mb-0 text-xs leading-[1.75] text-muted">{step.learn.how}</p>
+        <p className="mt-1.5 mb-0 text-sm leading-[1.75] text-muted">{step.learn.how}</p>
       </details>
     </div>
   );
@@ -964,7 +1029,7 @@ type Msg = { text: string; tone: "ok" | "warn" };
 export function PcBuilder() {
   // Komponen yang sudah terpasang; urutannya bebas selama prasyaratnya terpenuhi.
   const [done, setDone] = useState<string[]>([]);
-  // Komponen yang sedang diperhatikan pengguna (terakhir dipilih di daftar).
+  // Komponen yang sedang difokuskan pengguna, yaitu yang terakhir dipilih di daftar.
   const [focusId, setFocusId] = useState<string | null>(null);
   const [cpuIn, setCpuIn] = useState(false);
   const [leverDown, setLeverDown] = useState(false);
@@ -996,12 +1061,19 @@ export function PcBuilder() {
   const svgRef = useRef<SVGSVGElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<SVGGElement>(null);
-  // Komponen / kabel yang sedang ditekan; moved = sudah benar-benar diseret.
-  const press = useRef<{ kind: "part" | "cable"; id: string; x: number; y: number; moved: boolean } | null>(
-    null,
-  );
+  // Komponen atau kabel yang sedang ditekan. moved bernilai true jika sudah benar-benar diseret.
+  const press = useRef<{
+    kind: "part" | "cable";
+    id: string;
+    x: number;
+    y: number;
+    moved: boolean;
+  } | null>(null);
   // Handler drag dari render terbaru, dipanggil oleh listener di window.
-  const dragFns = useRef<{ move: (e: PointerEvent) => void; end: (e: PointerEvent | null) => void }>({
+  const dragFns = useRef<{
+    move: (e: PointerEvent) => void;
+    end: (e: PointerEvent | null) => void;
+  }>({
     move: () => {},
     end: () => {},
   });
@@ -1194,7 +1266,7 @@ export function PcBuilder() {
     pt.y = clientY;
     return pt.matrixTransform(ctm.inverse());
   };
-  // Slot DIMM di bawah titik, untuk drop/klik langsung di papan saat zoom RAM.
+  // Slot DIMM yang berada di bawah titik, untuk drop atau klik langsung di papan saat zoom RAM.
   const slotAt = (p: { x: number; y: number }) => {
     if (p.y < 30 || p.y > 186) return null;
     const i = DIMM_X.findIndex((x) => p.x >= x - 2.5 && p.x <= x + 9.5);
@@ -1205,7 +1277,8 @@ export function PcBuilder() {
   const placeAt = (id: string, p: { x: number; y: number }) => {
     const s = STEPS.find((x) => x.id === id)!;
     if (s.kind === "paste") {
-      if (pasteOn) return say("the paste is on the CPU, press & hold the button below the board to squeeze");
+      if (pasteOn)
+        return say("the paste is on the CPU, press & hold the button below the board to squeeze");
       if (!inCase(p)) return say("drop the paste onto the CPU", "warn");
       setPasteOn(true);
       return say("good, now squeeze out a pea-sized dot");
@@ -1214,7 +1287,8 @@ export function PcBuilder() {
       // Dijatuhkan di blok DIMM: langsung masuk ke slot terdekat dari titik drop.
       if (!hit(p, DIMM_AREA)) return say("drop the stick onto the RAM slots", "warn");
       const near = DIMM_X.reduce(
-        (best, x, i) => (Math.abs(p.x - (x + 3.5)) < Math.abs(p.x - (DIMM_X[best] + 3.5)) ? i : best),
+        (best, x, i) =>
+          Math.abs(p.x - (x + 3.5)) < Math.abs(p.x - (DIMM_X[best] + 3.5)) ? i : best,
         0,
       );
       setRamPick(true);
@@ -1232,7 +1306,7 @@ export function PcBuilder() {
     if (s.slot && inCase(p)) {
       if (id === "cpu") {
         setCpuIn(true);
-          return say("triangle lined up, now lower the socket lever");
+        return say("triangle lined up, now lower the socket lever");
       }
       return advance(id);
     }
@@ -1243,7 +1317,8 @@ export function PcBuilder() {
     if (phase !== "build") return;
     const p = toSvg(e.clientX, e.clientY);
     if (!p) return;
-    if (lock === "paste") return say("press & hold the button below the board to squeeze the paste");
+    if (lock === "paste")
+      return say("press & hold the button below the board to squeeze the paste");
     if (lock === "ram") {
       const slot = slotAt(p);
       if (slot) pickSlot(slot);
@@ -1264,7 +1339,10 @@ export function PcBuilder() {
     // Header kosong terdekat, diukur ke tepi kotaknya (0 jika di dalam kotak),
     // sehingga drop di dekat header atau di label-nya tetap terhitung.
     const edge = (b: Box) =>
-      Math.hypot(Math.max(b.x - p.x, 0, p.x - (b.x + b.w)), Math.max(b.y - p.y, 0, p.y - (b.y + b.h)));
+      Math.hypot(
+        Math.max(b.x - p.x, 0, p.x - (b.x + b.w)),
+        Math.max(b.y - p.y, 0, p.y - (b.y + b.h)),
+      );
     let port: Cable | undefined;
     let best = PLUG_RADIUS;
     for (const c of CABLES) {
@@ -1289,8 +1367,8 @@ export function PcBuilder() {
     else say(`${cable.ok} (${next.length}/${CABLES.length})`);
   };
 
-  // Panel bisa ditutup agar komponen lain bisa dipasang terlebih dulu;
-  // stik RAM yang sudah masuk tetap terpasang.
+  // Panel bisa ditutup untuk memasang komponen lain terlebih dulu. Stik RAM yang
+  // sudah masuk tetap terpasang.
   // Petunjuk muncul saat item yang sedang dikerjakan diseret atau diklik lagi.
   const busyTip = (x: Step) =>
     x.id === "cpu" && cpuIn
@@ -1308,7 +1386,9 @@ export function PcBuilder() {
 
   const closeRamPick = () => {
     setRamPick(false);
-    say(ram.length ? "one stick is in, drag the RAM again for the second" : "RAM put aside for now");
+    say(
+      ram.length ? "one stick is in, drag the RAM again for the second" : "RAM put aside for now",
+    );
   };
   const closePaste = () => {
     if (holding || pasteState === "ok") return;
@@ -1365,9 +1445,12 @@ export function PcBuilder() {
   };
 
   // Komponen yang bisa diseret saat ini. Kabel diseret dari cable kit, sedangkan CPU
-  // yang sudah terpasang & pasta yang sudah dioles diselesaikan langsung di papan.
+  // yang sudah terpasang dan pasta yang sudah dioles diselesaikan langsung di papan.
   const canGrab = (x: Step) =>
-    ready(x) && x.kind !== "cables" && !(x.id === "cpu" && cpuIn) && !(x.kind === "paste" && pasteOn);
+    ready(x) &&
+    x.kind !== "cables" &&
+    !(x.id === "cpu" && cpuIn) &&
+    !(x.kind === "paste" && pasteOn);
 
   const onDragMove = (e: PointerEvent) => {
     const pr = press.current;
@@ -1394,7 +1477,7 @@ export function PcBuilder() {
     autoScroll(e.clientY, e.clientX);
   };
 
-  // e = null: drag dibatalkan (pointercancel / jendela kehilangan fokus).
+  // e bernilai null jika drag dibatalkan (pointercancel atau jendela kehilangan fokus).
   const onDragEnd = (e: PointerEvent | null) => {
     const pr = press.current;
     press.current = null;
@@ -1481,10 +1564,11 @@ export function PcBuilder() {
     if (cur.id === "cpu" && cpuIn && !leverDown) {
       glow.push({ b: LEVER, label: "click to lock the lever" });
     } else if (cur.kind === "paste") {
-      if (!pasteOn) glow.push({
-        b: grow(SOCKET, GLOW_GROW),
-        label: `${verb} the paste onto the CPU`,
-      });
+      if (!pasteOn)
+        glow.push({
+          b: grow(SOCKET, GLOW_GROW),
+          label: `${verb} the paste onto the CPU`,
+        });
     } else if (cur.kind === "cables" && ready(cur)) {
       CABLES.filter((c) => !cables.includes(c.id)).forEach((c) =>
         glow.push({ b: grow(c.port, 4), label: c.portName }),
@@ -1538,7 +1622,8 @@ export function PcBuilder() {
   const aiming = !!active || !!lock;
   // Kabel yang sedang diseret ikut di-zoom dan diberi penjelasan seperti komponen lain.
   const heldCable = cableDrag ? CABLES.find((c) => c.id === cableDrag.id) : undefined;
-  const explainStep = phase !== "build" ? undefined : heldCable ? byId("cables") : aiming ? cur : undefined;
+  const explainStep =
+    phase !== "build" ? undefined : heldCable ? byId("cables") : aiming ? cur : undefined;
   const explain = !!explainStep;
   const side = wide && explain;
   const ox = side ? 135 : 230;
@@ -1574,9 +1659,15 @@ export function PcBuilder() {
   const caseArt = (
     <>
       {/* Casing + shroud PSU + kipas intake depan */}
-      <path d={R(10, 10, 440, 400)} stroke="var(--muted-color)" fill={lit ? "var(--bg-color)" : "none"} />
+      <path
+        d={R(10, 10, 440, 400)}
+        stroke="var(--muted-color)"
+        fill={lit ? "var(--bg-color)" : "none"}
+      />
       {/* Kaki casing, terlihat saat PC berdiri di meja */}
-      {lit && <path d="M36,410 V418 H70 V410 M390,410 V418 H424 V410" stroke="var(--muted-color)" />}
+      {lit && (
+        <path d="M36,410 V418 H70 V410 M390,410 V418 H424 V410" stroke="var(--muted-color)" />
+      )}
       <path d="M10.5,332 C140,331 300,333.4 449.5,332" stroke="var(--muted-color)" />
       <g stroke="var(--muted-color)">
         <path d={R(382, 40, 58, 58)} />
@@ -1629,7 +1720,7 @@ export function PcBuilder() {
             x={x}
             y={above ? b.y - 10 * k : b.y + b.h + 14 * k}
             fontSize={8 * k}
-            fontFamily="Poppins, sans-serif"
+            style={{ fontFamily: "var(--font-poppins-sans)" }}
             fill="var(--blue-color)"
             stroke="var(--bg-color)"
             strokeWidth={4 * k}
@@ -1729,10 +1820,7 @@ export function PcBuilder() {
           <div key={k} className="contents">
             <dt className="text-[#7c7c7c]">{k}</dt>
             <dd className="m-0 truncate">
-              :{" "}
-              {v === "mem"
-                ? `${memCount}M${memCount === MEM_MB ? " OK" : ""}`
-                : v}
+              : {v === "mem" ? `${memCount}M${memCount === MEM_MB ? " OK" : ""}` : v}
             </dd>
           </div>
         ))}
@@ -1795,7 +1883,11 @@ export function PcBuilder() {
             ))}
           </span>
           {["#5aa9ff", "#ffb547", "#9b8cff", "#4ade80"].map((c) => (
-            <span key={c} className="h-2.5 w-2.5 rounded-[3px] sm:h-3 sm:w-3" style={{ background: c }} />
+            <span
+              key={c}
+              className="h-2.5 w-2.5 rounded-[3px] sm:h-3 sm:w-3"
+              style={{ background: c }}
+            />
           ))}
         </span>
         <span className="w-14 whitespace-nowrap text-right font-mono text-[0.5rem] text-white/85 sm:text-[0.6rem]">
@@ -1808,211 +1900,238 @@ export function PcBuilder() {
   return (
     // Teks yang terseleksi bisa memicu drag bawaan browser yang membatalkan pointer
     // (pointercancel), sehingga komponen gagal dijatuhkan sampai halaman diklik.
-    <div
-      className="w-full select-none rounded-[10px] border-2 border-muted bg-background p-3 sm:p-4"
-      onDragStart={(e) => e.preventDefault()}
-      style={{ boxShadow: "5px 5px 0 var(--border-color)" }}
-    >
-      <div className={`grid gap-3 sm:gap-4 ${lit ? "" : "lg:grid-cols-[minmax(0,1fr)_18rem]"}`}>
+    <div className="w-full select-none bg-background" onDragStart={(e) => e.preventDefault()}>
+      {/* Lebar kolom papan dibatasi sesuai gambar PC (37.5rem) agar sisa lebarnya
+          dipakai kartu "Build a PC" */}
+      <div
+        className={`grid gap-3 sm:gap-4 ${lit ? "" : "lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
+      >
         {/* ── papan: casing terbuka ─────────────────────────────────────── */}
-        <div className="relative flex flex-col overflow-hidden p-1 sm:p-2">
-          <div className="flex items-baseline justify-between gap-x-4 font-poppins-sans text-xs text-muted">
-            <span className="flex min-w-0 gap-4">
-              <span className="min-w-0 truncate">
-                {built
-                  ? lit
-                    ? phase === "post"
-                      ? "powering on…"
-                      : ""
-                    :"build complete · ready to power on"
-                  : (cur?.name ?? "")}
-              </span>
-              {!lit && (
-                <span className="shrink-0">
-                  load{" "}
-                  <span className="text-foreground">
-                    {watts} W{has("psu") ? " / 750 W" : ""}
-                  </span>
+        <div className="relative flex flex-col overflow-hidden">
+          {/* Lebarnya sama dengan gambar PC di bawah. Garis casing digambar mulai x=10
+              dari viewBox 460, jadi padding 10/460 lebar membuat teks sejajar tepat
+              dengan garis casing. Persen padding mengacu ke lebar pembungkus ini.
+              Pergeseran 9.25/460 (tepi luar garis casing, stroke 1.5) membuat casing
+              sejajar dengan judul halaman. Persen translate mengacu ke lebar elemen
+              itu sendiri, jadi tetap pas di semua ukuran layar. */}
+          <div className="w-full max-w-150 -translate-x-[calc(100%*9.25/460)]">
+            <div className="flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-sm text-muted">
+              <span className="flex min-w-0 gap-4">
+                <span className="min-w-0 truncate">
+                  {built
+                    ? lit
+                      ? phase === "post"
+                        ? "powering on…"
+                        : ""
+                      : "build complete · ready to power on"
+                    : (cur?.name ?? "")}
                 </span>
-              )}
-            </span>
-            {/* Setelah menyala, waktu & slip dipindahkan ke laporan di layar monitor */}
-            <span className={`flex shrink-0 gap-4 ${lit ? "hidden" : ""}`}>
-              <span>
-                time <span className="text-foreground">{fmt(elapsed)}</span>
+                {!lit && (
+                  <span className="shrink-0">
+                    load{" "}
+                    <span className="text-foreground">
+                      {watts} W{has("psu") ? " / 750 W" : ""}
+                    </span>
+                  </span>
+                )}
               </span>
-              <span>
-                slips{" "}
-                <span className={mistakes ? "text-red" : "text-foreground"}>{mistakes}</span>
+              {/* Setelah menyala, waktu & slip dipindahkan ke laporan di layar monitor */}
+              <span className={`flex shrink-0 gap-4 ${lit ? "hidden" : ""}`}>
+                <span>
+                  time <span className="text-foreground">{fmt(elapsed)}</span>
+                </span>
+                <span>
+                  slips{" "}
+                  <span className={mistakes ? "text-red" : "text-foreground"}>{mistakes}</span>
+                </span>
               </span>
-            </span>
-          </div>
-          {/* Instruksi langkah dan umpan balik terakhir, tepat di atas papan. Tingginya
-              dikunci agar gambar PC tidak bergeser saat drag */}
-          <div className={`mt-1 min-h-[3.6em] font-poppins-sans text-xs leading-[1.7] ${lit ? "hidden" : ""}`}>
-            <p className="m-0 text-muted">{cur && phase === "build" ? cur.tip : ""}</p>
-            <p
-              className="m-0"
-              style={{ color: msg?.tone === "warn" ? "var(--red-color)" : "var(--blue-color)" }}
-              aria-live="polite"
+            </div>
+            {/* Feedback terakhir tampil tepat di atas papan. Tingginya minimal satu baris
+              agar gambar PC tidak bergeser saat pesan muncul */}
+            <div
+              className={`mt-1 min-h-[1.7em] px-[calc(100%*10/460)] font-poppins-sans text-sm leading-[1.7] ${lit ? "hidden" : ""}`}
             >
-              {msg ? msg.text : ""}
-            </p>
+              <p
+                className="m-0"
+                style={{ color: msg?.tone === "warn" ? "var(--red-color)" : "var(--blue-color)" }}
+                aria-live="polite"
+              >
+                {msg ? msg.text : ""}
+              </p>
+            </div>
           </div>
 
-          {/* Saat merakit: gambar PC beserta panel RAM / pasta di bawahnya. Setelah menyala,
-              sejak layar BIOS, tampil adegan meja 3D dengan beberapa sudut kamera */}
+          {/* Saat merakit, tampil gambar PC beserta panel RAM atau pasta di bawahnya.
+              Setelah PC menyala, mulai dari layar BIOS, tampil adegan meja 3D dengan
+              beberapa sudut kamera */}
           {lit ? (
             <PcDesk caseArt={caseArt} screen={phase === "post" ? postScreen : desktop} />
           ) : (
-          <div className="relative">
-          <div className="relative mx-auto mt-3 w-full max-w-150 overflow-hidden">
-          <svg
-            ref={svgRef}
-            viewBox="0 0 460 420"
-            className="block w-full select-none"
-            fill="none"
-            stroke="var(--fg-color)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            onClick={onBoardClick}
-            style={{ cursor: ramOpen ? "pointer" : "default" }}
-            role="img"
-            aria-label={`PC case, ${pct}% built`}
-          >
-            <g
-              ref={boardRef}
-              className={zoom ? "pc-zoomed" : undefined}
-              style={{
-                transform: `translate(${ox}px, 210px) scale(${view.s}) translate(${-view.cx}px, ${-view.cy}px)`,
-                transition: "transform 0.7s cubic-bezier(0.22, 0.8, 0.24, 1)",
-              }}
-            >
-            {caseArt}
-            </g>
-          </svg>
+            <div className="relative">
+              <div className="relative mt-3 w-full max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">
+                <svg
+                  ref={svgRef}
+                  viewBox="0 0 460 420"
+                  className="block w-full select-none"
+                  fill="none"
+                  stroke="var(--fg-color)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  onClick={onBoardClick}
+                  style={{ cursor: ramOpen ? "pointer" : "default" }}
+                  role="img"
+                  aria-label={`PC case, ${pct}% built`}
+                >
+                  <g
+                    ref={boardRef}
+                    className={zoom ? "pc-zoomed" : undefined}
+                    style={{
+                      transform: `translate(${ox}px, 210px) scale(${view.s}) translate(${-view.cx}px, ${-view.cy}px)`,
+                      transition: "transform 0.7s cubic-bezier(0.22, 0.8, 0.24, 1)",
+                    }}
+                  >
+                    {caseArt}
+                  </g>
+                </svg>
 
-          {/* Tepi area zoom memudar ke warna latar agar potongan gambar tidak terlihat kasar */}
-          {explain && (
-            <div
-              className={`pc-fade pointer-events-none absolute inset-y-0 left-0 ${side ? "w-[58.7%]" : "w-full"}`}
-              style={{ boxShadow: "inset 0 0 24px 18px var(--bg-color)" }}
-            />
-          )}
+                {/* Tepi area zoom memudar ke warna latar agar potongan gambar tidak terlihat kasar */}
+                {explain && (
+                  <div
+                    className={`pc-fade pointer-events-none absolute inset-y-0 left-0 ${side ? "w-[58.7%]" : "w-full"}`}
+                    style={{ boxShadow: "inset 0 0 24px 18px var(--bg-color)" }}
+                  />
+                )}
 
-          {/* Layar lebar: penjelasan komponen di samping area zoom */}
-          {side && explainStep && (
-            <div
-              key={explainStep.id}
-              className="pc-slide absolute inset-y-0 right-0 flex w-[41.3%] flex-col justify-center overflow-y-auto bg-background py-2 pl-6"
-            >
-              <LearnCard step={explainStep} note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`} />
-            </div>
-          )}
-          </div>
+                {/* Layar lebar: penjelasan komponen di samping area zoom */}
+                {side && explainStep && (
+                  <div
+                    key={explainStep.id}
+                    className="pc-slide absolute inset-y-0 right-0 flex w-[41.3%] flex-col justify-center overflow-y-auto bg-background py-2 pl-6"
+                  >
+                    <LearnCard
+                      step={explainStep}
+                      note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`}
+                    />
+                  </div>
+                )}
+              </div>
 
-          {/* Pilih slot RAM: papan di-zoom ke blok DIMM, tombol slot ada di bawahnya */}
-          {ramOpen && (
-            <div ref={panelRef} className="pc-drop mx-auto mt-3 flex w-full max-w-96 flex-col items-center gap-3">
-              <p className="m-0 text-center font-poppins-sans text-xs text-muted" aria-live="polite">
-                {ram.length
-                  ? "one stick in, pick the slot for the second one"
-                  : "two sticks, four slots, only one pair runs in dual channel"}
-              </p>
-              <div className="flex w-full items-center gap-2">
-                <div className="grid flex-1 grid-cols-4 gap-2">
-                  {DIMM_NAME.map((name) => {
-                    const filled = ram.includes(name);
-                    const hinted = ramHint && DIMM_OK.includes(name) && !filled;
-                    return (
-                      <button
-                        key={name}
-                        type="button"
-                        disabled={filled}
-                        onClick={() => pickSlot(name)}
-                        className={`cursor-pointer rounded-md border bg-transparent px-1 py-2.5 font-poppins-sans text-sm transition-[border-color,color] duration-300 disabled:cursor-default ${
-                          filled
-                            ? "border-blue text-blue"
-                            : hinted
-                              ? "border-blue text-foreground"
-                              : "border-muted text-foreground hover:border-foreground"
-                        } ${shake === name ? "pc-shake" : ""}`}
-                        aria-label={`slot ${name}${filled ? ", has a stick" : ""}`}
-                      >
-                        {filled ? `${name} ✓` : name}
-                      </button>
-                    );
-                  })}
+              {/* Pilih slot RAM: papan di-zoom ke blok DIMM, tombol slot ada di bawahnya */}
+              {ramOpen && (
+                <div
+                  ref={panelRef}
+                  className="pc-drop mx-auto mt-3 flex w-full max-w-96 flex-col items-center gap-3"
+                >
+                  <p
+                    className="m-0 text-center font-poppins-sans text-sm text-muted"
+                    aria-live="polite"
+                  >
+                    {ram.length
+                      ? "one stick in, pick the slot for the second one"
+                      : "two sticks, four slots, only one pair runs in dual channel"}
+                  </p>
+                  <div className="flex w-full items-center gap-2">
+                    <div className="grid flex-1 grid-cols-4 gap-2">
+                      {DIMM_NAME.map((name) => {
+                        const filled = ram.includes(name);
+                        const hinted = ramHint && DIMM_OK.includes(name) && !filled;
+                        return (
+                          <button
+                            key={name}
+                            type="button"
+                            disabled={filled}
+                            onClick={() => pickSlot(name)}
+                            className={`cursor-pointer rounded-md border bg-transparent px-1 py-2.5 font-poppins-sans text-base transition-[border-color,color] duration-300 disabled:cursor-default ${
+                              filled
+                                ? "border-blue text-blue"
+                                : hinted
+                                  ? "border-blue text-foreground"
+                                  : "border-muted text-foreground hover:border-foreground"
+                            } ${shake === name ? "pc-shake" : ""}`}
+                            aria-label={`slot ${name}${filled ? ", has a stick" : ""}`}
+                          >
+                            {filled ? `${name} ✓` : name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={closeRamPick}
+                      className="cursor-pointer rounded-md border-none bg-transparent px-3 py-2.5 font-poppins-sans text-sm text-muted transition-colors duration-300 hover:text-foreground"
+                    >
+                      later
+                    </button>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={closeRamPick}
-                  className="cursor-pointer rounded-md border-none bg-transparent px-3 py-2.5 font-poppins-sans text-xs text-muted transition-colors duration-300 hover:text-foreground"
-                >
-                  later
-                </button>
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* Olesan pasta: papan di-zoom ke CPU, status dan tombol tahan ada di bawahnya */}
-          {zoomed && (
-            <div ref={panelRef} className="pc-drop mx-auto mt-3 flex w-full max-w-96 flex-col items-center gap-3">
-              <p
-                className="m-0 text-center font-poppins-sans text-xs"
-                style={{ color: pasteInk }}
-                aria-live="polite"
-              >
-                {pasteStatus}
-              </p>
-              <div className="flex w-full items-center gap-2">
-                <button
-                  type="button"
-                  disabled={pasteState === "ok"}
-                  onPointerDown={(e) => {
-                    e.currentTarget.setPointerCapture(e.pointerId);
-                    startPaste();
-                  }}
-                  onPointerUp={releasePaste}
-                  onPointerCancel={releasePaste}
-                  onKeyDown={(e) => {
-                    if ((e.key === " " || e.key === "Enter") && !e.repeat) {
-                      e.preventDefault();
-                      startPaste();
-                    }
-                  }}
-                  onKeyUp={(e) => {
-                    if (e.key === " " || e.key === "Enter") releasePaste();
-                  }}
-                  className={`flex-1 cursor-pointer touch-none select-none rounded-md border bg-transparent px-3 py-2.5 font-poppins-sans text-sm transition-[border-color,color] duration-300 ${holding ? "border-blue text-blue" : "border-muted text-foreground"}`}
+              {/* Olesan pasta: papan di-zoom ke CPU, status dan tombol tahan ada di bawahnya */}
+              {zoomed && (
+                <div
+                  ref={panelRef}
+                  className="pc-drop mx-auto mt-3 flex w-full max-w-96 flex-col items-center gap-3"
                 >
-                  {pasteState === "ok"
-                    ? "✓ perfect"
-                    : holding
-                      ? "squeezing…"
-                      : pasteState === "idle"
-                        ? "press & hold to squeeze"
-                        : "press & hold to try again"}
-                </button>
-                <button
-                  type="button"
-                  onClick={closePaste}
-                  className="cursor-pointer rounded-md border-none bg-transparent px-3 py-2.5 font-poppins-sans text-xs text-muted transition-colors duration-300 hover:text-foreground"
-                >
-                  later
-                </button>
-              </div>
+                  <p
+                    className="m-0 text-center font-poppins-sans text-sm"
+                    style={{ color: pasteInk }}
+                    aria-live="polite"
+                  >
+                    {pasteStatus}
+                  </p>
+                  <div className="flex w-full items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={pasteState === "ok"}
+                      onPointerDown={(e) => {
+                        e.currentTarget.setPointerCapture(e.pointerId);
+                        startPaste();
+                      }}
+                      onPointerUp={releasePaste}
+                      onPointerCancel={releasePaste}
+                      onKeyDown={(e) => {
+                        if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+                          e.preventDefault();
+                          startPaste();
+                        }
+                      }}
+                      onKeyUp={(e) => {
+                        if (e.key === " " || e.key === "Enter") releasePaste();
+                      }}
+                      className={`flex-1 cursor-pointer touch-none select-none rounded-md border bg-transparent px-3 py-2.5 font-poppins-sans text-base transition-[border-color,color] duration-300 ${holding ? "border-blue text-blue" : "border-muted text-foreground"}`}
+                    >
+                      {pasteState === "ok"
+                        ? "✓ perfect"
+                        : holding
+                          ? "squeezing…"
+                          : pasteState === "idle"
+                            ? "press & hold to squeeze"
+                            : "press & hold to try again"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closePaste}
+                      className="cursor-pointer rounded-md border-none bg-transparent px-3 py-2.5 font-poppins-sans text-sm text-muted transition-colors duration-300 hover:text-foreground"
+                    >
+                      later
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-
-          </div>
           )}
 
           {/* Layar sempit (dan langkah kabel): kartu penjelasan di bawah papan */}
           {!side && explainStep && (
-            <div key={explainStep.id} className="pc-slide mx-auto mt-3 w-full max-w-150">
-              <LearnCard step={explainStep} note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`} />
+            <div
+              key={explainStep.id}
+              className="pc-slide mt-3 w-full max-w-150 -translate-x-[calc(100%*9.25/460)]"
+            >
+              <LearnCard
+                step={explainStep}
+                note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`}
+              />
             </div>
           )}
 
@@ -2021,7 +2140,7 @@ export function PcBuilder() {
               <button
                 type="button"
                 onClick={reset}
-                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-base text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
               >
                 <span className="text-red">▶ </span>build another
               </button>
@@ -2031,135 +2150,133 @@ export function PcBuilder() {
 
         {/* ── kartu: lembar rakitan ─────────────────────────────────────── */}
         {!lit && (
-        <aside className="flex flex-col border-t border-border px-1 pt-5 sm:px-2 lg:border-t-0 lg:border-l lg:pt-2 lg:pl-5">
-          <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
-            Build a PC
-          </h2>
-          <p className="mt-3 mb-0 font-poppins-sans text-xs leading-[1.8] text-muted">
-            From the smallest chip to the first boot. Drag each part into the case and
-            follow the build like a pro would.
-          </p>
+          <aside className="flex flex-col border-t border-border pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-5">
+            <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
+              Build a PC
+            </h2>
+            <p className="mt-3 mb-0 font-poppins-sans text-sm leading-[1.8] text-muted">
+              From the smallest chip to the first boot. Drag each part into the case and follow the
+              build like a pro would.
+            </p>
 
-          <div className="mt-4 flex items-baseline justify-between">
-            <span className="font-poppins-sans text-xs text-muted">
-              progress
-            </span>
-            <span className="font-caveat text-2xl font-bold text-foreground">{pct}%</span>
-          </div>
-          <div className="mt-1 h-2.5 overflow-hidden rounded-full border border-border">
-            <div
-              className="h-full bg-blue transition-[width] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)]"
-              style={{ width: `${pct}%` }}
-            />
-          </div>
+            <div className="mt-4 flex items-baseline justify-between">
+              <span className="font-poppins-sans text-sm text-muted">progress</span>
+              <span className="font-caveat text-2xl font-bold text-foreground">{pct}%</span>
+            </div>
+            <div className="mt-1 h-2.5 overflow-hidden rounded-full border border-border">
+              <div
+                className="h-full bg-blue transition-[width] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)]"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
 
-          <>
-          <ol className="mt-4 mb-0 flex list-none flex-col gap-1 p-0">
-            {STEPS.map((s, i) => {
-              const isDone = has(s.id);
-              const isReady = phase === "build" && ready(s);
-              const isFocus = phase === "build" && cur?.id === s.id;
-              const missing = (s.needs ?? []).filter((n) => !has(n)).map((n) => byId(n).name);
-              return (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    disabled={isDone}
-                    onPointerDown={(e) => !isDone && startPress("part", s.id, e)}
-                    className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border px-2 py-1.5 text-left transition-[border-color,opacity] duration-500 ${
-                      isDone
-                        ? "cursor-default border-transparent opacity-50"
-                        : drag?.id === s.id
-                          ? "cursor-grabbing border-blue"
-                          : isFocus
-                            ? "cursor-grab border-muted"
-                            : isReady
-                              ? "cursor-grab border-transparent hover:border-border"
-                              : "cursor-not-allowed border-transparent opacity-55"
-                    } ${shake === s.id ? "pc-shake" : ""}`}
-                    aria-label={`${i + 1}. ${s.name}, ${s.spec}${isDone ? ", done" : ""}`}
-                  >
-                    <span
-                      className={`shrink-0 ${isDone ? "text-muted" : "text-foreground"}`}
-                    >
-                      <PartIcon step={s} size={22} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-poppins-sans text-[0.68rem] leading-tight text-foreground">
-                        {isDone ? "✓ " : `${i + 1}. `}
-                        {s.name}
-                      </span>
-                      <span className="block truncate font-poppins-sans text-[0.58rem] leading-tight text-muted">
-                        {!isDone && missing.length ? `needs ${missing.join(" + ")} first` : s.spec}
-                      </span>
-                    </span>
-                  </button>
-                  {/* Cable kit tepat di bawah langkah kabel: kabel dengan bentuk pin aslinya,
-                      untuk diseret ke header yang tepat di papan */}
-                  {s.id === "cables" && showKit && (
-                    <div className="pc-drop mt-2 mb-1">
-                      <ul className="mt-0 mb-0 flex list-none flex-col gap-1 p-0 pl-3">
-                        {CABLES.map((c) => {
-                          const isIn = cables.includes(c.id);
-                          return (
-                            <li key={c.id}>
-                              <button
-                                type="button"
-                                disabled={isIn}
-                                onPointerDown={(e) => !isIn && startPress("cable", c.id, e)}
-                                className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border bg-transparent px-2 py-1.5 text-left font-poppins-sans transition-[border-color,opacity] duration-300 ${
-                                  isIn
-                                    ? "cursor-default border-transparent opacity-50"
-                                    : cableDrag?.id === c.id
-                                      ? "cursor-grabbing border-blue"
-                                      : "cursor-grab border-transparent text-foreground hover:border-border"
-                                } ${shake === `cable-${c.id}` ? "pc-shake" : ""}`}
-                                aria-label={`cable ${c.name}${isIn ? ", plugged in" : ""}`}
-                              >
-                                <span className="flex w-10 shrink-0 justify-center text-foreground">
-                                  <Connector c={c} height={22} />
-                                </span>
-                                <span className="min-w-0 flex-1">
-                                  <span className="block text-[0.68rem] leading-tight text-foreground">
-                                    {isIn ? "✓ " : ""}
-                                    {c.name}
-                                  </span>
-                                  <span className="block truncate text-[0.58rem] leading-tight text-muted">
-                                    {c.pins}
-                                  </span>
-                                </span>
-                              </button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
+            <>
+              <ol className="mt-4 mb-0 flex list-none flex-col gap-1 p-0">
+                {STEPS.map((s, i) => {
+                  const isDone = has(s.id);
+                  const isReady = phase === "build" && ready(s);
+                  const isFocus = phase === "build" && cur?.id === s.id;
+                  const missing = (s.needs ?? []).filter((n) => !has(n)).map((n) => byId(n).name);
+                  return (
+                    <li key={s.id}>
+                      <button
+                        type="button"
+                        disabled={isDone}
+                        onPointerDown={(e) => !isDone && startPress("part", s.id, e)}
+                        className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border px-2 py-1.5 text-left transition-[border-color,opacity] duration-500 ${
+                          isDone
+                            ? "cursor-default border-transparent opacity-50"
+                            : drag?.id === s.id
+                              ? "cursor-grabbing border-blue"
+                              : isFocus
+                                ? "cursor-grab border-muted"
+                                : isReady
+                                  ? "cursor-grab border-transparent hover:border-border"
+                                  : "cursor-not-allowed border-transparent opacity-55"
+                        } ${shake === s.id ? "pc-shake" : ""}`}
+                        aria-label={`${i + 1}. ${s.name}, ${s.spec}${isDone ? ", done" : ""}`}
+                      >
+                        <span className={`shrink-0 ${isDone ? "text-muted" : "text-foreground"}`}>
+                          <PartIcon step={s} size={22} />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-poppins-sans text-[0.805rem] leading-tight text-foreground">
+                            {isDone ? "✓ " : `${i + 1}. `}
+                            {s.name}
+                          </span>
+                          <span className="block truncate font-poppins-sans text-[0.705rem] leading-tight text-muted">
+                            {!isDone && missing.length
+                              ? `needs ${missing.join(" + ")} first`
+                              : s.spec}
+                          </span>
+                        </span>
+                      </button>
+                      {/* Cable kit tampil tepat di bawah langkah kabel. Setiap kabel digambar
+                      dengan bentuk pin aslinya untuk diseret ke header yang sesuai di papan */}
+                      {s.id === "cables" && showKit && (
+                        <div className="pc-drop mt-2 mb-1">
+                          <ul className="mt-0 mb-0 flex list-none flex-col gap-1 p-0 pl-3">
+                            {CABLES.map((c) => {
+                              const isIn = cables.includes(c.id);
+                              return (
+                                <li key={c.id}>
+                                  <button
+                                    type="button"
+                                    disabled={isIn}
+                                    onPointerDown={(e) => !isIn && startPress("cable", c.id, e)}
+                                    className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border bg-transparent px-2 py-1.5 text-left font-poppins-sans transition-[border-color,opacity] duration-300 ${
+                                      isIn
+                                        ? "cursor-default border-transparent opacity-50"
+                                        : cableDrag?.id === c.id
+                                          ? "cursor-grabbing border-blue"
+                                          : "cursor-grab border-transparent text-foreground hover:border-border"
+                                    } ${shake === `cable-${c.id}` ? "pc-shake" : ""}`}
+                                    aria-label={`cable ${c.name}${isIn ? ", plugged in" : ""}`}
+                                  >
+                                    <span className="flex w-10 shrink-0 justify-center text-foreground">
+                                      <Connector c={c} height={22} />
+                                    </span>
+                                    <span className="min-w-0 flex-1">
+                                      <span className="block text-[0.805rem] leading-tight text-foreground">
+                                        {isIn ? "✓ " : ""}
+                                        {c.name}
+                                      </span>
+                                      <span className="block truncate text-[0.705rem] leading-tight text-muted">
+                                        {c.pins}
+                                      </span>
+                                    </span>
+                                  </button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
 
-          <div className="mt-auto flex gap-2 pt-6">
-            <button
-              type="button"
-              disabled={!built}
-              onClick={powerOn}
-              className="flex-1 cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-sm text-foreground transition-[border-color,opacity] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted disabled:cursor-default disabled:opacity-40"
-            >
-              <span className="text-red">▶ </span>
-              power on
-            </button>
-            <button
-              type="button"
-              onClick={reset}
-              className="cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-sm text-muted transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
-            >
-              reset
-            </button>
-          </div>
-          </>
-        </aside>
+              <div className="mt-auto flex gap-2 pt-6">
+                <button
+                  type="button"
+                  disabled={!built}
+                  onClick={powerOn}
+                  className="flex-1 cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-base text-foreground transition-[border-color,opacity] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted disabled:cursor-default disabled:opacity-40"
+                >
+                  <span className="text-red">▶ </span>
+                  power on
+                </button>
+                <button
+                  type="button"
+                  onClick={reset}
+                  className="cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-base text-muted transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                >
+                  reset
+                </button>
+              </div>
+            </>
+          </aside>
         )}
       </div>
 

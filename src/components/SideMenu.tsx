@@ -266,21 +266,14 @@ export function SideMenu() {
           "-=0.15",
         );
     } else {
-      tl.to(items, {
-        ...hidden,
-        duration: 0.12,
-        ease: "power2.in",
-        stagger: { each: 0.02, from: "end" },
-      }).to(
-        panel,
-        {
-          autoAlpha: 0,
-          y: openUp ? GAP : -GAP,
-          duration: 0.16,
-          ease: "power2.in",
-        },
-        "-=0.05",
-      );
+      // Panel ditutup sekaligus tanpa stagger per item agar tetap rapi saat
+      // berjalan bersamaan dengan loading pindah halaman.
+      tl.to(panel, {
+        autoAlpha: 0,
+        y: openUp ? 4 : -4,
+        duration: 0.2,
+        ease: "power2.out",
+      });
     }
 
     return () => {
@@ -405,9 +398,7 @@ export function SideMenu() {
         className={`absolute hidden items-center gap-1 sm:flex top-1/2 -translate-y-1/2 pointer-events-none whitespace-nowrap ${side === "left" ? "left-[calc(100%+4px)] flex-row-reverse" : "right-[calc(100%+4px)] flex-row"} ${dragging ? "opacity-0" : "opacity-75"} transition-opacity duration-200 ease`}
         aria-hidden="true"
       >
-        <span
-          className={`text-lg font-semibold font-caveat -rotate-6 ${theme === "dark" ? "text-blue" : "text-blue-500"}`}
-        >
+        <span className={`text-lg font-semibold font-caveat -rotate-6 text-blue`}>
           {open ? "close menu" : "click menu"}
         </span>
 
@@ -425,14 +416,14 @@ export function SideMenu() {
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeDasharray="0.1 4.5"
-              className={theme === "dark" ? "stroke-blue" : "stroke-blue-500"}
+              className="stroke-blue"
             />
             <path
               d="M19,2 L25,6 L18,9"
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className={theme === "dark" ? "stroke-blue" : "stroke-blue-500"}
+              className="stroke-blue"
             />
           </svg>
         </span>
@@ -447,44 +438,58 @@ export function SideMenu() {
           ...edgeStyle(side),
         }}
       >
-        {navItems.filter((item) => !item.hidden).map((item) => {
-          const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
-          const lifted = hovered === item.href || isActive;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              data-menu-item
-              aria-current={isActive ? "page" : undefined}
-              onMouseEnter={() => setHovered(item.href)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(item.href)}
-              onBlur={() => setHovered(null)}
-              className={`flex items-center gap-2 py-2 pl-3 pr-4 font-mono text-sm whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
-              style={{
-                borderLeft: `2px solid ${isActive ? item.ink : "transparent"}`,
-                transition: "all 0.15s ease",
-              }}
-            >
-              <span
-                style={{
-                  color: lifted ? item.ink : "var(--muted-color)",
-                  display: "flex",
-                  transition: "color 0.15s ease",
+        {navItems
+          .filter((item) => !item.hidden)
+          .map((item) => {
+            const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+            const lifted = hovered === item.href || isActive;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                onClick={(e) => {
+                  // Menu langsung ditutup tanpa menunggu halaman baru selesai dimuat.
+                  // Klik dengan tombol modifier membuka tab baru, jadi menu tetap terbuka.
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                  setOpen(false);
+                  setHovered(null);
                 }}
+                onMouseEnter={() => setHovered(item.href)}
+                onMouseLeave={() => setHovered(null)}
+                onFocus={() => setHovered(item.href)}
+                onBlur={() => setHovered(null)}
+                className={`relative flex items-center py-2 pl-3 pr-4 font-mono text-base whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
+                style={{ transition: "background-color 0.15s ease, color 0.15s ease" }}
               >
-                {item.icon}
-              </span>
-              <span>
-                <span className="text-red">./</span>
-                {item.label}
-              </span>
-            </Link>
-          );
-        })}
+                {/* Penanda aktif dipisah dari konten agar tidak ikut bergeser saat animasi item. */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-0.5 origin-center"
+                  style={{
+                    background: item.ink,
+                    transform: `scaleY(${isActive ? 1 : 0})`,
+                    transition: "transform 0.2s ease",
+                  }}
+                />
+                <span data-menu-item className="flex items-center gap-2">
+                  <span
+                    style={{
+                      color: lifted ? item.ink : "var(--muted-color)",
+                      display: "flex",
+                      transition: "color 0.15s ease",
+                    }}
+                  >
+                    {item.icon}
+                  </span>
+                  <span>{item.label}</span>
+                </span>
+              </Link>
+            );
+          })}
         <div
           data-menu-item
-          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-dashed border-border font-mono text-[0.64rem] text-muted whitespace-nowrap"
+          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-dashed border-border font-mono text-[0.765rem] text-muted whitespace-nowrap"
         >
           <span className="flex items-center gap-2">
             {theme === "dark" ? (
@@ -502,7 +507,7 @@ export function SideMenu() {
             type="button"
             data-menu-item
             onClick={resetPlace}
-            className="flex items-center gap-2 py-2 pl-3 pr-4 cursor-pointer mt-1.25 pt-2 bg-none border-t border-dashed border-border rounded-none font-mono text-[0.64rem] text-muted whitespace-nowrap text-left"
+            className="flex items-center gap-2 py-2 pl-3 pr-4 cursor-pointer mt-1.25 pt-2 bg-none border-t border-dashed border-border rounded-none font-mono text-[0.765rem] text-muted whitespace-nowrap text-left"
             style={{
               borderRight: "none",
               borderBottom: "none",
