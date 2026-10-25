@@ -4,7 +4,7 @@ import { useTheme } from "@/components/ThemeProvider";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
-import { FloatingContacts } from "@/components/FloatingContacts";
+import { FloatingContacts, whatsappHref } from "@/components/FloatingContacts";
 import { SideMenu } from "@/components/SideMenu";
 
 const C = {
@@ -22,6 +22,8 @@ const C = {
   teal: "var(--teal-color)",
   orange: "var(--orange-color)",
 };
+
+const RESUME_MESSAGE = "Halo! Saya lihat portfolio kamu dan ingin minta resume kamu, boleh?";
 
 const navItems = [
   { href: "/", label: "home", exact: true },
@@ -71,8 +73,11 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         }}
       >
         <div className="max-w-5xl mx-auto px-4 pt-3 pb-3 flex items-center justify-between gap-2">
+          {/* Resume tidak dibagikan langsung, pengunjung diarahkan ke WhatsApp untuk memintanya */}
           <a
-            href="#"
+            href={whatsappHref(RESUME_MESSAGE)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="sketch relative shrink-0 py-2 px-2.75 no-underline"
             style={{
               // @ts-expect-error -- custom property dipakai oleh .sketch
