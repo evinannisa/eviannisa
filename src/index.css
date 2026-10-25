@@ -1285,18 +1285,22 @@ html.theme-swapping *::after {
 }
 /* Adegan meja 3D setelah PC menyala. Warna meja dan dinding mengikuti tema,
    sedangkan perangkat tetap hitam. --pc-bias adalah pantulan cahaya layar
-   di dinding belakang monitor. */
+   di dinding belakang monitor. --pc-room adalah latar di tepi adegan, tempat
+   dinding memudar, agar tepi terlihat lebih gelap di kedua tema. */
 .pc-desk {
+  --pc-room: transparent;
   --pc-wall: #101217;
   --pc-bias: rgba(130, 105, 255, 0.34);
   --pc-desk: #4a3324;
   --pc-desk-far: #382618;
   --pc-desk-edge: #2a1c12;
   --pc-grain: rgba(0, 0, 0, 0.14);
+  background: var(--pc-room);
 }
 :root.light .pc-desk {
-  --pc-wall: #ebe1d2;
-  --pc-bias: rgba(130, 105, 255, 0.26);
+  --pc-room: #d6c7b1;
+  --pc-wall: #f1e8db;
+  --pc-bias: rgba(130, 105, 255, 0.3);
   --pc-desk: #caa679;
   --pc-desk-far: #b99369;
   --pc-desk-edge: #9a7550;

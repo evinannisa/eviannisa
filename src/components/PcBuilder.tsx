@@ -1962,10 +1962,14 @@ export function PcBuilder() {
           </div>
 
           {/* Saat merakit, tampil gambar PC beserta panel RAM atau pasta di bawahnya.
-              Setelah PC menyala, mulai dari layar BIOS, tampil adegan meja 3D dengan
-              beberapa sudut kamera */}
+              Setelah PC menyala, tampil adegan meja 3D. Kamera menyorot layar selama BIOS,
+              lalu berkeliling ke sudut lainnya */}
           {lit ? (
-            <PcDesk caseArt={caseArt} screen={phase === "post" ? postScreen : desktop} />
+            <PcDesk
+              caseArt={caseArt}
+              screen={phase === "post" ? postScreen : desktop}
+              booting={phase === "post"}
+            />
           ) : (
             <div className="relative">
               <div className="relative mt-3 w-full max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">

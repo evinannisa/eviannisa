@@ -107,18 +107,19 @@ const TOWER = { x: 340, z: -20, w: 128, h: 230, d: 252 };
 
 type Cam = { key: string; label: string; yaw: number; pitch: number; dist: number; at: [number, number, number] };
 // Sudut kamera: yaw positif = kamera di kiri, pitch negatif = kamera di atas.
+// Urutan ini juga urutan tur: layar selama BIOS, lalu front sampai top down.
 const CAMS: Cam[] = [
+  { key: "screen", label: "screen", yaw: 0, pitch: 2.4, dist: -330, at: [MON.x, MON_Y, MON.z] },
   { key: "front", label: "front", yaw: 0, pitch: -7, dist: 160, at: [20, -170, 0] },
   { key: "hero", label: "desk", yaw: 26, pitch: -17, dist: 120, at: [40, -150, 0] },
-  { key: "glass", label: "side glass", yaw: 64, pitch: -9, dist: -260, at: [TOWER.x, -TOWER.h / 2, TOWER.z] },
-  { key: "screen", label: "screen", yaw: -14, pitch: -4, dist: -330, at: [MON.x, MON_Y, MON.z] },
   { key: "low", label: "low angle", yaw: 40, pitch: -2, dist: -120, at: [150, -130, 0] },
-  { key: "top", label: "top down", yaw: 6, pitch: -62, dist: 190, at: [30, -40, 30] },
+  { key: "glass", label: "side glass", yaw: 64, pitch: -9, dist: -260, at: [TOWER.x, -TOWER.h / 2, TOWER.z] },
+  { key: "top", label: "top down", yaw: 6, pitch: -62, dist: 900, at: [60, -100, 40] },
 ];
 
 const KEY_ROWS = [14, 14, 13, 12, 0];
 
-export function PcDesk({ caseArt, screen }: { caseArt: ReactNode; screen: ReactNode }) {
+export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; screen: ReactNode; booting: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const [k, setK] = useState(0.8);
   const [cam, setCam] = useState(0);
@@ -137,16 +138,25 @@ export function PcDesk({ caseArt, screen }: { caseArt: ReactNode; screen: ReactN
   }, []);
 
   // Kamera berganti sudut otomatis seperti video produk, lalu berhenti saat pengguna memilih sudut sendiri.
+  // Selama BIOS kamera tetap di layar, setelah selesai pindah ke front lalu berputar sampai top down.
   useEffect(() => {
     if (!touring) return;
+    if (booting) {
+      setCam(0);
+      return;
+    }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setCam(1);
+      setCam(2);
       setTouring(false);
       return;
     }
-    const t = window.setTimeout(() => setCam((c) => (c + 1) % CAMS.length), cam === 0 ? 2000 : 4200);
+    if (cam === 0) {
+      setCam(1);
+      return;
+    }
+    const t = window.setTimeout(() => setCam((c) => (c + 1 < CAMS.length ? c + 1 : 1)), 4200);
     return () => window.clearTimeout(t);
-  }, [touring, cam]);
+  }, [touring, cam, booting]);
 
   const base = CAMS[cam];
   const yaw = orbit?.yaw ?? base.yaw;
