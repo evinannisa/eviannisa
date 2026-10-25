@@ -5,8 +5,10 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { TopLoader } from "@/components/TopLoader";
 
 export const metadata: Metadata = {
-  title: "Dev Portfolio",
-  description: "Fullstack developer portfolio built with Next.js, Supabase, and Drizzle",
+  title: "Evi Annisa",
+  description:
+    "Evi Nur Annisa, a software engineer who builds things, learns new stuff, and turns little ideas into something real.",
+  icons: { icon: "/assets/images/logo.ico" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
