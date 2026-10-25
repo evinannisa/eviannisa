@@ -15,3 +15,4 @@ logs/
 src/bak/
 * copy*.tsx
 .next/
+.vercel
