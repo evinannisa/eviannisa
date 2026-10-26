@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&family=Share+Tech+Mono&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -56,6 +56,10 @@
   --gh-4: #216e39;
   --amber-color: #d29922;
   --blue-color: #4a8fa8;
+  /* Warna tombol WhatsApp dan email melayang di mode terang. Diambil dari palet
+     About dan dipisah dari --blue-color agar sama di semua halaman. */
+  --whatsapp-ink: #74874f;
+  --email-ink: #5b7c8a;
   --purple-color: #9b7ec8;
   --red-color: #e05c4a;
   --teal-color: #c4a35a;
@@ -78,8 +82,9 @@
    Token --color-* ikut ditulis ulang karena nilainya sudah dihitung di :root.
    Mengganti --blue-color saja tidak akan mengubah class seperti bg-blue.
 
-   Dipasang di :root lewat :has() agar menu dan tombol kontak melayang, yang
-   berada di luar halaman, ikut memakai palet ini selama About terbuka. */
+   Dipasang di :root lewat :has() agar menu, yang berada di luar halaman, ikut
+   memakai palet ini selama About terbuka. Warna tombol kontak melayang diatur
+   terpisah (--whatsapp-ink, --email-ink) agar sama di semua halaman. */
 :root.light:has(.about-page) {
   --red-color: #b8614a;
   --orange-color: #c27d45;
@@ -95,8 +100,6 @@
   --color-green: var(--green-color);
   --color-blue: var(--blue-color);
   --color-purple: var(--purple-color);
-  /* Hijau merek WhatsApp diredam agar sejalan dengan palet */
-  --whatsapp-ink: var(--green-color);
 }
 
 @theme inline {

@@ -489,7 +489,7 @@ export function SideMenu() {
           })}
         <div
           data-menu-item
-          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-border/50 font-mono text-sm text-muted whitespace-nowrap"
+          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-border/50 font-mono text-sm text-muted whitespace-nowrap last:pb-0.5"
         >
           <span className="flex items-center gap-2">
             {theme === "dark" ? (
@@ -507,7 +507,7 @@ export function SideMenu() {
             type="button"
             data-menu-item
             onClick={resetPlace}
-            className="flex items-center gap-2 py-2 pl-3 pr-4 cursor-pointer mt-1.25 pt-2 bg-none border-t border-dashed border-border rounded-none font-mono text-[0.765rem] text-muted whitespace-nowrap text-left"
+            className="flex items-center gap-2 py-2 pl-3 pr-4 cursor-pointer pt-2 bg-none border-t border-border/50 rounded-none font-mono text-[0.765rem] text-muted whitespace-nowrap text-left"
             style={{
               borderRight: "none",
               borderBottom: "none",

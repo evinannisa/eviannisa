@@ -4,6 +4,11 @@ import { useTheme } from "@/components/ThemeProvider";
 import { CodingArt } from "@/components/CodingArt";
 import { PageDoodles, WAVE, WAVE_INK } from "@/components/PageDoodles";
 import { ArrowUpRight } from "lucide-react";
+import { useEffect, useRef } from "react";
+
+// Jarak garis buku (lihat .notebook di index.css) dan jarak garis dari baseline teks.
+const LINE = 32;
+const LINE_GAP = 8;
 
 const C = {
   bg: "var(--bg-color)",
@@ -23,9 +28,31 @@ const C = {
 
 export default function Home() {
   const { theme } = useTheme();
+  const sectionRef = useRef<HTMLElement>(null);
+  const baseRef = useRef<HTMLSpanElement>(null);
+
+  // Konten diletakkan di tengah layar, jadi posisi paragraf ikut berubah. Garis buku
+  // digeser agar selalu tepat di bawah baris teks.
+  useEffect(() => {
+    const section = sectionRef.current;
+    const base = baseRef.current;
+    if (!section || !base) return;
+    const align = () => {
+      const y = base.getBoundingClientRect().top - section.getBoundingClientRect().top;
+      const off = (((y + LINE_GAP - (LINE - 1)) % LINE) + LINE) % LINE;
+      section.style.backgroundPositionY = `${off}px`;
+    };
+    align();
+    const ro = new ResizeObserver(align);
+    ro.observe(section);
+    document.fonts?.ready.then(align);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div className="mt-1 sm:mt-1">
       <section
+        ref={sectionRef}
         className="min-h-screen flex items-center relative overflow-hidden px-6 pt-24 pb-15 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
@@ -239,14 +266,16 @@ export default function Home() {
             <p
               style={{
                 fontFamily: "var(--font-poppins-sans)",
-                // Tinggi baris tetap (±31px) agar teks sejajar dengan garis buku,
-                // meskipun font mengecil di layar sempit.
-                lineHeight: "1.95rem",
+                // Tinggi baris sama dengan jarak garis buku agar setiap baris teks
+                // jatuh di atas garis, berapa pun ukuran font-nya.
+                lineHeight: `${LINE}px`,
                 letterSpacing: "0.012em",
                 color: C.muted,
               }}
               className="mb-7 lg:max-w-150 text-sm sm:text-base"
             >
+              {/* Penanda baseline baris pertama untuk menyelaraskan garis buku. */}
+              <span ref={baseRef} aria-hidden="true" className="inline-block h-0 w-0" />
               I build things, learn new stuff, and turn little ideas into something real. I’m always
               curious, trying something new, and seeing where it takes me.
               <br />

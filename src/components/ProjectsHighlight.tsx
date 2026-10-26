@@ -162,7 +162,7 @@ export function ProjectsHighlight() {
   return (
     <section ref={rootRef} className="relative lg:max-w-160">
       <svg
-        className="ph-dots absolute pointer-events-none"
+        className="ph-dots absolute pointer-events-none hidden lg:block"
         style={{ top: "-10rem", left: "5rem", width: 26 }}
         viewBox="0 0 40 20"
         fill="none"

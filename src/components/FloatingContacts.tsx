@@ -66,7 +66,7 @@ const contacts: Contact[] = [
     key: "whatsapp",
     note: "wa me ~",
     href: whatsappHref(WHATSAPP_MESSAGE),
-    // Warna hijau WhatsApp, kecuali jika halaman menggantinya lewat --whatsapp-ink.
+    // Hijau WhatsApp, kecuali jika tema menggantinya lewat --whatsapp-ink.
     ink: "var(--whatsapp-ink, #25D366)",
     tilt: 5,
     icon: <WhatsAppIcon />,
@@ -77,7 +77,8 @@ const contacts: Contact[] = [
     key: "email",
     note: "drop a mail",
     href: `mailto:${EMAIL}?subject=${encodeURIComponent(EMAIL_SUBJECT)}`,
-    ink: "var(--blue-color)",
+    // Di mode terang memakai --email-ink agar sama di semua halaman.
+    ink: "var(--email-ink, var(--blue-color))",
     tilt: -3,
     icon: <Mail size={19} strokeWidth={2.2} />,
   },
@@ -91,6 +92,8 @@ export function FloatingContacts() {
   const launcherRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isChatRoute = pathname === "/chat";
+  // Di layar sempit, tombol kontak melayang hanya tampil di halaman Connect with me (beranda).
+  const showContacts = pathname === "/";
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 500);
@@ -115,7 +118,9 @@ export function FloatingContacts() {
       {!isChatRoute && <ChatPopup open={open} onClose={closeChat} />}
       <TimeCapsulePopup open={capsuleOpen} onClose={closeCapsule} />
 
-      <div className="pointer-events-none fixed z-50 flex flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8">
+      <div
+        className={`pointer-events-none fixed z-50 flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8 ${showContacts ? "flex" : "hidden sm:flex"}`}
+      >
         <div
           className="hidden lg:flex flex-col items-end pr-1 pointer-events-none"
           style={{

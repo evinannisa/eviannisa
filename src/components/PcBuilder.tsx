@@ -1872,12 +1872,13 @@ export function PcBuilder() {
       ))}
     </>
   );
-  // Layar POST mode teks: abu-abu VGA di atas hitam, seperti BIOS asli. VT323 meniru
-  // font bitmap layar BIOS.
+  // Layar POST mode teks: abu-abu VGA di atas hitam, seperti BIOS asli. Share Tech Mono
+  // dipakai karena bentuknya mirip font terminal BIOS, tetapi garisnya tipis.
   const postScreen = (
     <div
-      className="flex flex-1 flex-col px-6 py-5 text-[0.9rem] leading-[1.22] text-[#b4b4b4]"
-      style={{ fontFamily: "'VT323', monospace" }}
+      className="flex flex-1 flex-col px-6 py-5 text-[0.75rem] leading-[1.47] text-[#b4b4b4]"
+      // font-synthesis dimatikan agar browser tidak membuat versi tebal tiruan.
+      style={{ fontFamily: "'Share Tech Mono', monospace", fontWeight: 400, fontSynthesis: "none" }}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -1885,7 +1886,7 @@ export function PcBuilder() {
           <p className="m-0 text-[#7c7c7c]">Copyright (C) 2026 · All rights reserved</p>
         </div>
         {/* Logo papan di pojok kanan atas, seperti layar POST asli */}
-        <span className="shrink-0 border border-[#b4b4b4] px-1.5 py-0.5 font-bold tracking-[0.12em] text-[#e2e2e2]">
+        <span className="shrink-0 border border-[#b4b4b4] px-1.5 py-0.5 tracking-[0.12em] text-[#e2e2e2]">
           B650
         </span>
       </div>
@@ -2231,10 +2232,6 @@ export function PcBuilder() {
               <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
                 Build a PC
               </h2>
-              <p className="mt-3 mb-0 font-poppins-sans text-sm leading-[1.8] text-muted">
-                From the smallest chip to the first boot. Drag each part into the case and follow
-                the build like a pro would.
-              </p>
             </div>
 
             <div className="flex items-baseline justify-between lg:mt-4">

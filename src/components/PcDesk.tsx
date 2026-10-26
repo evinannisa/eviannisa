@@ -117,6 +117,18 @@ const CAMS: Cam[] = [
   { key: "top", label: "top down", yaw: 6, pitch: -62, dist: 900, at: [60, -100, 40] },
 ];
 
+// Layar sempit memakai bingkai 4:3 yang lebih tinggi, jadi jarak dan titik bidik kamera
+// disetel ulang agar adegan tetap di tengah. Layar BIOS dibuat hampir memenuhi bingkai
+// agar teksnya terbaca.
+const CAMS_NARROW: Record<string, Pick<Cam, "dist" | "at">> = {
+  screen: { dist: -760, at: [MON.x, MON_Y, MON.z] },
+  front: { dist: 170, at: [0, -170, 40] },
+  hero: { dist: 220, at: [20, -160, 20] },
+  low: { dist: 10, at: [120, -150, 0] },
+  glass: { dist: -80, at: [TOWER.x - 60, -TOWER.h / 2, TOWER.z] },
+  top: { dist: 450, at: [30, -90, 10] },
+};
+
 const KEY_ROWS = [14, 14, 13, 12, 0];
 
 export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; screen: ReactNode; booting: boolean }) {
@@ -126,6 +138,8 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const [orbit, setOrbit] = useState<{ yaw: number; pitch: number } | null>(null);
   const [touring, setTouring] = useState(true);
   const [dragging, setDragging] = useState(false);
+  // Sama dengan batas sm: di bawahnya bingkai adegan berubah dari 16:9 menjadi 4:3.
+  const [narrow, setNarrow] = useState(false);
   const drag = useRef<{ x: number; y: number; yaw: number; pitch: number } | null>(null);
 
   // Adegan digambar di ruang 1000 px, lalu diskalakan mengikuti lebar kartu.
@@ -135,6 +149,14 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
     const ro = new ResizeObserver(() => setK(el.clientWidth / 1000));
     ro.observe(el);
     return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
   // Kamera berganti sudut otomatis seperti video produk, lalu berhenti saat pengguna memilih sudut sendiri.
@@ -158,7 +180,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
     return () => window.clearTimeout(t);
   }, [touring, cam, booting]);
 
-  const base = CAMS[cam];
+  const base = narrow ? { ...CAMS[cam], ...CAMS_NARROW[CAMS[cam].key] } : CAMS[cam];
   const yaw = orbit?.yaw ?? base.yaw;
   const pitch = orbit?.pitch ?? base.pitch;
   const [tx, ty, tz] = base.at;
