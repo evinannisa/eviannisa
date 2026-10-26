@@ -183,18 +183,21 @@ export default function Experience() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between gap-3 w-full min-w-0">
-                <div className="flex flex-col gap-1 min-w-0">
-                  <h2 className="m-0 font-poppins-sans text-base text-foreground">{g.place}</h2>
-                  {PLACE_LOCATION[g.place] && (
-                    <div className="font-mono text-sm text-muted leading-[1.4]">
-                      {PLACE_LOCATION[g.place]}
-                    </div>
-                  )}
+              {/* Lokasi di baris sendiri agar tidak terdesak oleh tanggal. */}
+              <div className="flex flex-col gap-1 w-full min-w-0">
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="m-0 min-w-0 font-poppins-sans text-sm sm:text-base text-foreground">
+                    {g.place}
+                  </h2>
+                  <div className="shrink-0 whitespace-nowrap text-xs sm:text-sm font-poppins-sans text-foreground">
+                    {placeSpan(g.roles)}
+                  </div>
                 </div>
-                <div className="ml-auto self-start shrink-0 whitespace-nowrap text-sm font-poppins-sans text-foreground">
-                  {placeSpan(g.roles)}
-                </div>
+                {PLACE_LOCATION[g.place] && (
+                  <div className="font-mono text-xs sm:text-sm text-muted leading-[1.4]">
+                    {PLACE_LOCATION[g.place]}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -241,17 +244,17 @@ export default function Experience() {
                     </svg>
 
                     <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-                      <span className="text-base text-foreground font-mono leading-tight opacity-90">
+                      <span className="text-sm sm:text-base text-foreground font-mono leading-tight opacity-90">
                         {t.title}
                       </span>
                       {g.roles.length > 1 && (
-                        <span className="shrink-0 font-mono text-sm text-muted opacity-80">
+                        <span className="shrink-0 font-mono text-xs sm:text-sm text-muted opacity-80">
                           {t.year}
                         </span>
                       )}
                     </div>
 
-                    <p className="m-0 font-poppins-sans text-base leading-[1.75] tracking-[0.012em] text-muted max-w-155">
+                    <p className="m-0 font-poppins-sans text-sm sm:text-base leading-[1.75] tracking-[0.012em] text-muted max-w-155">
                       {t.desc}
                     </p>
 
@@ -260,7 +263,7 @@ export default function Experience() {
                         {t.skills.map((s) => (
                           <li
                             key={s}
-                            className="py-1.5 px-3 font-mono text-[0.805rem] leading-none text-muted rounded-md border border-border bg-transparent"
+                            className="py-1.5 px-3 font-mono text-xs sm:text-[0.805rem] leading-none text-muted rounded-md border border-border bg-transparent"
                           >
                             {s}
                           </li>

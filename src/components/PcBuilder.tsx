@@ -124,6 +124,9 @@ type Cable = {
   split?: number;
   d: string;
   ok: string;
+  // Pengenalan singkat kabel untuk kartu penjelasan.
+  title: string;
+  what: string;
 };
 const CABLES: Cable[] = [
   {
@@ -135,6 +138,8 @@ const CABLES: Cable[] = [
     grid: [2, 12],
     d: "M204,366 C276,366 350,362 350,318 L350,138 C350,112 345,100 331,98",
     ok: "24-pin ATX clicked in, the motherboard has power",
+    title: "What is the 24-pin ATX cable?",
+    what: "The main power cable of the motherboard. It powers the board itself, along with the RAM, the SSD and the chips on it.",
   },
   {
     id: "eps",
@@ -146,6 +151,8 @@ const CABLES: Cable[] = [
     split: 2,
     d: "M34,346 C20,338 17,320 17,296 L17,38 C17,24 25,18 42,18 L170,18 C182,18 189,21 189,27",
     ok: "EPS 4+4 in, the CPU power stages are fed directly",
+    title: "What is the EPS cable?",
+    what: "A power cable just for the CPU. It feeds the power stages around the socket, which turn it into the low voltage the CPU runs on.",
   },
   {
     id: "pcie",
@@ -157,6 +164,8 @@ const CABLES: Cable[] = [
     split: 3,
     d: "M204,376 C296,376 377,370 377,326 L377,236 C377,214 366,204 350,203",
     ok: "PCIe 6+2 in, the card gets up to 150 W on top of the 75 W from the slot",
+    title: "What is the PCIe power cable?",
+    what: "Extra power for the graphics card. The slot alone gives up to 75 W, and this cable adds up to 150 W more.",
   },
   {
     id: "fan",
@@ -167,6 +176,8 @@ const CABLES: Cable[] = [
     grid: [1, 4],
     d: "M172,118 C156,120 140,124 131,133 C127,137 125,140 124,143",
     ok: "fan in CPU_FAN, the BIOS can now speed it up and down with the temperature",
+    title: "What is the CPU fan cable?",
+    what: "It powers the cooler fan and lets the motherboard change its speed based on the CPU temperature.",
   },
   {
     id: "panel",
@@ -177,6 +188,8 @@ const CABLES: Cable[] = [
     grid: [2, 5],
     d: "M440,392 C404,392 352,388 324,360 C306,342 296,328 292,313",
     ok: "front panel wired, the power button on the case now works",
+    title: "What are the front panel cables?",
+    what: "They connect the power button, reset button and LEDs on the case to the motherboard, so the case buttons can control the PC.",
   },
 ];
 
@@ -312,7 +325,7 @@ type Step = {
   needs?: string[];
   needsWhy?: string;
   // Materi singkat: apa itu, bagaimana kerjanya, dan tips teknisi.
-  learn: { what: string; how: string; tip: string };
+  learn: { what: string };
 };
 
 const CPU_ART = (
@@ -775,8 +788,6 @@ const STEPS: Step[] = [
     watts: 120,
     learn: {
       what: "The Central Processing Unit is the brain of the computer. Every click, keystroke and line of code ends up as instructions the CPU executes.",
-      how: "It runs billions of cycles per second (4.2 GHz = 4.2 billion). The 7800X3D has 8 cores, so it can work on 8 tasks at once, plus 96 MB of 3D V-Cache stacked on top of the chip, which keeps game data close and fast.",
-      tip: "Hold it by the edges and never touch the contacts. The small golden triangle must line up with the triangle on the socket, it only fits one way.",
     },
     icon: { box: { x: 175, y: 64, w: 60, h: 60 }, art: CPU_ART },
   },
@@ -791,9 +802,7 @@ const STEPS: Step[] = [
     done: "pea-sized dot, the cooler pressure will spread it evenly",
     watts: 0,
     learn: {
-      what: "Thermal paste is a thermal interface material (TIM) that sits between the CPU and the cooler.",
-      how: "The metal lid of the CPU and the base of the cooler look flat, but up close they are full of tiny gaps filled with air, and air is a poor heat conductor. Paste fills those gaps so heat can flow from the CPU into the cooler.",
-      tip: "A pea-sized dot in the center is enough. The mounting pressure of the cooler spreads it. Too little leaves air pockets, too much spills over the edge.",
+      what: "Thermal paste sits between the CPU and the cooler. It fills the tiny air gaps between them so heat can flow from the CPU into the cooler.",
     },
     icon: {
       box: { x: 0, y: 0, w: 40, h: 40 },
@@ -816,8 +825,6 @@ const STEPS: Step[] = [
     watts: 10,
     learn: {
       what: "Random Access Memory is the short-term workspace of the computer. It holds whatever the CPU is working on right now: open apps, browser tabs, game levels.",
-      how: "RAM is around 100x faster than an SSD but it forgets everything when the power goes off. In dual channel the CPU talks to two sticks at the same time, roughly doubling memory bandwidth.",
-      tip: "With two sticks, use A2 and B2 (the second and fourth slots from the CPU). Push until both clips snap shut.",
     },
     icon: { box: { x: 208, y: 40, w: 134, h: 134 }, art: [262, 280].map(RAM_ART) },
   },
@@ -832,8 +839,6 @@ const STEPS: Step[] = [
     watts: 7,
     learn: {
       what: "A Solid State Drive is long-term storage. The operating system, apps and your files live here and stay put when the power is off.",
-      how: "An M.2 NVMe drive plugs straight into the PCIe lanes on the motherboard, no cables. A Gen4 drive reads around 7,000 MB/s, about 13x faster than a SATA SSD and 50x faster than a hard disk.",
-      tip: "Peel the plastic film off the thermal pad on the M.2 heatsink, otherwise the drive overheats and slows down.",
     },
     icon: { box: { x: 146, y: 97, w: 118, h: 118 }, art: SSD_ART },
   },
@@ -850,8 +855,6 @@ const STEPS: Step[] = [
     watts: 3,
     learn: {
       what: "The CPU cooler moves heat away from the CPU so it can keep running at full speed.",
-      how: "The CPU turns electricity into heat, up to 120 W here. Copper heatpipes carry that heat up into thin aluminium fins and the fan blows it away. Without a cooler the CPU throttles or shuts itself down within seconds.",
-      tip: "Its fan cable goes into the CPU_FAN header later, so the BIOS can speed it up and down with the temperature.",
     },
     icon: { box: { x: 166, y: 54, w: 80, h: 80 }, art: COOLER_ART },
   },
@@ -865,9 +868,7 @@ const STEPS: Step[] = [
     done: "rear exhaust set, airflow goes front to back",
     watts: 2,
     learn: {
-      what: "Case fans move air through the whole case, not just one part.",
-      how: "Front fans pull cool air in, the rear fan pushes hot air out. A clear front-to-back path keeps the CPU, GPU and SSD cooler at the same time, and lets every fan spin slower and quieter.",
-      tip: "Look for the small arrows on the fan frame, they show which way the air flows.",
+      what: "Case fans move air through the whole case, pulling cool air in and pushing hot air out, so every part stays cool.",
     },
     icon: { box: { x: 22, y: 36, w: 72, h: 72 }, art: CASEFAN_ART },
   },
@@ -881,8 +882,6 @@ const STEPS: Step[] = [
     watts: 220,
     learn: {
       what: "The Graphics Processing Unit draws everything you see on screen, and is also what powers most AI work today.",
-      how: "Where a CPU has a few strong cores, a GPU has thousands of small ones that work in parallel, perfect for calculating millions of pixels at once. It has its own fast memory, 12 GB of VRAM here.",
-      tip: "The top slot is wired to the CPU with 16 PCIe lanes. The lower x4 slot only has 4, which would choke the card. Listen for the click of the slot latch.",
     },
     icon: { box: { x: 96, y: 86, w: 280, h: 280 }, art: GPU_ART },
   },
@@ -897,8 +896,6 @@ const STEPS: Step[] = [
     watts: 0,
     learn: {
       what: "The Power Supply Unit is the heart of the system. It feeds every part with the electricity it needs.",
-      how: "It converts AC power from the wall (220 V) into steady DC voltages: 12 V, 5 V and 3.3 V. 80+ Gold means at least about 87% of the power reaches the parts and only a little is lost as heat.",
-      tip: "Aim for a load around 50 to 60% of the rating, that is where a PSU is most efficient and quietest. 362 W on a 750 W unit is a comfortable fit.",
     },
     icon: { box: { x: 20, y: 280, w: 190, h: 190 }, art: PSU_ART },
   },
@@ -915,8 +912,6 @@ const STEPS: Step[] = [
     watts: 0,
     learn: {
       what: "Cables carry power from the PSU to the parts, and signals from the case to the motherboard.",
-      how: "The 24-pin powers the motherboard itself, the 8-pin EPS feeds the CPU power stages, and the PCIe 6+2 gives the GPU extra power beyond the 75 W the slot supplies. The cooler fan goes into CPU_FAN, and the front panel wires connect the power button.",
-      tip: "EPS and PCIe are both 8-pin and look alike, but they are keyed differently. Never force a plug, if it does not slide in, it is the wrong one.",
     },
     icon: {
       box: { x: 0, y: 0, w: 40, h: 40 },
@@ -960,25 +955,37 @@ function learnTitle(s: Step) {
   return `What is ${article} ${s.name}?`;
 }
 
-// Kartu materi: penjelasan komponen dan tips teknisi; cara kerjanya bisa dibuka jika perlu.
-function LearnCard({ step, note }: { step: Step; note?: string }) {
+// Kartu materi: pengenalan singkat komponen dan fungsinya. Untuk kabel, isinya
+// mengikuti kabel yang sedang dipegang atau baru dicolok.
+function LearnCard({
+  step,
+  cable,
+  note,
+  onClose,
+}: {
+  step: Step;
+  cable?: Cable;
+  note?: string;
+  onClose?: () => void;
+}) {
   return (
     <div className="font-poppins-sans">
-      <p className="m-0 font-caveat text-2xl font-bold leading-none text-foreground">
-        {learnTitle(step)}
+      <p className="m-0 font-caveat text-xl sm:text-2xl font-bold leading-none text-foreground">
+        {cable ? cable.title : learnTitle(step)}
       </p>
       {note && <p className="mt-1.5 mb-0 text-[0.785rem] text-muted">{note}</p>}
-      <p className="mt-3 mb-0 text-sm leading-[1.75] text-foreground">{step.learn.what}</p>
-      <p className="mt-3 mb-0 text-sm leading-[1.75] text-muted">
-        <span className="text-blue">pro tip</span> · {step.learn.tip}
+      <p className="mt-3 mb-0 text-sm leading-[1.75] text-foreground">
+        {cable ? cable.what : step.learn.what}
       </p>
-      <details className="group mt-3">
-        <summary className="cursor-pointer list-none text-[0.785rem] text-muted transition-colors duration-300 hover:text-foreground [&::-webkit-details-marker]:hidden">
-          <span className="group-open:hidden">+ how it works</span>
-          <span className="hidden group-open:inline">− how it works</span>
-        </summary>
-        <p className="mt-1.5 mb-0 text-sm leading-[1.75] text-muted">{step.learn.how}</p>
-      </details>
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-4 w-full rounded-md border border-border py-2.5 font-mono text-sm text-foreground"
+        >
+          got it
+        </button>
+      )}
     </div>
   );
 }
@@ -1060,6 +1067,9 @@ export function PcBuilder() {
   const [memCount, setMemCount] = useState(0);
   // Layar cukup lebar untuk menaruh kartu penjelasan di samping papan.
   const [wide, setWide] = useState(false);
+  // Layar sempit: komponen atau kabel yang baru terpasang tetap di-zoom bersama
+  // penjelasannya sampai "got it" ditekan. Item berikutnya tetap bisa langsung dipilih.
+  const [review, setReview] = useState<{ step: string; cable?: string } | null>(null);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -1206,6 +1216,8 @@ export function PcBuilder() {
     say(byId(id).done);
     setDone((d) => (d.includes(id) ? d : [...d, id]));
     setFocusId(null);
+    setPicked(null);
+    if (!wide) setReview({ step: id });
   };
 
   // Alasan komponen ini belum bisa dipasang.
@@ -1381,6 +1393,8 @@ export function PcBuilder() {
     setCables(next);
     if (next.length === CABLES.length) advance("cables");
     else say(`${cable.ok} (${next.length}/${CABLES.length})`);
+    setPicked(null);
+    if (!wide) setReview({ step: "cables", cable: cid });
   };
 
   // Panel bisa ditutup untuk memasang komponen lain terlebih dulu. Stik RAM yang
@@ -1525,6 +1539,7 @@ export function PcBuilder() {
   const startPress = (kind: "part" | "cable", id: string, e: React.PointerEvent) => {
     if (e.button !== 0) return;
     window.getSelection()?.removeAllRanges();
+    setReview(null);
     // Mouse dan pena bisa langsung menyeret. Sentuhan hanya menyeret item yang sudah
     // dipilih, selain itu browser menggulir halaman (pointercancel).
     const touch = e.pointerType === "touch";
@@ -1554,6 +1569,7 @@ export function PcBuilder() {
   };
 
   const reset = () => {
+    setReview(null);
     setDone([]);
     setFocusId(null);
     setCpuIn(false);
@@ -1586,12 +1602,15 @@ export function PcBuilder() {
   // Slot yang berdenyut menandai tujuan komponen yang sedang dipegang atau aksi
   // berikutnya. Garis bantu dan labelnya muncul di setiap langkah, tanpa menunggu
   // komponen dipegang, agar pengguna langsung tahu tujuan dan fungsinya.
+  // Layar sempit: garis bantu baru muncul setelah item diketuk, dipegang, atau
+  // langkahnya sedang dikerjakan, agar papan tidak penuh petunjuk sejak awal.
+  const hint = wide || !!active || !!lock || !!picked;
   const glow: { b: Box; label?: string }[] = [];
   if (phase === "build" && holdingCable) {
     CABLES.filter((c) => !cables.includes(c.id) && (c.id !== "pcie" || has("gpu"))).forEach((c) =>
       glow.push({ b: grow(c.port, 4), label: c.portName }),
     );
-  } else if (phase === "build" && cur) {
+  } else if (phase === "build" && cur && hint) {
     const verb = active ? "drop" : "drag";
     if (cur.id === "cpu" && cpuIn && !leverDown) {
       glow.push({ b: LEVER, label: "click to lock the lever" });
@@ -1654,8 +1673,20 @@ export function PcBuilder() {
   const aiming = !!active || !!lock;
   // Kabel yang sedang diseret ikut di-zoom dan diberi penjelasan seperti komponen lain.
   const heldCable = cableDrag ? CABLES.find((c) => c.id === cableDrag.id) : undefined;
+  const reviewing = !!review && !wide && !aiming && !heldCable && phase === "build";
+  const reviewCable = reviewing ? CABLES.find((c) => c.id === review.cable) : undefined;
+  // Kabel yang sedang dipegang atau baru dicolok: zoom dan penjelasannya mengikuti kabel ini.
+  const focusCable = heldCable ?? reviewCable;
   const explainStep =
-    phase !== "build" ? undefined : heldCable ? byId("cables") : aiming ? cur : undefined;
+    phase !== "build"
+      ? undefined
+      : heldCable
+        ? byId("cables")
+        : aiming
+          ? cur
+          : reviewing
+            ? byId(review.step)
+            : undefined;
   const explain = !!explainStep;
   const side = wide && explain;
   const ox = side ? 135 : 230;
@@ -1663,15 +1694,14 @@ export function PcBuilder() {
     const s = Math.max(side ? 0.8 : 1, Math.min(max, (side ? 240 : 400) / b.w, 360 / b.h));
     return { cx: b.x + b.w / 2, cy: b.y + b.h / 2, s };
   };
-  const view =
-    !explain || !cur
-      ? { cx: 230, cy: 210, s: 1 }
-      : heldCable
-        ? // Zoom ke header tujuan kabel yang dipegang, dengan sedikit area di sekitarnya.
-          fit(grow(heldCable.port, 40), side ? 2.6 : 2.2)
-        : zoomed
-          ? { cx: 205, cy: 94, s: side ? 3.4 : ZOOM }
-          : fit(FOCUS[cur.id] ?? { x: 10, y: 10, w: 440, h: 400 }, side ? 2.6 : 2.2);
+  const view = !explainStep
+    ? { cx: 230, cy: 210, s: 1 }
+    : focusCable
+      ? // Zoom ke header tujuan kabel, dengan sedikit area di sekitarnya.
+        fit(grow(focusCable.port, 40), side ? 2.6 : 2.2)
+      : zoomed
+        ? { cx: 205, cy: 94, s: side ? 3.4 : ZOOM }
+        : fit(FOCUS[explainStep.id] ?? { x: 10, y: 10, w: 440, h: 400 }, side ? 2.6 : 2.2);
   const zoom = view.s !== 1 || view.cx !== ox ? view : null;
   // Batas papan yang terlihat (di luar kartu), dalam koordinat papan.
   const vx0 = view.cx - ox / view.s;
@@ -1749,8 +1779,9 @@ export function PcBuilder() {
         if (!label) return null;
         // Garis bantu di luar area zoom tidak diberi label.
         if (b.x + b.w < vx0 || b.x > vx1 || b.y + b.h < vy0 || b.y > vy1) return null;
-        // Ukuran label di layar tetap sama, berapa pun zoom-nya.
-        const k = 1 / view.s;
+        // Ukuran label di layar tetap sama, berapa pun zoom-nya. Di layar sempit papan
+        // ikut mengecil, jadi label diperbesar agar tetap terbaca.
+        const k = (wide ? 1 : 1.35) / view.s;
         const above = b.y - 10 * k >= vy0 + 12 * k;
         const x = Math.max(vx0 + 4 * k, Math.min(b.x - 2 * k, vx1 - (label.length * 4.9 + 4) * k));
         return (
@@ -1827,7 +1858,7 @@ export function PcBuilder() {
       {/* Kabel: satu garis solid, tebalnya sama untuk semua kabel */}
       {CABLES.filter((c) => cables.includes(c.id)).map((c) => (
         <g key={c.id}>
-          <path d={c.d} pathLength={1} strokeWidth={CABLE_W} className="pc-cable" />
+          <path d={c.d} pathLength={1} strokeWidth={CABLE_W / view.s} className="pc-cable" />
           <rect
             x={c.port.x + 1.5}
             y={c.port.y + 1.5}
@@ -1841,9 +1872,13 @@ export function PcBuilder() {
       ))}
     </>
   );
-  // Layar POST mode teks: abu-abu VGA di atas hitam, seperti BIOS asli.
+  // Layar POST mode teks: abu-abu VGA di atas hitam, seperti BIOS asli. VT323 meniru
+  // font bitmap layar BIOS.
   const postScreen = (
-    <div className="flex flex-1 flex-col px-6 py-5 font-mono text-[0.72rem] leading-[1.7] text-[#b4b4b4]">
+    <div
+      className="flex flex-1 flex-col px-6 py-5 text-[0.9rem] leading-[1.22] text-[#b4b4b4]"
+      style={{ fontFamily: "'VT323', monospace" }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="m-0 text-[#e2e2e2]">B650-A ATX · UEFI BIOS v3.10</p>
@@ -1880,25 +1915,21 @@ export function PcBuilder() {
       style={{ background: WALLPAPER }}
     >
       <div className="flex flex-1 items-center justify-center p-3">
-        <div className="pc-boot w-full max-w-[19rem] overflow-hidden rounded-lg border border-white/15 bg-[#11131a]/80 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-md">
+        <div className="pc-boot w-full max-w-[19rem] overflow-hidden rounded-lg border border-white/15 bg-[#11131a]/90 shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
           <div className="flex items-center gap-1.5 border-b border-white/10 px-2.5 py-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57]" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#febc2e]" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#28c840]" />
             <span className="ml-1.5 text-[0.55rem] text-white/60">build report</span>
           </div>
-          <div className="flex items-center gap-3 px-3 pt-3 sm:gap-4 sm:px-4 sm:pt-4">
-            <p className="m-0 text-[2.4rem] font-semibold leading-none sm:text-[3.2rem]">
-              {g.letter}
-            </p>
+          <div className="flex items-center gap-4 px-4 pt-4">
+            <p className="m-0 text-[3.2rem] font-semibold leading-none">{g.letter}</p>
             <div className="min-w-0">
-              <p className="m-0 text-sm font-semibold leading-tight sm:text-base">It boots!</p>
-              <p className="m-0 mt-0.5 text-[0.58rem] leading-snug text-white/65 sm:text-[0.66rem]">
-                {g.line}
-              </p>
+              <p className="m-0 text-base font-semibold leading-tight">It boots!</p>
+              <p className="m-0 mt-0.5 text-[0.66rem] leading-snug text-white/65">{g.line}</p>
             </div>
           </div>
-          <dl className="m-0 mt-3 grid grid-cols-3 gap-2 border-t border-white/10 px-3 py-2 text-[0.55rem] sm:mt-4 sm:px-4 sm:py-2.5 sm:text-[0.62rem]">
+          <dl className="m-0 mt-4 grid grid-cols-3 gap-2 border-t border-white/10 px-4 py-2.5 text-[0.62rem]">
             {[
               ["time", fmt(elapsed)],
               ["slips", String(mistakes)],
@@ -1913,23 +1944,19 @@ export function PcBuilder() {
         </div>
       </div>
       {/* Taskbar: ikon aplikasi di tengah, jam di kanan */}
-      <div className="flex h-5 shrink-0 items-center justify-between bg-black/45 px-2 backdrop-blur-md sm:h-7 sm:px-3">
+      <div className="flex h-7 shrink-0 items-center justify-between bg-black/55 px-3">
         <span className="w-14" />
-        <span className="flex items-center gap-1.5 sm:gap-2">
-          <span className="grid h-2.5 w-2.5 grid-cols-2 gap-px sm:h-3 sm:w-3">
+        <span className="flex items-center gap-2">
+          <span className="grid h-3 w-3 grid-cols-2 gap-px">
             {[0, 1, 2, 3].map((i) => (
               <span key={i} className="rounded-[1px] bg-white/85" />
             ))}
           </span>
           {["#5aa9ff", "#ffb547", "#9b8cff", "#4ade80"].map((c) => (
-            <span
-              key={c}
-              className="h-2.5 w-2.5 rounded-[3px] sm:h-3 sm:w-3"
-              style={{ background: c }}
-            />
+            <span key={c} className="h-3 w-3 rounded-[3px]" style={{ background: c }} />
           ))}
         </span>
-        <span className="w-14 whitespace-nowrap text-right font-mono text-[0.5rem] text-white/85 sm:text-[0.6rem]">
+        <span className="w-14 whitespace-nowrap text-right font-mono text-[0.6rem] text-white/85">
           {clock}
         </span>
       </div>
@@ -1956,7 +1983,7 @@ export function PcBuilder() {
               itu sendiri, jadi tetap pas di semua ukuran layar. Lebar 460/441.5 membuat
               tepi kanan casing ikut sejajar, sehingga jarak kiri dan kanan sama. */}
           <div className="w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)]">
-            <div className="flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-sm text-muted">
+            <div className="flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-xs sm:text-sm text-muted">
               <span className="flex min-w-0 gap-4">
                 <span className="min-w-0 truncate">
                   {built ? (lit ? "" : "build complete · ready to power on") : (cur?.name ?? "")}
@@ -1981,10 +2008,10 @@ export function PcBuilder() {
                 </span>
               </span>
             </div>
-            {/* Feedback terakhir tampil tepat di atas papan. Tingginya minimal satu baris
-              agar gambar PC tidak bergeser saat pesan muncul */}
+            {/* Feedback terakhir tampil tepat di atas papan, hanya di layar lebar. Tingginya
+              minimal satu baris agar gambar PC tidak bergeser saat pesan muncul */}
             <div
-              className={`mt-1 min-h-[1.7em] px-[calc(100%*10/460)] font-poppins-sans text-sm leading-[1.7] ${lit ? "hidden" : ""}`}
+              className={`mt-1 min-h-[1.7em] px-[calc(100%*10/460)] font-poppins-sans text-sm leading-[1.7] ${lit ? "hidden" : "hidden lg:block"}`}
             >
               <p
                 className="m-0"
@@ -2050,6 +2077,7 @@ export function PcBuilder() {
                   >
                     <LearnCard
                       step={explainStep}
+                      cable={heldCable}
                       note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`}
                     />
                   </div>
@@ -2081,7 +2109,7 @@ export function PcBuilder() {
                             type="button"
                             disabled={filled}
                             onClick={() => pickSlot(name)}
-                            className={`cursor-pointer rounded-md border bg-transparent px-1 py-2.5 font-poppins-sans text-base transition-[border-color,color] duration-300 disabled:cursor-default ${
+                            className={`cursor-pointer rounded-md border bg-transparent px-1 py-2.5 font-poppins-sans text-sm sm:text-base transition-[border-color,color] duration-300 disabled:cursor-default ${
                               filled
                                 ? "border-blue text-blue"
                                 : hinted
@@ -2138,7 +2166,7 @@ export function PcBuilder() {
                       onKeyUp={(e) => {
                         if (e.key === " " || e.key === "Enter") releasePaste();
                       }}
-                      className={`flex-1 cursor-pointer touch-none select-none rounded-md border bg-transparent px-3 py-2.5 font-poppins-sans text-base transition-[border-color,color] duration-300 ${holding ? "border-blue text-blue" : "border-muted text-foreground"}`}
+                      className={`flex-1 cursor-pointer touch-none select-none rounded-md border bg-transparent px-3 py-2.5 font-poppins-sans text-sm sm:text-base transition-[border-color,color] duration-300 ${holding ? "border-blue text-blue" : "border-muted text-foreground"}`}
                     >
                       {pasteState === "ok"
                         ? "✓ perfect"
@@ -2163,10 +2191,21 @@ export function PcBuilder() {
 
           {/* Layar sempit (dan langkah kabel): kartu penjelasan di bawah papan */}
           {!side && explainStep && (
-            <div key={explainStep.id} className="pc-slide mt-3 w-full max-w-150">
+            <div
+              key={`${explainStep.id}-${focusCable?.id ?? ""}`}
+              className="pc-slide mt-3 w-full max-w-150"
+            >
               <LearnCard
                 step={explainStep}
-                note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`}
+                cable={focusCable}
+                note={
+                  heldCable
+                    ? `holding ${heldCable.name} · ${heldCable.pins}`
+                    : reviewing
+                      ? (reviewCable?.ok ?? explainStep.done)
+                      : undefined
+                }
+                onClose={reviewing ? () => setReview(null) : undefined}
               />
             </div>
           )}
@@ -2176,7 +2215,7 @@ export function PcBuilder() {
               <button
                 type="button"
                 onClick={reset}
-                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-base text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                className="w-full cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] sm:w-auto duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
               >
                 <span className="text-red">▶ </span>build another
               </button>
@@ -2209,8 +2248,13 @@ export function PcBuilder() {
               />
             </div>
 
+            {/* Di layar sentuh, item harus diketuk dulu sebelum bisa di-drag (lihat startPress). */}
+            <p className="mt-4 mb-0 font-poppins-sans text-xs leading-[1.6] text-muted lg:hidden">
+              Tap a part first, then drag it into the case.
+            </p>
+
             <>
-              <ol className="mt-4 mb-0 flex list-none flex-col gap-1 p-0">
+              <ol className="mt-2 mb-0 flex list-none flex-col gap-1 p-0 lg:mt-4">
                 {queue.map((s) => {
                   // Nomor tetap mengikuti urutan rakitan, bukan posisi di daftar.
                   const i = STEPS.indexOf(s);
@@ -2309,7 +2353,7 @@ export function PcBuilder() {
                   type="button"
                   disabled={!built}
                   onClick={powerOn}
-                  className="flex-1 cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-base text-foreground transition-[border-color,opacity] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted disabled:cursor-default disabled:opacity-40"
+                  className="flex-1 cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color,opacity] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted disabled:cursor-default disabled:opacity-40"
                 >
                   <span className="text-red">▶ </span>
                   power on
@@ -2317,7 +2361,7 @@ export function PcBuilder() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-base text-muted transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                  className="cursor-pointer rounded-md border border-border bg-transparent px-3 py-2 font-poppins-sans text-sm sm:text-base text-muted transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
                 >
                   reset
                 </button>

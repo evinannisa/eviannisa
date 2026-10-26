@@ -200,7 +200,7 @@ export function WorkHighlight() {
           Work Experience
         </div>
         <svg
-          className="ah-doodle ah-laptop doodle-sm lg:hidden pointer-events-none"
+          className="ah-doodle ah-laptop doodle-sm hidden sm:block lg:hidden pointer-events-none"
           width={34}
           viewBox="0 0 116 96"
           fill="none"

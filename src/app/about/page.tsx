@@ -3,7 +3,7 @@
 import { useTheme } from "@/components/ThemeProvider";
 import { Monitor } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AboutDoodles, AboutPageDoodles, DOTS } from "@/components/AboutDoodles";
+import { AboutDoodles, AboutPageDoodles } from "@/components/AboutDoodles";
 import { GithubPanel } from "@/components/GithubPanel";
 import { EducationTimeline } from "@/components/EducationTimeline";
 import { WorkHighlight } from "@/components/WorkHighlight";
@@ -191,31 +191,13 @@ export default function About() {
 
           {/* Bio dan fakta singkat */}
           <div className="flex flex-col gap-2 sm:gap-4">
-            <div className="flex items-center gap-4">
-              <div>
-                <div className="text-xl sm:text-2xl font-caveat font-bold tracking-[0.080em] text-foreground">
-                  Evi Nur Annisa
-                </div>
-                <div className="text-[12px] sm:text-sm font-poppins text-muted font-normal tracking-[0.018em]">
-                  Software Engineer
-                </div>
+            <div>
+              <div className="text-xl sm:text-2xl font-caveat font-bold tracking-[0.080em] text-foreground">
+                Evi Nur Annisa
               </div>
-              {/* Hanya di layar sempit. Di layar lebar titik ini ada di bawah bio (AboutDoodles). */}
-              <svg
-                className="md:hidden shrink-0"
-                width={30}
-                viewBox="0 0 40 20"
-                fill="none"
-                stroke="var(--muted-color)"
-                strokeWidth={2.6}
-                strokeLinecap="round"
-                opacity="0.45"
-                aria-hidden="true"
-              >
-                {DOTS.map((d) => (
-                  <path key={d} d={d} />
-                ))}
-              </svg>
+              <div className="text-[12px] sm:text-sm font-poppins text-muted font-normal tracking-[0.018em]">
+                Software Engineer
+              </div>
             </div>
             <p className="about-fx font-normal! text-sm sm:text-base font-poppins leading-[1.8] tracking-[0.012em] text-muted">
               Hello! I'm <span className="text-foreground/90 font-medium">Evi</span>. I am a

@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/components/ThemeProvider";
 import { CodingArt } from "@/components/CodingArt";
-import { PageDoodles } from "@/components/PageDoodles";
+import { PageDoodles, WAVE, WAVE_INK } from "@/components/PageDoodles";
 import { ArrowUpRight } from "lucide-react";
 
 const C = {
@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="mt-1 sm:mt-1">
       <section
-        className="min-h-screen flex items-center relative overflow-hidden px-6 py-18 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
+        className="min-h-screen flex items-center relative overflow-hidden px-6 pt-24 pb-15 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
         {/* Doodle yang tersebar di seluruh halaman, di belakang konten */}
@@ -197,11 +197,11 @@ export default function Home() {
                   }}
                 />
               </div>
-              <div>
+              <div className="relative">
                 <div
+                  className="text-xl sm:text-2xl"
                   style={{
                     fontFamily: "'Caveat', cursive",
-                    fontSize: "1.5rem",
                     fontWeight: 700,
                     color: C.fg,
                   }}
@@ -217,6 +217,21 @@ export default function Home() {
                 >
                   Software Engineer
                 </div>
+                {/* Hanya di layar sempit. Dibuat absolute agar posisi nama tidak bergeser.
+                    Di layar lebar gelombang ini ada di atas hero (PageDoodles). */}
+                <svg
+                  className="md:hidden absolute left-12 top-full -mt-0.5"
+                  width={40}
+                  viewBox="0 0 48 28"
+                  fill="none"
+                  stroke={WAVE_INK}
+                  strokeWidth={1.7}
+                  strokeLinecap="round"
+                  opacity="0.5"
+                  aria-hidden="true"
+                >
+                  <path d={WAVE} />
+                </svg>
               </div>
             </div>
 
@@ -224,12 +239,13 @@ export default function Home() {
             <p
               style={{
                 fontFamily: "var(--font-poppins-sans)",
-                fontSize: "1rem",
-                lineHeight: "1.95",
+                // Tinggi baris tetap (±31px) agar teks sejajar dengan garis buku,
+                // meskipun font mengecil di layar sempit.
+                lineHeight: "1.95rem",
                 letterSpacing: "0.012em",
                 color: C.muted,
               }}
-              className="mb-7 lg:max-w-150"
+              className="mb-7 lg:max-w-150 text-sm sm:text-base"
             >
               I build things, learn new stuff, and turn little ideas into something real. I’m always
               curious, trying something new, and seeing where it takes me.

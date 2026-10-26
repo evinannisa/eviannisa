@@ -112,7 +112,7 @@ export default function Projects() {
               onClick={() => {
                 setFilter(f.key);
               }}
-              className="flex-1 sm:flex-none whitespace-nowrap font-mono text-sm sm:text-base font-medium py-1.75 px-2 sm:px-4 cursor-pointer border-none"
+              className="flex-1 sm:flex-none whitespace-nowrap font-mono text-xs sm:text-base font-medium py-1.75 px-2 sm:px-4 cursor-pointer border-none"
               style={{
                 transition: "all 0.15s",
                 backgroundColor:
@@ -212,7 +212,7 @@ export default function Projects() {
                   </span>
 
                   <span
-                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] border border-border px-2 py-0.5 font-mono text-sm text-muted transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
+                    className="pointer-events-none absolute right-2 top-2 rounded-[3px] border border-border px-2 py-0.5 font-mono text-xs sm:text-sm text-muted transition-opacity duration-1000 ease-in-out group-has-[.pj-reveal:hover]:opacity-0"
                     style={{
                       backgroundColor: `color-mix(in srgb, ${C.bg} 88%, transparent)`,
                     }}
@@ -222,10 +222,10 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-1 flex-col px-4 pt-3 pb-3.5">
-                  <span className="font-mono text-sm text-muted">{p.year}</span>
+                  <span className="font-mono text-xs sm:text-sm text-muted">{p.year}</span>
 
                   <div className="mt-1 flex items-start justify-between gap-2.5">
-                    <h3 className="font-poppins-sans text-lg font-medium text-foreground m-0">
+                    <h3 className="font-poppins-sans text-base sm:text-lg font-medium text-foreground m-0">
                       {p.title}
                     </h3>
 
@@ -274,7 +274,7 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  <p className="mt-2 mb-0 font-poppins-sans text-base leading-[1.75] text-muted line-clamp-3">
+                  <p className="mt-2 mb-0 font-poppins-sans text-sm sm:text-base leading-[1.75] text-muted line-clamp-3">
                     {p.desc}
                   </p>
                 </div>

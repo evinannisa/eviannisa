@@ -35,8 +35,11 @@ const navItems = [
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const [hoverResume, setHoverResume] = useState(false);
+  const [mobile, setMobile] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  // Navbar beranda transparan, kecuali di layar sempit setelah di-scroll agar tidak menimpa konten.
+  const clearNav = isHome && !(mobile && scrolled);
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -47,6 +50,14 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const fn = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const fn = () => setMobile(mq.matches);
+    fn();
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
   }, []);
 
   return (
@@ -61,15 +72,15 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
            dan garis bawah. `transition-all` ikut menganimasikan backdrop-filter dan
            properti layout, sehingga navbar terasa tertinggal dari halaman. */
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
-          !isHome && scrolled ? "border-border" : "border-transparent"
+          !clearNav && scrolled ? "border-border" : "border-transparent"
         }`}
         style={{
-          backgroundColor: isHome
+          backgroundColor: clearNav
             ? "transparent"
             : scrolled
               ? "var(--nav-bg-scrolled)"
               : "var(--nav-bg)",
-          backdropFilter: isHome ? "none" : "blur(10px)",
+          backdropFilter: clearNav ? "none" : "blur(10px)",
         }}
       >
         <div className="max-w-5xl mx-auto px-4 pt-3 pb-3 flex items-center justify-between gap-2">
@@ -78,7 +89,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             href={whatsappHref(RESUME_MESSAGE)}
             target="_blank"
             rel="noopener noreferrer"
-            className="sketch relative shrink-0 py-2 px-2.75 no-underline"
+            className="sketch relative shrink-0 py-1.5 px-2 sm:py-2 sm:px-2.75 no-underline"
             style={{
               // @ts-expect-error -- custom property dipakai oleh .sketch
               "--frame": hoverResume ? C.orange : C.border,
@@ -118,7 +129,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
               />
             </svg>
             <span
-              className="inner text-sm font-mono flex-row! items-center font-medium whitespace-nowrap gap-1.25"
+              className="inner text-xs sm:text-sm font-mono flex-row! items-center font-medium whitespace-nowrap gap-1 sm:gap-1.25"
               style={{
                 color: hoverResume ? C.fg : C.muted,
                 transition: "color 0.18s ease",

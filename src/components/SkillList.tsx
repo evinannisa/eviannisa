@@ -60,7 +60,7 @@ export function SkillList({
 
           return (
             <div key={g.label} className="sl-col">
-              <h3 className="text-[1.045rem] font-semibold text-foreground leading-[1.2] mb-[1.1rem] font-poppins-sans">
+              <h3 className="text-sm sm:text-[1.045rem] font-semibold text-foreground leading-[1.2] mb-[1.1rem] font-poppins-sans">
                 {g.label}
               </h3>
 

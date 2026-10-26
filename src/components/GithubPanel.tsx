@@ -18,6 +18,7 @@ const GAP = 3;
 export function GithubPanel() {
   const [data, setData] = useState<Data | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let alive = true;
@@ -29,6 +30,13 @@ export function GithubPanel() {
       alive = false;
     };
   }, []);
+
+  // Di layar sempit grafik bisa di-scroll, jadi digeser ke ujung kanan agar
+  // aktivitas terbaru langsung terlihat.
+  useEffect(() => {
+    const el = graphRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [data]);
 
   useEffect(() => {
     const ctx = gsap.context((self) => {
@@ -124,7 +132,7 @@ export function GithubPanel() {
 
       {days.length > 0 && (
         <>
-          <div className="gh-graph-wrap">
+          <div ref={graphRef} className="gh-graph-wrap">
             <svg
               className="gh-graph"
               viewBox={`0 0 ${w} ${h}`}

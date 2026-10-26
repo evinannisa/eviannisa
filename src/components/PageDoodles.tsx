@@ -15,6 +15,10 @@ type Mark = {
   hide?: string;
 };
 
+// Garis gelombang biru. Juga dipakai di bawah "Software Engineer" di layar sempit (page.tsx).
+export const WAVE = "M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14";
+export const WAVE_INK = "#79c0ff";
+
 const MARKS: Mark[] = [
   // Pita atas
   {
@@ -31,8 +35,9 @@ const MARKS: Mark[] = [
     left: "26%",
     w: 46,
     box: "0 0 48 28",
-    paths: ["M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14"],
-    ink: "#79c0ff",
+    paths: [WAVE],
+    ink: WAVE_INK,
+    hide: "hidden md:block",
   },
   // Sisi kiri
   // Sisi kanan

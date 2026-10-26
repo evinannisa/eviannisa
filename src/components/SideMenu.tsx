@@ -459,7 +459,7 @@ export function SideMenu() {
                 onMouseLeave={() => setHovered(null)}
                 onFocus={() => setHovered(item.href)}
                 onBlur={() => setHovered(null)}
-                className={`relative flex items-center py-2 pl-3 pr-4 font-mono text-base whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
+                className={`relative flex items-center py-2 pl-3 pr-4 font-mono text-sm sm:text-base whitespace-nowrap no-underline ${lifted ? "text-foreground bg-surface2" : "text-muted bg-transparent"} ${isActive ? "font-semibold" : "font-normal"}`}
                 style={{ transition: "background-color 0.15s ease, color 0.15s ease" }}
               >
                 {/* Penanda aktif dipisah dari konten agar tidak ikut bergeser saat animasi item. */}
@@ -489,13 +489,13 @@ export function SideMenu() {
           })}
         <div
           data-menu-item
-          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-border/50 font-mono text-[0.765rem] text-muted whitespace-nowrap"
+          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-border/50 font-mono text-sm text-muted whitespace-nowrap"
         >
           <span className="flex items-center gap-2">
             {theme === "dark" ? (
-              <Moon size={14} strokeWidth={2.2} />
+              <Moon size={15} strokeWidth={2.2} />
             ) : (
-              <Sun size={14} strokeWidth={2.2} />
+              <Sun size={15} strokeWidth={2.2} />
             )}
             {theme === "dark" ? "dark" : "light"}
           </span>
