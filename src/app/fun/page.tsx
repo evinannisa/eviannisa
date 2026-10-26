@@ -17,7 +17,7 @@ export default function Fun() {
         </p>
       </div>
 
-      <div className="px-6 pb-20 max-w-5xl mx-auto">
+      <div className="px-6 pb-8 max-w-5xl mx-auto">
         <PcBuilder />
       </div>
     </div>

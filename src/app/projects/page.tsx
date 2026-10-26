@@ -130,7 +130,7 @@ export default function Projects() {
         </div>
       </div>
 
-      <div className="px-6 pb-20 max-w-5xl mx-auto grid gap-5 sm:grid-cols-2 lg:gap-8">
+      <div className="px-6 pb-8 max-w-5xl mx-auto grid gap-5 sm:grid-cols-2 lg:gap-8">
         {visible.map((p) => {
           const withIcon = p.stack.filter((t) => stackIcon(t));
           const peek = [...withIcon, ...p.stack.filter((t) => !stackIcon(t))].slice(0, 5);

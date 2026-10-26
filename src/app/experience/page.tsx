@@ -134,7 +134,7 @@ export default function Experience() {
 
   return (
     <div className="relative mt-8" style={{ backgroundColor: C.bg, minHeight: "100vh" }}>
-      <div className="px-6 pt-12 pb-12 max-w-5xl mx-auto">
+      <div className="px-6 pt-12 pb-8 max-w-5xl mx-auto">
         <div>
           <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
             Work & Stacks

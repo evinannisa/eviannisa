@@ -151,7 +151,7 @@ export default function About() {
         </p> */}
       </div>
 
-      <div className="px-6 pb-20 max-w-5xl mx-auto">
+      <div className="px-6 pb-8 max-w-5xl mx-auto">
         <div className="relative grid md:grid-cols-2 gap-12 mb-10">
           <AboutDoodles />
 

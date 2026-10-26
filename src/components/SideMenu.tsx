@@ -354,7 +354,7 @@ export function SideMenu() {
   return (
     <div
       ref={rootRef}
-      className="fixed right-0 top-3 z-50 flex sm:top-3"
+      className="fixed right-0 top-2.25 z-50 flex sm:top-3.25"
       style={
         place === null ? undefined : { left: place.x, top: place.y, right: "auto", bottom: "auto" }
       }

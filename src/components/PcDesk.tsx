@@ -133,6 +133,9 @@ const KEY_ROWS = [14, 14, 13, 12, 0];
 
 export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; screen: ReactNode; booting: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
+  // Posisi dan skala layar monitor di bingkai, untuk lapisan 2D (lihat flatOn).
+  const [flat, setFlat] = useState<{ x: number; y: number; w: number; h: number; s: number } | null>(null);
   const [k, setK] = useState(0.8);
   const [cam, setCam] = useState(0);
   const [orbit, setOrbit] = useState<{ yaw: number; pitch: number } | null>(null);
@@ -184,6 +187,26 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const yaw = orbit?.yaw ?? base.yaw;
   const pitch = orbit?.pitch ?? base.pitch;
   const [tx, ty, tz] = base.at;
+
+  // Di layar sempit saat kamera di sudut "screen", isi monitor juga ditampilkan sebagai
+  // lapisan 2D di atas monitor 3D. Safari menggambar elemen 3D dengan resolusi rendah,
+  // sehingga teks di monitor tampak buram.
+  const flatOn = narrow && base.key === "screen" && !orbit && !dragging;
+  useEffect(() => {
+    if (!flatOn) {
+      setFlat(null);
+      return;
+    }
+    // Diukur setelah transisi kamera (1.8 detik) selesai.
+    const t = window.setTimeout(() => {
+      const stage = stageRef.current?.getBoundingClientRect();
+      const el = screenRef.current;
+      if (!stage || !el) return;
+      const r = el.getBoundingClientRect();
+      setFlat({ x: r.left - stage.left, y: r.top - stage.top, w: r.width, h: r.height, s: r.width / el.offsetWidth });
+    }, 1850);
+    return () => window.clearTimeout(t);
+  }, [flatOn, k]);
 
   const pick = (i: number) => {
     setTouring(false);
@@ -396,7 +419,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
                 style: { background: "#0b0b0c", padding: "8px 8px 16px", boxShadow: "inset 0 0 0 1px #2b2c30" },
                 children: (
                   <>
-                    <div className="relative flex h-full flex-col overflow-hidden rounded-[2px] bg-black">
+                    <div ref={screenRef} className="relative flex h-full flex-col overflow-hidden rounded-[2px] bg-black">
                       {screen}
                       {/* Lapisan kaca dengan kilap diagonal tipis */}
                       <div
@@ -496,6 +519,26 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
             }}
           />
         </div>
+
+        {flat && (
+          <div
+            className="pc-fade pointer-events-none absolute overflow-hidden rounded-[2px] bg-black"
+            style={{ left: flat.x, top: flat.y, width: flat.w, height: flat.h }}
+            aria-hidden="true"
+          >
+            <div
+              className="flex flex-col"
+              style={{
+                width: flat.w / flat.s,
+                height: flat.h / flat.s,
+                transform: `scale(${flat.s})`,
+                transformOrigin: "0 0",
+              }}
+            >
+              {screen}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Pilihan sudut kamera, di bawah adegan agar tidak menutupi gambar */}
