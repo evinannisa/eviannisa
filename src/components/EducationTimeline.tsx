@@ -6,6 +6,25 @@ import Link from "next/link";
 
 const ACCENT = "var(--muted-color)";
 
+// Doodle buku dipakai di dua ukuran: besar di layar lebar, kecil di samping judul.
+const bookPaths = (
+  <>
+    <path
+      className="edu-draw"
+      d="M7,21 C23,15 41,13 58,18 C58,41 58,63 58,82 C41,77 23,79 8,84 C6,62 8,41 7,21"
+    />
+    <path
+      className="edu-draw"
+      d="M58,18 C75,13 93,15 109,21 C108,41 109,62 107,84 C93,79 75,77 58,82"
+    />
+    <path className="edu-draw" strokeWidth="1.4" d="M15,33 C27,29 41,28 50,31" />
+    <path className="edu-draw" strokeWidth="1.4" d="M15,45 C27,41 41,40 50,43" />
+    <path className="edu-draw" strokeWidth="1.4" d="M15,57 C27,53 38,52 46,55" />
+    <path className="edu-draw" strokeWidth="1.4" d="M66,31 C78,28 92,29 101,33" />
+    <path className="edu-draw" strokeWidth="1.4" d="M66,43 C78,40 89,41 98,45" />
+  </>
+);
+
 export function EducationTimeline() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -62,6 +81,18 @@ export function EducationTimeline() {
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Education
         </div>
+        <svg
+          className="edu-doodle edu-book doodle-sm lg:hidden pointer-events-none"
+          width={34}
+          viewBox="0 0 120 92"
+          fill="none"
+          stroke="var(--muted-color)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          {bookPaths}
+        </svg>
       </div>
 
       <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
@@ -82,19 +113,7 @@ export function EducationTimeline() {
         opacity="0.5"
         aria-hidden="true"
       >
-        <path
-          className="edu-draw"
-          d="M7,21 C23,15 41,13 58,18 C58,41 58,63 58,82 C41,77 23,79 8,84 C6,62 8,41 7,21"
-        />
-        <path
-          className="edu-draw"
-          d="M58,18 C75,13 93,15 109,21 C108,41 109,62 107,84 C93,79 75,77 58,82"
-        />
-        <path className="edu-draw" strokeWidth="1.4" d="M15,33 C27,29 41,28 50,31" />
-        <path className="edu-draw" strokeWidth="1.4" d="M15,45 C27,41 41,40 50,43" />
-        <path className="edu-draw" strokeWidth="1.4" d="M15,57 C27,53 38,52 46,55" />
-        <path className="edu-draw" strokeWidth="1.4" d="M66,31 C78,28 92,29 101,33" />
-        <path className="edu-draw" strokeWidth="1.4" d="M66,43 C78,40 89,41 98,45" />
+        {bookPaths}
       </svg>
 
       <svg

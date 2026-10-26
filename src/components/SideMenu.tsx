@@ -395,7 +395,7 @@ export function SideMenu() {
       </button>
 
       <div
-        className={`absolute hidden items-center gap-1 sm:flex top-1/2 -translate-y-1/2 pointer-events-none whitespace-nowrap ${side === "left" ? "left-[calc(100%+4px)] flex-row-reverse" : "right-[calc(100%+4px)] flex-row"} ${dragging ? "opacity-0" : "opacity-75"} transition-opacity duration-200 ease`}
+        className={`absolute flex items-center gap-1 top-1/2 -translate-y-1/2 pointer-events-none whitespace-nowrap ${side === "left" ? "left-[calc(100%+4px)] flex-row-reverse" : "right-[calc(100%+4px)] flex-row"} ${dragging ? "opacity-0" : "opacity-75"} transition-opacity duration-200 ease`}
         aria-hidden="true"
       >
         <span className={`text-lg font-semibold font-caveat -rotate-6 text-blue`}>
@@ -489,7 +489,7 @@ export function SideMenu() {
           })}
         <div
           data-menu-item
-          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-dashed border-border font-mono text-[0.765rem] text-muted whitespace-nowrap"
+          className="sm:hidden flex items-center justify-between gap-3 py-2 pl-3 pr-4 mt-1.25 pt-2 border-t border-border/50 font-mono text-[0.765rem] text-muted whitespace-nowrap"
         >
           <span className="flex items-center gap-2">
             {theme === "dark" ? (

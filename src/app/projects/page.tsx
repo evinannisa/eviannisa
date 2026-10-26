@@ -105,14 +105,14 @@ export default function Projects() {
       </div>
 
       <div className="px-6 max-w-5xl mx-auto mb-6">
-        <div className="flex flex-col sm:flex-row sm:inline-flex rounded-md overflow-hidden border border-border">
-          {filterLabels.map((f) => (
+        <div className="flex sm:inline-flex rounded-md overflow-hidden border border-border">
+          {filterLabels.map((f, i) => (
             <button
               key={f.key}
               onClick={() => {
                 setFilter(f.key);
               }}
-              className="font-mono text-base font-medium py-1.75 px-4 cursor-pointer border-none"
+              className="flex-1 sm:flex-none whitespace-nowrap font-mono text-sm sm:text-base font-medium py-1.75 px-2 sm:px-4 cursor-pointer border-none"
               style={{
                 transition: "all 0.15s",
                 backgroundColor:
@@ -120,7 +120,7 @@ export default function Projects() {
                     ? `color-mix(in srgb, ${C.blue} 10%, transparent)`
                     : "transparent",
                 color: filter === f.key ? C.blue : C.muted,
-                borderRight: f.key !== "fullstack" ? `1px solid ${C.border}` : "none",
+                borderRight: i < filterLabels.length - 1 ? `1px solid ${C.border}` : "none",
               }}
             >
               {filter === f.key && <span style={{ color: C.blue }}>▶ </span>}

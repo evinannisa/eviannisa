@@ -1,18 +1,47 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+// Batas waktu menunggu halaman tujuan. Setelah lewat, halaman tetap dibuka.
+const READY_TIMEOUT = 8000;
+// Halaman yang sudah disiapkan langsung dibuka pada klik berikutnya.
+const readyPages = new Set<string>();
+
+// Fetch HTML halaman tujuan (sekaligus memicu compile di mode dev), lalu tunggu
+// semua gambarnya dimuat agar halaman tampil utuh.
+async function preparePage(pathname: string) {
+  if (readyPages.has(pathname)) return;
+  const html = await fetch(pathname, { headers: { accept: "text/html" } }).then((r) => r.text());
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const srcs = new Set(
+    [...doc.querySelectorAll("img[src]")].map((img) => img.getAttribute("src")!),
+  );
+  await Promise.all(
+    [...srcs].map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img.decode().catch(() => {});
+    }),
+  );
+  readyPages.add(pathname);
+}
 
 /**
  * Garis progres tipis di tepi atas layar saat pindah halaman.
  *
  * App Router tidak punya event saat navigasi dimulai, jadi awal navigasi
- * dideteksi dari klik pada link internal dan tombol back/forward. Navigasi
- * dianggap selesai saat `pathname` berubah. Selama menunggu, progres bertambah
- * makin lambat hingga mendekati 90% agar tidak terlihat selesai lebih awal.
+ * dideteksi dari klik pada link internal dan tombol back/forward. Klik link
+ * ditahan sampai halaman tujuan dan gambarnya siap, jadi halaman saat ini tetap
+ * tampil selama menunggu. Navigasi dianggap selesai saat
+ * `pathname` berubah. Selama menunggu, progres bertambah makin lambat hingga
+ * mendekati 90% agar tidak terlihat selesai lebih awal.
  */
 export function TopLoader() {
   const pathname = usePathname();
+  const router = useRouter();
+  // Nomor navigasi terakhir. Jika link lain diklik saat menunggu, navigasi lama dibatalkan.
+  const navId = useRef(0);
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const trickle = useRef<ReturnType<typeof setInterval>>(undefined);
@@ -42,11 +71,20 @@ export function TopLoader() {
       // Navigasi hanya dianggap selesai saat pathname berubah. Link yang hanya
       // mengganti ?query atau #anchor diabaikan agar progres tidak berhenti di tengah.
       if (url.pathname === location.pathname) return;
+      e.preventDefault();
       start();
+      const id = ++navId.current;
+      const timeout = new Promise((r) => setTimeout(r, READY_TIMEOUT));
+      Promise.race([preparePage(url.pathname), timeout])
+        .catch(() => {})
+        .then(() => {
+          if (id === navId.current) router.push(url.pathname + url.search + url.hash);
+        });
     };
 
     // Back/forward yang hanya mengganti #anchor tidak mengubah pathname, jadi diabaikan.
     const onPop = () => {
+      navId.current++;
       if (location.pathname !== current.current) start();
     };
 
@@ -58,7 +96,7 @@ export function TopLoader() {
       clearInterval(trickle.current);
       clearTimeout(hide.current);
     };
-  }, []);
+  }, [router]);
 
   // Halaman baru sudah tampil. Progres dipenuhkan, lalu garisnya dipudarkan.
   useEffect(() => {

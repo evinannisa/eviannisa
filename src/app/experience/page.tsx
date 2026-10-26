@@ -87,7 +87,10 @@ const skillGroups = [
       "Microfrontend",
       "TanStack Start",
       "TanStack Query",
+      "Zustand",
+      "Pinia",
       "Tailwind CSS",
+      "Vuetify",
       "Styled Components",
       "Vanilla CSS",
       "MapLibre GL JS",
@@ -153,7 +156,7 @@ export default function Experience() {
 
         {groups.map((g, gi) => (
           <section key={g.place} className="mb-11 last:mb-0">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-start gap-3 mb-4">
               <div
                 className="shrink-0 flex items-center justify-center overflow-hidden rounded-[9px] border border-border bg-surface"
                 style={{
@@ -180,8 +183,8 @@ export default function Experience() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between w-full">
-                <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between gap-3 w-full min-w-0">
+                <div className="flex flex-col gap-1 min-w-0">
                   <h2 className="m-0 font-poppins-sans text-base text-foreground">{g.place}</h2>
                   {PLACE_LOCATION[g.place] && (
                     <div className="font-mono text-sm text-muted leading-[1.4]">
@@ -189,7 +192,7 @@ export default function Experience() {
                     </div>
                   )}
                 </div>
-                <div className="ml-auto self-start text-sm font-poppins-sans text-foreground">
+                <div className="ml-auto self-start shrink-0 whitespace-nowrap text-sm font-poppins-sans text-foreground">
                   {placeSpan(g.roles)}
                 </div>
               </div>

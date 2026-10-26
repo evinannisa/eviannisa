@@ -13,6 +13,69 @@ const TOP_WORK = timeline.slice(0, 1);
 // Stack diambil dari entri experience terbaru agar selalu sama dengan halaman /experience.
 const STACK_SHOWN = 5;
 
+// Doodle laptop dipakai di dua ukuran: besar di layar lebar, kecil di samping judul.
+const laptopPaths = (
+  <>
+    <path
+      className="ah-draw"
+      d="M16.0,68.0 C30.5,59.3 46.1,51.8 62.0,46.0 C75.9,53.9 90.9,60.7 106.0,66.0 C91.5,74.6 75.8,82.1 60.0,88.0 C46.0,80.2 31.1,73.4 16.0,68.0"
+    />
+    <path
+      className="ah-draw"
+      d="M16.0,68.0 C30.5,59.3 46.1,51.8 62.0,46.0 C61.5,33.2 59.5,20.3 56.0,8.0 C41.4,16.5 25.8,24.0 10.0,30.0 C10.8,42.7 12.8,55.6 16.0,68.0"
+    />
+    <path
+      className="ah-draw"
+      strokeWidth="1.3"
+      d="M19.7,60.9 C32.4,56.1 45.0,50.0 56.7,43.2 C54.3,34.1 52.8,24.5 52.3,15.1 C39.7,20.0 27.1,26.1 15.3,32.8 C17.6,41.9 19.1,51.5 19.7,60.9"
+    />
+    <path className="ah-draw" strokeWidth="1.2" d="M9.7,28.0 C25.4,21.9 41.1,14.4 55.7,6.0" />
+    <path
+      className="ah-draw"
+      strokeWidth="1.2"
+      d="M65.6,77.1 C69.4,74.4 73.8,72.4 78.3,71.1 C80.2,72.7 82.4,73.7 84.9,74.1 C81.1,76.8 76.7,78.8 72.2,80.1 C70.3,78.5 68.1,77.5 65.6,77.1"
+    />
+    <path
+      className="ah-draw"
+      strokeWidth="1.4"
+      strokeDasharray="4 2.2"
+      d="M34.6,71.4 C46.6,66.7 58.6,61.0 69.8,54.6"
+    />
+    <path
+      className="ah-draw"
+      strokeWidth="1.4"
+      strokeDasharray="4 2.2"
+      d="M41.2,74.4 C52.4,68.0 64.4,62.3 76.4,57.6"
+    />
+    <path
+      className="ah-draw"
+      strokeWidth="1.4"
+      strokeDasharray="4 2.2"
+      d="M47.8,77.4 C59.8,72.7 71.8,67.0 83.0,60.6"
+    />
+    <path
+      className="ah-draw"
+      strokeWidth="1.4"
+      strokeDasharray="4 2.2"
+      d="M54.4,80.4 C65.6,74.0 77.6,68.3 89.6,63.6"
+    />
+    <path className="wh-code" strokeWidth="2.1" d="M21.5,54.0 C29.5,49.3 38.1,45.2 46.8,41.9" />
+    <path
+      className="wh-code"
+      strokeWidth="2.1"
+      stroke="var(--green-color)"
+      d="M20.6,47.8 C31.0,43.7 41.4,38.7 51.2,33.1"
+    />
+    <path
+      className="wh-code"
+      strokeWidth="2.1"
+      stroke="var(--purple-color)"
+      d="M19.6,41.6 C25.2,38.0 31.3,35.1 37.6,33.0"
+    />
+    <path className="wh-code" strokeWidth="2.1" d="M18.6,35.4 C27.9,31.9 37.1,27.5 45.7,22.5" />
+  </>
+);
+
 export function WorkHighlight() {
   const { theme } = useTheme();
 
@@ -128,63 +191,7 @@ export function WorkHighlight() {
         opacity="0.5"
         aria-hidden="true"
       >
-        <path
-          className="ah-draw"
-          d="M16.0,68.0 C30.5,59.3 46.1,51.8 62.0,46.0 C75.9,53.9 90.9,60.7 106.0,66.0 C91.5,74.6 75.8,82.1 60.0,88.0 C46.0,80.2 31.1,73.4 16.0,68.0"
-        />
-        <path
-          className="ah-draw"
-          d="M16.0,68.0 C30.5,59.3 46.1,51.8 62.0,46.0 C61.5,33.2 59.5,20.3 56.0,8.0 C41.4,16.5 25.8,24.0 10.0,30.0 C10.8,42.7 12.8,55.6 16.0,68.0"
-        />
-        <path
-          className="ah-draw"
-          strokeWidth="1.3"
-          d="M19.7,60.9 C32.4,56.1 45.0,50.0 56.7,43.2 C54.3,34.1 52.8,24.5 52.3,15.1 C39.7,20.0 27.1,26.1 15.3,32.8 C17.6,41.9 19.1,51.5 19.7,60.9"
-        />
-        <path className="ah-draw" strokeWidth="1.2" d="M9.7,28.0 C25.4,21.9 41.1,14.4 55.7,6.0" />
-        <path
-          className="ah-draw"
-          strokeWidth="1.2"
-          d="M65.6,77.1 C69.4,74.4 73.8,72.4 78.3,71.1 C80.2,72.7 82.4,73.7 84.9,74.1 C81.1,76.8 76.7,78.8 72.2,80.1 C70.3,78.5 68.1,77.5 65.6,77.1"
-        />
-        <path
-          className="ah-draw"
-          strokeWidth="1.4"
-          strokeDasharray="4 2.2"
-          d="M34.6,71.4 C46.6,66.7 58.6,61.0 69.8,54.6"
-        />
-        <path
-          className="ah-draw"
-          strokeWidth="1.4"
-          strokeDasharray="4 2.2"
-          d="M41.2,74.4 C52.4,68.0 64.4,62.3 76.4,57.6"
-        />
-        <path
-          className="ah-draw"
-          strokeWidth="1.4"
-          strokeDasharray="4 2.2"
-          d="M47.8,77.4 C59.8,72.7 71.8,67.0 83.0,60.6"
-        />
-        <path
-          className="ah-draw"
-          strokeWidth="1.4"
-          strokeDasharray="4 2.2"
-          d="M54.4,80.4 C65.6,74.0 77.6,68.3 89.6,63.6"
-        />
-        <path className="wh-code" strokeWidth="2.1" d="M21.5,54.0 C29.5,49.3 38.1,45.2 46.8,41.9" />
-        <path
-          className="wh-code"
-          strokeWidth="2.1"
-          stroke="var(--green-color)"
-          d="M20.6,47.8 C31.0,43.7 41.4,38.7 51.2,33.1"
-        />
-        <path
-          className="wh-code"
-          strokeWidth="2.1"
-          stroke="var(--purple-color)"
-          d="M19.6,41.6 C25.2,38.0 31.3,35.1 37.6,33.0"
-        />
-        <path className="wh-code" strokeWidth="2.1" d="M18.6,35.4 C27.9,31.9 37.1,27.5 45.7,22.5" />
+        {laptopPaths}
       </svg>
 
       <div className="flex gap-2.5 items-center sm:justify-end mb-2">
@@ -192,6 +199,18 @@ export function WorkHighlight() {
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Work Experience
         </div>
+        <svg
+          className="ah-doodle ah-laptop doodle-sm lg:hidden pointer-events-none"
+          width={34}
+          viewBox="0 0 116 96"
+          fill="none"
+          stroke="var(--muted-color)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          {laptopPaths}
+        </svg>
       </div>
       <p className="mb-4 sm:mb-6 text-sm sm:text-base sm:text-right lg:max-w-160 text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
         And then, after graduation, everything I had learned and experienced along the way started

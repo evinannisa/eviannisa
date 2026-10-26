@@ -13,6 +13,8 @@ type Mark = {
   ink?: string;
   sw?: number;
   hide?: string;
+  // Kelas tambahan, misalnya untuk memindahkan posisi di layar sempit.
+  className?: string;
 };
 
 export const STAR =
@@ -34,7 +36,6 @@ const GRID_MARKS: Mark[] = [
     paths: [
       "M20.0,6.0 L23.5,15.3 L33.3,15.8 L25.6,22.0 L28.2,31.3 L20.0,25.9 L11.8,31.3 L14.4,22.0 L6.7,15.8 L16.5,15.3 Z",
     ],
-    hide: "hidden sm:block",
   },
   // Strip kanan kolom bio, menghadap celah antarkolom.
   {
@@ -43,7 +44,8 @@ const GRID_MARKS: Mark[] = [
     w: 26,
     box: "0 0 48 28",
     paths: ["M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14"],
-    hide: "hidden md:block",
+    // Di layar sempit posisi ini tertutup polaroid, jadi dipindah ke kanan atasnya.
+    className: "max-md:!top-[12%] max-md:!left-auto max-md:!right-[-3%]",
   },
   // Di bawah paragraf bio, memakai ruang mb-10 milik grid.
   {
@@ -53,7 +55,8 @@ const GRID_MARKS: Mark[] = [
     box: "0 0 40 20",
     paths: ["M6,10 L8,10", "M18,14 L20,14", "M30,10 L32,10"],
     sw: 2.6,
-    hide: "hidden sm:block",
+    // Di layar sempit titik ini tampil di samping nama (lihat about/page.tsx).
+    hide: "hidden md:block",
   },
 ];
 
@@ -119,7 +122,7 @@ function DoodleLayer({ marks, className = "" }: { marks: Mark[]; className?: str
       {marks.map((m, i) => (
         <svg
           key={i}
-          className={`ad-mark absolute ${m.hide ?? ""}`}
+          className={`ad-mark absolute ${m.hide ?? ""} ${m.className ?? ""}`}
           style={{ top: m.top, left: m.left, right: m.right, width: m.w }}
           viewBox={m.box}
           fill="none"

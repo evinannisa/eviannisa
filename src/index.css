@@ -8,11 +8,13 @@
   --fg-color: #e6edf3;
   --muted-color: #8b949e;
   --green-color: #3fb950;
-  /* Hijau khusus untuk sel grafik kontribusi GitHub. Dipisah dari --green-color
-     karena sel grafik memakai opasitas 0.16-1.0, sehingga tingkat terendahnya
-     nyaris hilang di latar hitam. #39d353 (hijau tema gelap GitHub) menaikkan
-     kontras tiap tingkat sebesar 4-28%. */
-  --gh-green: #39d353;
+  /* Warna sel grafik kontribusi per tingkat (palet tema gelap GitHub). Tingkat 0
+     mengikuti warna teks agar menyesuaikan tema. */
+  --gh-0: color-mix(in srgb, var(--fg-color) 16%, transparent);
+  --gh-1: #0e4429;
+  --gh-2: #006d32;
+  --gh-3: #26a641;
+  --gh-4: #39d353;
   --amber-color: #d29922;
   --blue-color: #58a6ff;
   --purple-color: #bc8cff;
@@ -47,9 +49,11 @@
   --fg-color: #2a2118;
   --muted-color: #7a6a55;
   --green-color: #3fb950;
-  /* Tema light memakai hijau yang sama dengan token biasa. Di latar krem,
-     hijau yang lebih terang justru menurunkan kontras. */
-  --gh-green: #3fb950;
+  /* Palet grafik kontribusi tema terang GitHub. */
+  --gh-1: #9be9a8;
+  --gh-2: #40c463;
+  --gh-3: #30a14e;
+  --gh-4: #216e39;
   --amber-color: #d29922;
   --blue-color: #4a8fa8;
   --purple-color: #9b7ec8;
@@ -125,6 +129,8 @@
 }
 html {
   scroll-behavior: smooth;
+  /* Menghilangkan sorotan bawaan browser saat elemen diketuk di layar sentuh. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -554,6 +560,22 @@ html.theme-swapping *::after {
 :root.light .ah-lamp {
   opacity: 0.12;
 }
+/* Doodle kecil di samping judul (layar sempit). Tebal garis dibuat tetap dan
+   opasitasnya dinaikkan agar tetap jelas saat diperkecil. */
+.doodle-sm path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.3;
+}
+.doodle-sm:is(.edu-book, .ah-laptop, .ah-lamp) {
+  opacity: 0.5;
+}
+:root.light .doodle-sm:is(.edu-book, .ah-laptop, .ah-lamp) {
+  opacity: 0.4;
+}
+/* Di versi kecil, garis kode di layar laptop terlalu rapat sehingga disembunyikan. */
+.doodle-sm.ah-laptop .wh-code {
+  display: none;
+}
 :root.light .coding-art {
   --ca-steam-ink: var(--red-color);
 }
@@ -764,11 +786,11 @@ html.theme-swapping *::after {
   z-index: 3;
   pointer-events: none;
 }
-/* Di bawah sm, kartu menyusut mengikuti kolom dan pangkal panah keluar dari
-   layar. Panah disembunyikan agar tidak terpotong. */
+/* Di bawah sm, panah diperkecil dan digeser agar pangkalnya tidak keluar layar. */
 @media (max-width: 639px) {
   .polaroid-arrow {
-    display: none;
+    width: 64px;
+    left: -42px;
   }
 }
 /* Garis putus-putus statis dengan pola 5 garis + 4 jeda. Panjang lengkungnya
@@ -892,8 +914,12 @@ html.theme-swapping *::after {
   display: block;
   text-decoration: none;
 }
-.sketch-card:hover {
-  --frame: var(--muted-color);
+/* Hover hanya aktif di perangkat dengan mouse, sama seperti varian `hover:` Tailwind v4.
+   Di layar sentuh, state hover tertinggal setelah elemen diketuk. */
+@media (hover: hover) {
+  .sketch-card:hover {
+    --frame: var(--muted-color);
+  }
 }
 /* `.sketch > .inner` bawaan memusatkan isi secara vertikal. Kartu dengan
    isi beberapa baris harus dimulai dari atas. */
@@ -919,8 +945,10 @@ html.theme-swapping *::after {
 /* Urutan fungsi penting: `scale` ditulis TERAKHIR agar pembesaran dihitung
    pada sumbu yang sudah lurus. Jika ditaruh sebelum `rotate`, ikon sempat
    bergeser dari titik tengahnya selama animasi. */
-.stack-mark:hover {
-  transform: rotate(0deg) translateY(-2px) scale(1.18);
+@media (hover: hover) {
+  .stack-mark:hover {
+    transform: rotate(0deg) translateY(-2px) scale(1.18);
+  }
 }
 /* Warna ikut ditransisikan dengan durasi yang sama seperti gerakannya, agar
    perubahan warna dan posisi selesai bersamaan. Jika --accent tidak diatur
@@ -928,9 +956,11 @@ html.theme-swapping *::after {
 .stack-logo {
   transition: background-color 0.45s ease;
 }
-.stack-mark:hover .stack-logo {
-  background-color: var(--accent, var(--fg-color));
-  opacity: 1;
+@media (hover: hover) {
+  .stack-mark:hover .stack-logo {
+    background-color: var(--accent, var(--fg-color));
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

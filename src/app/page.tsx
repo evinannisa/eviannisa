@@ -3,6 +3,7 @@
 import { useTheme } from "@/components/ThemeProvider";
 import { CodingArt } from "@/components/CodingArt";
 import { PageDoodles } from "@/components/PageDoodles";
+import { ArrowUpRight } from "lucide-react";
 
 const C = {
   bg: "var(--bg-color)",
@@ -245,7 +246,7 @@ export default function Home() {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-              Available to Opportunity
+              Available for New Opportunities
             </div>
 
             {/* Media sosial */}
@@ -285,6 +286,9 @@ export default function Home() {
                   href={href}
                   {...(href.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
                   style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 3,
                     fontFamily: "var(--font-mono)",
                     fontSize: "0.785rem",
                     padding: "3px 9px",
@@ -304,7 +308,8 @@ export default function Home() {
                     e.currentTarget.style.borderColor = C.border;
                   }}
                 >
-                  ↗ {label}
+                  <ArrowUpRight size={13} strokeWidth={2} aria-hidden="true" />
+                  {label}
                 </a>
               ))}
             </div>

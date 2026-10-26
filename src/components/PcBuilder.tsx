@@ -1047,6 +1047,9 @@ export function PcBuilder() {
   const [drag, setDrag] = useState<{ id: string; x: number; y: number } | null>(null);
   const [msg, setMsg] = useState<Msg | null>(null);
   const [shake, setShake] = useState<string | null>(null);
+  // Item yang dipilih dengan ketukan di layar sentuh, formatnya "part:cpu" atau "cable:atx".
+  // Hanya item ini yang bisa diseret, sehingga daftar tetap bisa digulir.
+  const [picked, setPicked] = useState<string | null>(null);
   const [mistakes, setMistakes] = useState(0);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [endedAt, setEndedAt] = useState<number | null>(null);
@@ -1062,12 +1065,15 @@ export function PcBuilder() {
   const panelRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<SVGGElement>(null);
   // Komponen atau kabel yang sedang ditekan. moved bernilai true jika sudah benar-benar diseret.
+  // armed bernilai false jika item belum dipilih, jadi geserannya hanya menggulir halaman.
   const press = useRef<{
     kind: "part" | "cable";
     id: string;
     x: number;
     y: number;
     moved: boolean;
+    armed: boolean;
+    touch: boolean;
   } | null>(null);
   // Handler drag dari render terbaru, dipanggil oleh listener di window.
   const dragFns = useRef<{
@@ -1112,6 +1118,16 @@ export function PcBuilder() {
   const pct = Math.round((done.length / STEPS.length) * 100);
   const watts = STEPS.filter((x) => has(x.id)).reduce((sum, x) => sum + x.watts, 0);
   const elapsed = startedAt ? (endedAt ?? now) - startedAt : 0;
+
+  // Halaman tidak ikut tergulir selama drag. Listener harus non-passive agar
+  // preventDefault berlaku.
+  useEffect(() => {
+    const block = (e: TouchEvent) => {
+      if (press.current?.armed) e.preventDefault();
+    };
+    window.addEventListener("touchmove", block, { passive: false });
+    return () => window.removeEventListener("touchmove", block);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 640px)");
@@ -1454,7 +1470,7 @@ export function PcBuilder() {
 
   const onDragMove = (e: PointerEvent) => {
     const pr = press.current;
-    if (!pr) return;
+    if (!pr || !pr.armed) return;
     if (!pr.moved) {
       if (Math.hypot(e.clientX - pr.x, e.clientY - pr.y) < 5) return;
       pr.moved = true;
@@ -1490,13 +1506,17 @@ export function PcBuilder() {
       return pr.kind === "part" ? placeAt(pr.id, p) : plug(pr.id, p);
     }
     // Klik biasa hanya menampilkan petunjuk; komponen tetap dipasang dengan drag.
+    // Di layar sentuh, ketukan sekaligus memilih item untuk diseret.
+    const then = pr.touch ? "now drag" : "drag";
     if (pr.kind === "cable") {
-      return say(`drag the ${CABLES.find((c) => c.id === pr.id)!.name} cable onto its header`);
+      if (pr.touch) setPicked(`cable:${pr.id}`);
+      return say(`${then} the ${CABLES.find((c) => c.id === pr.id)!.name} cable onto its header`);
     }
     const s = byId(pr.id);
     if (!ready(s)) return nudge(s);
     setFocusId(s.id);
-    say(canGrab(s) ? `drag the ${s.name} into the case` : busyTip(s));
+    if (pr.touch && canGrab(s)) setPicked(`part:${s.id}`);
+    say(canGrab(s) ? `${then} the ${s.name} into the case` : busyTip(s));
   };
   dragFns.current = { move: onDragMove, end: onDragEnd };
 
@@ -1505,7 +1525,18 @@ export function PcBuilder() {
   const startPress = (kind: "part" | "cable", id: string, e: React.PointerEvent) => {
     if (e.button !== 0) return;
     window.getSelection()?.removeAllRanges();
-    press.current = { kind, id, x: e.clientX, y: e.clientY, moved: false };
+    // Mouse dan pena bisa langsung menyeret. Sentuhan hanya menyeret item yang sudah
+    // dipilih, selain itu browser menggulir halaman (pointercancel).
+    const touch = e.pointerType === "touch";
+    press.current = {
+      kind,
+      id,
+      x: e.clientX,
+      y: e.clientY,
+      moved: false,
+      armed: !touch || picked === `${kind}:${id}`,
+      touch,
+    };
     const move = (ev: PointerEvent) => dragFns.current.move(ev);
     const up = (ev: PointerEvent) => stop(ev);
     const cancel = () => stop(null);
@@ -1536,6 +1567,7 @@ export function PcBuilder() {
     setRamPick(false);
     setCables([]);
     setCableDrag(null);
+    setPicked(null);
     setMsg(null);
     setMistakes(0);
     setStartedAt(null);
@@ -1653,6 +1685,13 @@ export function PcBuilder() {
     ? new Date(endedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     : "";
   const lit = phase !== "build";
+  // Komponen yang sudah terpasang dipindah ke bawah agar komponen berikutnya selalu di atas.
+  const queue = [...STEPS.filter((s) => !has(s.id)), ...STEPS.filter((s) => has(s.id))];
+  // Begitu juga kabel yang sudah tercolok.
+  const cableQueue = [
+    ...CABLES.filter((c) => !cables.includes(c.id)),
+    ...CABLES.filter((c) => cables.includes(c.id)),
+  ];
 
   // Isi casing dipakai dua kali: di papan saat merakit dan di dinding kaca casing
   // pada adegan meja 3D setelah sistem dinyalakan.
@@ -1902,9 +1941,10 @@ export function PcBuilder() {
     // (pointercancel), sehingga komponen gagal dijatuhkan sampai halaman diklik.
     <div className="w-full select-none bg-background" onDragStart={(e) => e.preventDefault()}>
       {/* Lebar kolom papan dibatasi sesuai gambar PC (37.5rem) agar sisa lebarnya
-          dipakai kartu "Build a PC" */}
+          dipakai kartu "Build a PC". grid-cols-1 menjaga kolom di layar sempit agar tidak
+          melebar mengikuti baris status */}
       <div
-        className={`grid gap-3 sm:gap-4 ${lit ? "" : "lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
+        className={`grid grid-cols-1 gap-3 sm:gap-4 ${lit ? "" : "lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
       >
         {/* ── papan: casing terbuka ─────────────────────────────────────── */}
         <div className="relative flex flex-col overflow-hidden">
@@ -1913,18 +1953,13 @@ export function PcBuilder() {
               dengan garis casing. Persen padding mengacu ke lebar pembungkus ini.
               Pergeseran 9.25/460 (tepi luar garis casing, stroke 1.5) membuat casing
               sejajar dengan judul halaman. Persen translate mengacu ke lebar elemen
-              itu sendiri, jadi tetap pas di semua ukuran layar. */}
-          <div className="w-full max-w-150 -translate-x-[calc(100%*9.25/460)]">
+              itu sendiri, jadi tetap pas di semua ukuran layar. Lebar 460/441.5 membuat
+              tepi kanan casing ikut sejajar, sehingga jarak kiri dan kanan sama. */}
+          <div className="w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)]">
             <div className="flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-sm text-muted">
               <span className="flex min-w-0 gap-4">
                 <span className="min-w-0 truncate">
-                  {built
-                    ? lit
-                      ? phase === "post"
-                        ? "powering on…"
-                        : ""
-                      : "build complete · ready to power on"
-                    : (cur?.name ?? "")}
+                  {built ? (lit ? "" : "build complete · ready to power on") : (cur?.name ?? "")}
                 </span>
                 {!lit && (
                   <span className="shrink-0">
@@ -1972,7 +2007,7 @@ export function PcBuilder() {
             />
           ) : (
             <div className="relative">
-              <div className="relative mt-3 w-full max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">
+              <div className="relative mt-3 w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">
                 <svg
                   ref={svgRef}
                   viewBox="0 0 460 420"
@@ -2084,7 +2119,7 @@ export function PcBuilder() {
                   >
                     {pasteStatus}
                   </p>
-                  <div className="flex w-full items-center gap-2">
+                  <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:items-center">
                     <button
                       type="button"
                       disabled={pasteState === "ok"}
@@ -2128,10 +2163,7 @@ export function PcBuilder() {
 
           {/* Layar sempit (dan langkah kabel): kartu penjelasan di bawah papan */}
           {!side && explainStep && (
-            <div
-              key={explainStep.id}
-              className="pc-slide mt-3 w-full max-w-150 -translate-x-[calc(100%*9.25/460)]"
-            >
+            <div key={explainStep.id} className="pc-slide mt-3 w-full max-w-150">
               <LearnCard
                 step={explainStep}
                 note={heldCable && `holding ${heldCable.name} · ${heldCable.pins}`}
@@ -2154,16 +2186,19 @@ export function PcBuilder() {
 
         {/* ── kartu: lembar rakitan ─────────────────────────────────────── */}
         {!lit && (
-          <aside className="flex flex-col border-t border-border pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-5">
-            <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
-              Build a PC
-            </h2>
-            <p className="mt-3 mb-0 font-poppins-sans text-sm leading-[1.8] text-muted">
-              From the smallest chip to the first boot. Drag each part into the case and follow the
-              build like a pro would.
-            </p>
+          <aside className="flex flex-col lg:border-l lg:border-border lg:pl-5">
+            {/* Hanya di layar lebar. Di layar sempit, judul halaman sudah menjadi "Build a PC" */}
+            <div className="hidden lg:block">
+              <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
+                Build a PC
+              </h2>
+              <p className="mt-3 mb-0 font-poppins-sans text-sm leading-[1.8] text-muted">
+                From the smallest chip to the first boot. Drag each part into the case and follow
+                the build like a pro would.
+              </p>
+            </div>
 
-            <div className="mt-4 flex items-baseline justify-between">
+            <div className="flex items-baseline justify-between lg:mt-4">
               <span className="font-poppins-sans text-sm text-muted">progress</span>
               <span className="font-caveat text-2xl font-bold text-foreground">{pct}%</span>
             </div>
@@ -2176,7 +2211,9 @@ export function PcBuilder() {
 
             <>
               <ol className="mt-4 mb-0 flex list-none flex-col gap-1 p-0">
-                {STEPS.map((s, i) => {
+                {queue.map((s) => {
+                  // Nomor tetap mengikuti urutan rakitan, bukan posisi di daftar.
+                  const i = STEPS.indexOf(s);
                   const isDone = has(s.id);
                   const isReady = phase === "build" && ready(s);
                   const isFocus = phase === "build" && cur?.id === s.id;
@@ -2187,10 +2224,13 @@ export function PcBuilder() {
                         type="button"
                         disabled={isDone}
                         onPointerDown={(e) => !isDone && startPress("part", s.id, e)}
-                        className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border px-2 py-1.5 text-left transition-[border-color,opacity] duration-500 ${
+                        onContextMenu={(e) => e.preventDefault()}
+                        className={`flex w-full [-webkit-touch-callout:none] items-center gap-2.5 rounded-[5px] border px-2 py-1.5 text-left transition-[border-color,opacity] duration-500 ${
+                          picked === `part:${s.id}` ? "touch-none" : "touch-pan-y"
+                        } ${
                           isDone
                             ? "cursor-default border-transparent opacity-50"
-                            : drag?.id === s.id
+                            : drag?.id === s.id || picked === `part:${s.id}`
                               ? "cursor-grabbing border-blue"
                               : isFocus
                                 ? "cursor-grab border-muted"
@@ -2220,7 +2260,7 @@ export function PcBuilder() {
                       {s.id === "cables" && showKit && (
                         <div className="pc-drop mt-2 mb-1">
                           <ul className="mt-0 mb-0 flex list-none flex-col gap-1 p-0 pl-3">
-                            {CABLES.map((c) => {
+                            {cableQueue.map((c) => {
                               const isIn = cables.includes(c.id);
                               return (
                                 <li key={c.id}>
@@ -2228,10 +2268,13 @@ export function PcBuilder() {
                                     type="button"
                                     disabled={isIn}
                                     onPointerDown={(e) => !isIn && startPress("cable", c.id, e)}
-                                    className={`flex w-full touch-none items-center gap-2.5 rounded-[5px] border bg-transparent px-2 py-1.5 text-left font-poppins-sans transition-[border-color,opacity] duration-300 ${
+                                    onContextMenu={(e) => e.preventDefault()}
+                                    className={`flex w-full [-webkit-touch-callout:none] items-center gap-2.5 rounded-[5px] border bg-transparent px-2 py-1.5 text-left font-poppins-sans transition-[border-color,opacity] duration-300 ${
+                                      picked === `cable:${c.id}` ? "touch-none" : "touch-pan-y"
+                                    } ${
                                       isIn
                                         ? "cursor-default border-transparent opacity-50"
-                                        : cableDrag?.id === c.id
+                                        : cableDrag?.id === c.id || picked === `cable:${c.id}`
                                           ? "cursor-grabbing border-blue"
                                           : "cursor-grab border-transparent text-foreground hover:border-border"
                                     } ${shake === `cable-${c.id}` ? "pc-shake" : ""}`}
@@ -2261,7 +2304,7 @@ export function PcBuilder() {
                 })}
               </ol>
 
-              <div className="mt-auto flex gap-2 pt-6">
+              <div className="mt-auto grid grid-cols-1 gap-2 pt-6 sm:flex">
                 <button
                   type="button"
                   disabled={!built}

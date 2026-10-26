@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-const ACCENT = "var(--fg-color)";
-
 type Data = {
   user: string;
   repos: number | null;
@@ -13,8 +11,6 @@ type Data = {
   days: { d: string; l: number }[];
   total: number | null;
 };
-
-const LEVEL = [0.16, 0.38, 0.58, 0.78, 1.0];
 
 const CELL = 11;
 const GAP = 3;
@@ -147,8 +143,7 @@ export function GithubPanel() {
                     width={CELL}
                     height={CELL}
                     rx="2.5"
-                    fill={ACCENT}
-                    fillOpacity={LEVEL[day.l] ?? LEVEL[0]}
+                    fill={`var(--gh-${day.l >= 0 && day.l <= 4 ? day.l : 0})`}
                   />
                 );
               })}

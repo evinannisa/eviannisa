@@ -474,27 +474,27 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
             }}
           />
         </div>
+      </div>
 
-        {/* Pilihan sudut kamera */}
-        <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-1.5 p-2.5 sm:p-3">
-          {CAMS.map((c, i) => (
-            <button
-              key={c.key}
-              type="button"
-              onClick={() => pick(i)}
-              className={`cursor-pointer rounded-full border px-2.5 py-1 font-poppins-sans text-[0.65rem] backdrop-blur-sm transition-colors duration-300 sm:text-xs ${
-                i === cam && !orbit
-                  ? "border-blue bg-blue/15 text-foreground"
-                  : "border-border bg-background/60 text-muted hover:text-foreground"
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
-          <span className="ml-auto hidden font-poppins-sans text-[0.65rem] text-muted sm:inline">
-            {touring ? "touring · " : ""}drag to look around
-          </span>
-        </div>
+      {/* Pilihan sudut kamera, di bawah adegan agar tidak menutupi gambar */}
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {CAMS.map((c, i) => (
+          <button
+            key={c.key}
+            type="button"
+            onClick={() => pick(i)}
+            className={`cursor-pointer rounded-full border px-2.5 py-1 font-poppins-sans text-[0.65rem] backdrop-blur-sm transition-colors duration-300 sm:text-xs ${
+              i === cam && !orbit
+                ? "border-blue bg-blue/15 text-foreground"
+                : "border-border bg-background/60 text-muted hover:text-foreground"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
+        <span className="ml-auto hidden font-poppins-sans text-[0.65rem] text-muted sm:inline">
+          {touring ? "touring · " : ""}drag to look around
+        </span>
       </div>
     </div>
   );

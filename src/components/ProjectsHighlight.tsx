@@ -13,6 +13,49 @@ const TOP_PROJECTS = projects.slice(0, 1);
 // Stack diambil dari proyek terbaru agar selalu sama dengan halaman /projects.
 const STACK_SHOWN = 5;
 
+// Doodle lampu dipakai di dua ukuran: besar di layar lebar, kecil di samping judul.
+const lampPaths = (
+  <>
+    <path
+      className="ah-draw"
+      d="M38,92 C37.4,86 31.6,79.4 26.4,71.4 C21,64 18.6,57.2 19.2,49 C19.6,32 33.2,17.6 50,18 C67.2,18.4 81.4,32.2 80.8,49 C80.4,57.2 79.2,64.4 73.8,71.6 C68.4,79.4 62.6,86 62,92 Z"
+    />
+    <path className="ah-draw" strokeWidth="1.3" d="M31,42 C31,33 36,26 43,23" />
+    <path
+      className="ah-draw"
+      strokeWidth="1.5"
+      d="M38.0,92.0 C45.7,91.0 54.3,91.0 62.0,92.0 C60.6,97.7 60.2,104.2 61.0,110.0 C61.0,113.0 58.2,115.4 55.0,115.0 C51.8,114.0 48.2,114.0 45.0,115.0 C41.8,114.6 39.0,113.0 39.0,110.0 C39.8,104.2 39.4,97.7 38.0,92.0"
+    />
+    <path className="ah-draw" strokeWidth="1.2" d="M38.6,97 C45,99 55,99 61.4,97" />
+    <path className="ah-draw" strokeWidth="1.2" d="M38.9,102 C45,104 55,104 61.1,102" />
+    <path className="ah-draw" strokeWidth="1.2" d="M39.3,107 C45,109 55,109 60.7,107" />
+    <path className="ah-draw" strokeWidth="1.3" d="M45,115 C45,121 55,121 55,115" />
+    <path className="ah-draw" strokeWidth="1.3" d="M45.0,91.0 C45.6,83.6 45.2,75.3 44.0,68.0" />
+    <path className="ah-draw" strokeWidth="1.3" d="M55.0,91.0 C54.4,83.6 54.8,75.3 56.0,68.0" />
+    <path
+      className="ah-draw ph-glow"
+      strokeWidth="1.5"
+      stroke="var(--amber-color)"
+      d="M44,68 C46,60 48,72 50,62 C52,72 54,60 56,68"
+    />
+    <path
+      className="ph-spark"
+      strokeWidth="1.4"
+      d="M88.0,20.0 C88.1,21.4 88.6,22.8 89.3,24.0 C90.6,24.2 91.9,24.7 93.0,25.4 C91.7,25.5 90.4,26.0 89.3,26.7 C89.2,28.0 88.7,29.4 88.0,30.6 C87.9,29.3 87.4,27.9 86.7,26.7 C85.4,26.6 84.1,26.1 83.0,25.4 C84.3,25.2 85.6,24.7 86.7,24.0 C86.8,22.6 87.3,21.2 88.0,20.0"
+    />
+    <path
+      className="ph-spark"
+      strokeWidth="1.3"
+      d="M13.0,70.0 C13.1,70.9 13.5,71.8 14.0,72.6 C14.9,72.7 15.8,73.1 16.6,73.6 C15.7,73.7 14.8,74.1 14.0,74.6 C13.9,75.5 13.5,76.4 13.0,77.2 C12.9,76.3 12.5,75.4 12.0,74.6 C11.1,74.5 10.2,74.1 9.4,73.6 C10.3,73.5 11.2,73.1 12.0,72.6 C12.1,71.7 12.5,70.8 13.0,70.0"
+    />
+    <path className="ph-ray" strokeWidth="1.6" d="M50,10 C50.5,7.4 49.8,5 49.4,2.4" />
+    <path className="ph-ray" strokeWidth="1.6" d="M27,24 C25,22.2 22.8,20 20.4,17.2" />
+    <path className="ph-ray" strokeWidth="1.6" d="M73,24 C75.4,22.4 77.2,19.8 79.6,17.4" />
+    <path className="ph-ray" strokeWidth="1.6" d="M14,49 C11.2,49.6 8.4,48.8 5.6,49.4" />
+    <path className="ph-ray" strokeWidth="1.6" d="M86,49 C88.8,48.4 91.4,49.2 94.4,48.6" />
+  </>
+);
+
 // Cerita tambahan yang hanya tampil di halaman About, ditambahkan setelah
 // deskripsi proyek.
 const ABOUT_NOTE: Record<string, string> = {
@@ -140,6 +183,18 @@ export function ProjectsHighlight() {
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Poject Playground
         </div>
+        <svg
+          className="ah-doodle ah-lamp doodle-sm lg:hidden pointer-events-none"
+          width={24}
+          viewBox="0 0 100 128"
+          fill="none"
+          stroke="var(--muted-color)"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          {lampPaths}
+        </svg>
       </div>
 
       <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
@@ -252,51 +307,7 @@ export function ProjectsHighlight() {
           opacity="0.5"
           aria-hidden="true"
         >
-          <path
-            className="ah-draw"
-            d="M38,92 C37.4,86 31.6,79.4 26.4,71.4 C21,64 18.6,57.2 19.2,49 C19.6,32 33.2,17.6 50,18 C67.2,18.4 81.4,32.2 80.8,49 C80.4,57.2 79.2,64.4 73.8,71.6 C68.4,79.4 62.6,86 62,92 Z"
-          />
-          <path className="ah-draw" strokeWidth="1.3" d="M31,42 C31,33 36,26 43,23" />
-          <path
-            className="ah-draw"
-            strokeWidth="1.5"
-            d="M38.0,92.0 C45.7,91.0 54.3,91.0 62.0,92.0 C60.6,97.7 60.2,104.2 61.0,110.0 C61.0,113.0 58.2,115.4 55.0,115.0 C51.8,114.0 48.2,114.0 45.0,115.0 C41.8,114.6 39.0,113.0 39.0,110.0 C39.8,104.2 39.4,97.7 38.0,92.0"
-          />
-          <path className="ah-draw" strokeWidth="1.2" d="M38.6,97 C45,99 55,99 61.4,97" />
-          <path className="ah-draw" strokeWidth="1.2" d="M38.9,102 C45,104 55,104 61.1,102" />
-          <path className="ah-draw" strokeWidth="1.2" d="M39.3,107 C45,109 55,109 60.7,107" />
-          <path className="ah-draw" strokeWidth="1.3" d="M45,115 C45,121 55,121 55,115" />
-          <path
-            className="ah-draw"
-            strokeWidth="1.3"
-            d="M45.0,91.0 C45.6,83.6 45.2,75.3 44.0,68.0"
-          />
-          <path
-            className="ah-draw"
-            strokeWidth="1.3"
-            d="M55.0,91.0 C54.4,83.6 54.8,75.3 56.0,68.0"
-          />
-          <path
-            className="ah-draw ph-glow"
-            strokeWidth="1.5"
-            stroke="var(--amber-color)"
-            d="M44,68 C46,60 48,72 50,62 C52,72 54,60 56,68"
-          />
-          <path
-            className="ph-spark"
-            strokeWidth="1.4"
-            d="M88.0,20.0 C88.1,21.4 88.6,22.8 89.3,24.0 C90.6,24.2 91.9,24.7 93.0,25.4 C91.7,25.5 90.4,26.0 89.3,26.7 C89.2,28.0 88.7,29.4 88.0,30.6 C87.9,29.3 87.4,27.9 86.7,26.7 C85.4,26.6 84.1,26.1 83.0,25.4 C84.3,25.2 85.6,24.7 86.7,24.0 C86.8,22.6 87.3,21.2 88.0,20.0"
-          />
-          <path
-            className="ph-spark"
-            strokeWidth="1.3"
-            d="M13.0,70.0 C13.1,70.9 13.5,71.8 14.0,72.6 C14.9,72.7 15.8,73.1 16.6,73.6 C15.7,73.7 14.8,74.1 14.0,74.6 C13.9,75.5 13.5,76.4 13.0,77.2 C12.9,76.3 12.5,75.4 12.0,74.6 C11.1,74.5 10.2,74.1 9.4,73.6 C10.3,73.5 11.2,73.1 12.0,72.6 C12.1,71.7 12.5,70.8 13.0,70.0"
-          />
-          <path className="ph-ray" strokeWidth="1.6" d="M50,10 C50.5,7.4 49.8,5 49.4,2.4" />
-          <path className="ph-ray" strokeWidth="1.6" d="M27,24 C25,22.2 22.8,20 20.4,17.2" />
-          <path className="ph-ray" strokeWidth="1.6" d="M73,24 C75.4,22.4 77.2,19.8 79.6,17.4" />
-          <path className="ph-ray" strokeWidth="1.6" d="M14,49 C11.2,49.6 8.4,48.8 5.6,49.4" />
-          <path className="ph-ray" strokeWidth="1.6" d="M86,49 C88.8,48.4 91.4,49.2 94.4,48.6" />
+          {lampPaths}
         </svg>
         {/* Timeline vertikal, sama seperti Education dan Work Experience */}
         <div className="tl-list lg:max-w-160 pl-4 sm:pl-[1.85rem]">
