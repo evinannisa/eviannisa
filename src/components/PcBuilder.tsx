@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Check } from "lucide-react";
 import { PcDesk } from "./PcDesk";
 
 // Kotak dengan garis sedikit goyang seperti sketsa. Offset-nya tetap (bukan acak)
@@ -926,8 +927,6 @@ const STEPS: Step[] = [
   },
 ];
 
-const TOTAL_W = STEPS.reduce((s, x) => s + x.watts, 0);
-
 function PartIcon({ step, size }: { step: Step; size: number }) {
   const { x, y, w, h } = step.icon.box;
   return (
@@ -955,8 +954,18 @@ function learnTitle(s: Step) {
   return `What is ${article} ${s.name}?`;
 }
 
+// Pengganti ikon item di daftar setelah komponen terpasang atau kabel tercolok.
+function DoneMark() {
+  return (
+    <span className="flex h-[22px] w-[22px] items-center justify-center">
+      <Check size={18} strokeWidth={2.2} aria-hidden="true" />
+    </span>
+  );
+}
+
 // Kartu materi: pengenalan singkat komponen dan fungsinya. Untuk kabel, isinya
 // mengikuti kabel yang sedang dipegang atau baru dicolok.
+
 function LearnCard({
   step,
   cable,
@@ -1019,13 +1028,6 @@ const WALLPAPER = [
 ].join(", ");
 const MEM_LINE = POST_LINES.findIndex(([, v]) => v === "mem");
 
-function grade(mistakes: number) {
-  if (mistakes === 0) return { letter: "S", line: "flawless build, are you a technician?" };
-  if (mistakes <= 2) return { letter: "A", line: "clean build, a couple of slips" };
-  if (mistakes <= 4) return { letter: "B", line: "it boots, that is what matters" };
-  return { letter: "C", line: "it boots... somehow" };
-}
-
 const fmt = (ms: number) => {
   const s = Math.floor(ms / 1000);
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
@@ -1063,6 +1065,11 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [endedAt, setEndedAt] = useState<number | null>(null);
   const [now, setNow] = useState(0);
+  // Waktu untuk jam di taskbar monitor.
+  const [clockAt, setClockAt] = useState(0);
+  // Saat layar "Welcome" pertama kali muncul. Animasinya dihitung dari waktu ini agar
+  // tidak terulang saat salinan layar dipasang ulang (lapisan 2D di PcDesk).
+  const [welcomeAt, setWelcomeAt] = useState(0);
   const [phase, setPhase] = useState<"build" | "post" | "done">("build");
   const [postShown, setPostShown] = useState(0);
   // Angka memory test yang terus naik di layar POST.
@@ -1157,6 +1164,14 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
     return () => window.clearInterval(t);
   }, [startedAt, endedAt]);
 
+  // Jam di taskbar berjalan sesuai waktu nyata selama PC menyala.
+  useEffect(() => {
+    if (phase === "build") return;
+    setClockAt(Date.now());
+    const t = window.setInterval(() => setClockAt(Date.now()), 1000);
+    return () => window.clearInterval(t);
+  }, [phase]);
+
   // Pasta bertambah selama tombol ditahan.
   useEffect(() => {
     if (!holding) return;
@@ -1176,7 +1191,10 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
   useEffect(() => {
     if (phase !== "post") return;
     if (postShown > POST_LINES.length) {
-      const t = window.setTimeout(() => setPhase("done"), 1400);
+      const t = window.setTimeout(() => {
+        setWelcomeAt(Date.now());
+        setPhase("done");
+      }, 1400);
       return () => window.clearTimeout(t);
     }
     // Jeda lebih lama di awal (logo) dan selama memory test menghitung.
@@ -1711,10 +1729,8 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
   const vy0 = view.cy - 210 / view.s;
   const vy1 = view.cy + 210 / view.s;
 
-  const g = grade(mistakes);
-  // Jam di taskbar, diambil saat sistem dinyalakan.
-  const clock = endedAt
-    ? new Date(endedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  const clock = clockAt
+    ? new Date(clockAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     : "";
   const lit = phase !== "build";
   useEffect(() => onLitChange?.(lit), [lit, onLitChange]);
@@ -1919,33 +1935,12 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
       style={{ background: WALLPAPER }}
     >
       <div className="flex flex-1 items-center justify-center p-3">
-        <div className="pc-boot w-full max-w-[19rem] overflow-hidden rounded-lg border border-white/15 bg-[#11131a]/90 shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
-          <div className="flex items-center gap-1.5 border-b border-white/10 px-2.5 py-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57]" />
-            <span className="h-1.5 w-1.5 rounded-full bg-[#febc2e]" />
-            <span className="h-1.5 w-1.5 rounded-full bg-[#28c840]" />
-            <span className="ml-1.5 text-[0.55rem] text-white/60">build report</span>
-          </div>
-          <div className="flex items-center gap-4 px-4 pt-4">
-            <p className="m-0 text-[3.2rem] font-semibold leading-none">{g.letter}</p>
-            <div className="min-w-0">
-              <p className="m-0 text-base font-semibold leading-tight">It boots!</p>
-              <p className="m-0 mt-0.5 text-[0.66rem] leading-snug text-white/65">{g.line}</p>
-            </div>
-          </div>
-          <dl className="m-0 mt-4 grid grid-cols-3 gap-2 border-t border-white/10 px-4 py-2.5 text-[0.62rem]">
-            {[
-              ["time", fmt(elapsed)],
-              ["slips", String(mistakes)],
-              ["load", `${TOTAL_W} W`],
-            ].map(([k, v]) => (
-              <div key={k}>
-                <dt className="text-white/55">{k}</dt>
-                <dd className="m-0 mt-0.5 font-mono">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <p
+          className="pc-hello m-0 font-caveat text-[4.2rem] font-bold leading-none text-white"
+          style={{ ["--welcome-delay" as string]: `${welcomeAt - Date.now()}ms` }}
+        >
+          Welcome
+        </p>
       </div>
       {/* Taskbar: ikon aplikasi di tengah, jam di kanan */}
       <div className="flex h-7 shrink-0 items-center justify-between bg-black/55 px-3">
@@ -1992,19 +1987,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
             >
               <span className="flex min-w-0 gap-4">
                 <span className="min-w-0 truncate">
-                  {built ? (
-                    lit ? (
-                      ""
-                    ) : (
-                      <>
-                        build complete
-                        {/* Dipendekkan di mobile dan tablet agar tidak terpotong */}
-                        <span className="hidden lg:inline"> · ready to power on</span>
-                      </>
-                    )
-                  ) : (
-                    (cur?.name ?? "")
-                  )}
+                  {built ? (lit ? "" : "build complete") : (cur?.name ?? "")}
                 </span>
                 {!lit && (
                   <span className="shrink-0">
@@ -2015,7 +1998,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                   </span>
                 )}
               </span>
-              {/* Setelah menyala, waktu & slip dipindahkan ke laporan di layar monitor */}
+              {/* Waktu dan slip disembunyikan setelah PC menyala */}
               <span className={`flex shrink-0 gap-4 ${lit ? "hidden" : ""}`}>
                 <span>
                   time <span className="text-foreground">{fmt(elapsed)}</span>
@@ -2026,19 +2009,10 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                 </span>
               </span>
             </div>
-            {/* Feedback terakhir tampil tepat di atas papan, hanya di desktop. Tingginya
-              minimal satu baris agar gambar PC tidak bergeser saat pesan muncul */}
-            <div
-              className={`mt-1 min-h-[1.7em] px-[calc(100%*10/460)] font-poppins-sans text-sm leading-[1.7] ${lit ? "hidden" : "hidden lg:block"}`}
-            >
-              <p
-                className="m-0"
-                style={{ color: msg?.tone === "warn" ? "var(--red-color)" : "var(--blue-color)" }}
-                aria-live="polite"
-              >
-                {msg ? msg.text : ""}
-              </p>
-            </div>
+            {/* Feedback tidak ditampilkan, hanya dibacakan screen reader */}
+            <p className="sr-only" aria-live="polite">
+              {msg ? msg.text : ""}
+            </p>
           </div>
 
           {/* Saat merakit, tampil gambar PC beserta panel RAM atau pasta di bawahnya.
@@ -2302,11 +2276,11 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                         aria-label={`${i + 1}. ${s.name}, ${s.spec}${isDone ? ", done" : ""}`}
                       >
                         <span className={`shrink-0 ${isDone ? "text-muted" : "text-foreground"}`}>
-                          <PartIcon step={s} size={22} />
+                          {isDone ? <DoneMark /> : <PartIcon step={s} size={22} />}
                         </span>
-                        <span className="min-w-0 flex-1">
+                        <span className="flex min-w-0 flex-1 flex-col gap-1">
                           <span className="block font-poppins-sans text-[0.805rem] leading-tight text-foreground">
-                            {isDone ? "✓ " : `${i + 1}. `}
+                            {isDone ? "" : `${i + 1}. `}
                             {s.name}
                           </span>
                           <span className="block truncate font-poppins-sans text-[0.705rem] leading-tight text-muted">
@@ -2342,11 +2316,10 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                                     aria-label={`cable ${c.name}${isIn ? ", plugged in" : ""}`}
                                   >
                                     <span className="flex w-10 shrink-0 justify-center text-foreground">
-                                      <Connector c={c} height={22} />
+                                      {isIn ? <DoneMark /> : <Connector c={c} height={22} />}
                                     </span>
-                                    <span className="min-w-0 flex-1">
+                                    <span className="flex min-w-0 flex-1 flex-col gap-1">
                                       <span className="block text-[0.805rem] leading-tight text-foreground">
-                                        {isIn ? "✓ " : ""}
                                         {c.name}
                                       </span>
                                       <span className="block truncate text-[0.705rem] leading-tight text-muted">

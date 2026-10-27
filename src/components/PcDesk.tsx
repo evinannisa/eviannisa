@@ -119,9 +119,163 @@ const CAMS: Cam[] = [
 
 const KEY_ROWS = [14, 14, 13, 12, 0];
 
+type P3 = [number, number, number];
+// Belakang casing dan belakang dudukan VESA monitor, tempat kabel tersambung.
+const TOWER_BACK = TOWER.z - TOWER.d / 2;
+const VESA_BACK = MON.z - MON.d / 2 - 22;
+// Kabel yang tergeletak di meja.
+const ON_DESK = -2.5;
+// Lubang kabel di meja. Colokan listrik dianggap ada di bawah meja, jadi kedua kabel
+// power masuk ke lubang ini dari arah yang berlawanan.
+const HOLE = { x: 140, z: -212, r: 16 };
+// Kabel berjalan lurus sejajar meja, monitor, dan casing agar terlihat rapi. Hanya
+// tikungannya yang dibuat melengkung (lihat smooth). Kabel display dan kabel power
+// memakai jalur masing-masing yang sejajar.
+const CABLE_LANE = -194;
+const POWER_LANE = -184;
+const CABLES: P3[][] = [
+  // Kabel display: dari belakang monitor turun ke meja, menyusur ke belakang casing, lalu
+  // naik ke port kartu grafis.
+  [
+    [MON.x + 40, MON_Y + 40, VESA_BACK],
+    [MON.x + 40, MON_Y + 40, CABLE_LANE],
+    [MON.x + 40, ON_DESK, CABLE_LANE],
+    [TOWER.x - 40, ON_DESK, CABLE_LANE],
+    [TOWER.x - 40, -120, CABLE_LANE],
+    [TOWER.x - 40, -120, TOWER_BACK],
+  ],
+  // Kabel power monitor, masuk ke lubang kabel dari kiri.
+  [
+    [MON.x - 40, MON_Y + 60, VESA_BACK],
+    [MON.x - 40, MON_Y + 60, POWER_LANE],
+    [MON.x - 40, ON_DESK, POWER_LANE],
+    [HOLE.x - 5, ON_DESK, POWER_LANE],
+    [HOLE.x - 5, ON_DESK, HOLE.z],
+    [HOLE.x - 5, 30, HOLE.z],
+  ],
+  // Kabel power casing dari PSU di bagian bawah, masuk ke lubang kabel dari kanan.
+  [
+    [TOWER.x + 40, -30, TOWER_BACK],
+    [TOWER.x + 40, -30, POWER_LANE],
+    [TOWER.x + 40, ON_DESK, POWER_LANE],
+    [HOLE.x + 5, ON_DESK, POWER_LANE],
+    [HOLE.x + 5, ON_DESK, HOLE.z],
+    [HOLE.x + 5, 30, HOLE.z],
+  ],
+];
+
+// Setiap tikungan dibulatkan dengan kurva bezier kuadrat, lalu dipecah menjadi titik-titik
+// rapat agar kabel terlihat melengkung.
+function smooth(pts: P3[], radius = 50, steps = 10): P3[] {
+  const lerp = (a: P3, b: P3, t: number): P3 => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const dist = (a: P3, b: P3) => Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+  const out: P3[] = [pts[0]];
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [a, c, b] = [pts[i - 1], pts[i], pts[i + 1]];
+    const p0 = lerp(c, a, Math.min(radius, dist(a, c) / 2) / dist(a, c));
+    const p2 = lerp(c, b, Math.min(radius, dist(c, b) / 2) / dist(c, b));
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      out.push(lerp(lerp(p0, c, t), lerp(c, p2, t), t));
+    }
+  }
+  out.push(pts[pts.length - 1]);
+  return out;
+}
+
+// Ujung kabel yang memakai konektor: [awal, akhir]. Ujung kabel power yang masuk ke lubang
+// meja tidak terlihat, jadi tanpa konektor.
+const CABLE_ENDS: [boolean, boolean][] = [
+  [true, true],
+  [true, false],
+  [true, false],
+];
+
+// Kabel digambar sebagai rangkaian potongan pendek. Tiap potongan berupa satu bidang
+// bergradasi yang diputar pada sumbunya agar selalu menghadap kamera, jadi kabel tampak
+// bulat dari sudut mana pun dan tidak terlihat pipih. view adalah sudut kamera (derajat).
+function Cable({
+  pts,
+  ends,
+  view,
+  moving,
+}: {
+  pts: P3[];
+  ends: [boolean, boolean];
+  view: { yaw: number; pitch: number };
+  moving: boolean;
+}) {
+  const t = 6;
+  const tube = "linear-gradient(180deg, #121316 0%, #2f323a 35%, #4a4e58 50%, #2f323a 65%, #121316 100%)";
+  const path = smooth(pts);
+  // Arah dari adegan ke kamera, dalam koordinat adegan.
+  const cy = (view.yaw * Math.PI) / 180;
+  const cp = (view.pitch * Math.PI) / 180;
+  const cam: P3 = [-Math.cos(cp) * Math.sin(cy), Math.sin(cp), Math.cos(cp) * Math.cos(cy)];
+  const transition = moving ? "none" : "transform 1.8s cubic-bezier(0.65, 0, 0.35, 1)";
+
+  const segments = path.slice(1).map((b, i) => {
+    const a = path[i];
+    const [dx, dy, dz] = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
+    const len = Math.hypot(dx, dy, dz);
+    if (len < 0.01) return null;
+    const yaw = Math.atan2(-dz, dx);
+    const pitch = Math.atan2(dy, Math.hypot(dx, dz));
+    // Sumbu y dan z lokal potongan setelah diputar, untuk menghitung putaran (roll)
+    // yang membuat bidang menghadap kamera.
+    const ly: P3 = [-Math.sin(pitch) * Math.cos(yaw), Math.cos(pitch), Math.sin(pitch) * Math.sin(yaw)];
+    const lz: P3 = [Math.sin(yaw), 0, Math.cos(yaw)];
+    const dot = (u: P3, v: P3) => u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+    const roll = Math.atan2(-dot(cam, ly), dot(cam, lz));
+    // Sedikit lebih panjang agar sambungan antarpotongan tidak berlubang.
+    const w = len + t * 0.8;
+    return (
+      <div
+        key={i}
+        className="absolute"
+        style={{
+          width: w,
+          height: t,
+          left: -w / 2,
+          top: -t / 2,
+          background: tube,
+          borderRadius: t / 2,
+          transform: `translate3d(${(a[0] + b[0]) / 2}px, ${(a[1] + b[1]) / 2}px, ${(a[2] + b[2]) / 2}px) rotateY(${yaw}rad) rotateZ(${pitch}rad) rotateX(${roll}rad)`,
+          transition,
+        }}
+      />
+    );
+  });
+
+  // Konektor di ujung kabel, searah dengan potongan terakhirnya (sumbu z).
+  const plug = (e: P3, n: P3, key: string) => {
+    const dir = Math.sign(n[2] - e[2]) || 1;
+    return (
+      <Box
+        key={key}
+        x={e[0]}
+        y={e[1]}
+        z={e[2] + dir * 6}
+        w={13}
+        h={10}
+        d={12}
+        fill="linear-gradient(180deg, #2b2e35, #1b1d22)"
+      />
+    );
+  };
+  return (
+    <>
+      {segments}
+      {ends[0] && plug(pts[0], pts[1], "start")}
+      {ends[1] && plug(pts[pts.length - 1], pts[pts.length - 2], "end")}
+    </>
+  );
+}
+
 export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; screen: ReactNode; booting: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
   // Posisi dan skala layar monitor di bingkai, untuk lapisan 2D (lihat flatOn).
   const [flat, setFlat] = useState<{ x: number; y: number; w: number; h: number; s: number } | null>(null);
   const [k, setK] = useState(0.8);
@@ -177,15 +331,25 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
       setFlat(null);
       return;
     }
-    // Diukur setelah transisi kamera (1.8 detik) selesai.
-    const t = window.setTimeout(() => {
+    // Diukur begitu kamera diam: langsung jika tidak sedang bergerak (misalnya saat BIOS
+    // dimulai), atau tepat setelah transisi kamera selesai. Dengan begitu teks 3D yang
+    // buram tidak sempat terlihat.
+    let live = true;
+    const measure = () => {
       const stage = stageRef.current?.getBoundingClientRect();
       const el = screenRef.current;
-      if (!stage || !el) return;
+      if (!live || !stage || !el) return;
       const r = el.getBoundingClientRect();
       setFlat({ x: r.left - stage.left, y: r.top - stage.top, w: r.width, h: r.height, s: r.width / el.offsetWidth });
-    }, 1850);
-    return () => window.clearTimeout(t);
+    };
+    const raf = requestAnimationFrame(() => {
+      const moving = sceneRef.current?.getAnimations() ?? [];
+      Promise.all(moving.map((a) => a.finished)).then(measure, () => {});
+    });
+    return () => {
+      live = false;
+      cancelAnimationFrame(raf);
+    };
   }, [flatOn, k]);
 
   const pick = (i: number) => {
@@ -228,13 +392,14 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
         onPointerUp={onUp}
         onPointerCancel={onUp}
         role="img"
-        aria-label="The finished PC on a desk, next to a monitor showing the build report"
+        aria-label="The finished PC on a desk, next to a monitor saying Welcome"
       >
         <div
           className="absolute top-0 left-0"
           style={{ width: 1000, height: 562.5, perspective: 1500, transform: `scale(${k})`, transformOrigin: "0 0" }}
         >
           <div
+            ref={sceneRef}
             className="absolute top-1/2 left-1/2"
             style={{
               transformStyle: "preserve-3d",
@@ -417,6 +582,19 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
               }}
             />
 
+            {CABLES.map((pts, i) => (
+              <Cable key={i} pts={pts} ends={CABLE_ENDS[i]} view={{ yaw, pitch }} moving={dragging} />
+            ))}
+            {/* Lubang kabel di meja, dengan cincin karet di tepinya */}
+            <Flat
+              x={HOLE.x}
+              z={HOLE.z}
+              w={HOLE.r * 2}
+              d={HOLE.r * 2}
+              y={-0.6}
+              style={{ borderRadius: "50%", background: "#050506", boxShadow: "inset 0 0 0 3px #2a2c31, inset 0 0 8px 4px rgba(0,0,0,0.9)" }}
+            />
+
             {/* Casing: sisi kaca kiri menghadap monitor, bagian depan mesh dengan dua kipas intake */}
             <Box
               x={TOWER.x}
@@ -506,7 +684,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
 
         {flat && (
           <div
-            className="pc-fade pointer-events-none absolute overflow-hidden rounded-[2px] bg-black"
+            className="pointer-events-none absolute overflow-hidden rounded-[2px] bg-black"
             style={{ left: flat.x, top: flat.y, width: flat.w, height: flat.h }}
             aria-hidden="true"
           >

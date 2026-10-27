@@ -1351,6 +1351,28 @@ html.theme-swapping *::after {
     opacity: 0;
   }
 }
+/* "Welcome" di monitor muncul sekali tepat setelah BIOS, ditulis dari kiri, lalu memudar
+   dan tidak kembali. Inset atas dan bawah dibuat negatif agar ekor huruf Caveat tidak
+   terpotong. --welcome-delay diisi komponen dari welcomeAt. */
+.pc-hello {
+  clip-path: inset(-30% 100% -30% 0);
+  animation: pc-hello 3.4s ease-in-out var(--welcome-delay, 0s) forwards;
+}
+@keyframes pc-hello {
+  0% {
+    clip-path: inset(-30% 100% -30% 0);
+    opacity: 1;
+  }
+  45%,
+  80% {
+    clip-path: inset(-30% -5% -30% 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(-30% -5% -30% 0);
+    opacity: 0;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .pc-drop,
   .pc-pulse,
@@ -1358,11 +1380,22 @@ html.theme-swapping *::after {
   .pc-boot,
   .pc-cable,
   .pc-caret,
+  .pc-hello,
   .pc-on,
   .pc-on .pc-drop,
   .pc-on .pc-cable,
   .pc-on .pc-blades {
     animation: none;
+  }
+  /* Tanpa efek ditulis, tetapi tetap hilang setelah beberapa saat. */
+  .pc-hello {
+    clip-path: none;
+    animation: pc-hello-out 0.01s calc(var(--welcome-delay, 0s) + 2.6s) forwards;
+  }
+}
+@keyframes pc-hello-out {
+  to {
+    opacity: 0;
   }
 }
 /* Saat papan di-zoom ke komponen yang sedang dipasang, ketebalan garis tetap sama.
