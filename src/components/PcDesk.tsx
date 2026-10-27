@@ -129,8 +129,6 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const [orbit, setOrbit] = useState<{ yaw: number; pitch: number } | null>(null);
   const [touring, setTouring] = useState(true);
   const [dragging, setDragging] = useState(false);
-  // Di bawah lg (mobile dan tablet), teks monitor perlu lapisan 2D (lihat flatOn).
-  const [narrow, setNarrow] = useState(false);
   const drag = useRef<{ x: number; y: number; yaw: number; pitch: number } | null>(null);
 
   // Adegan digambar di ruang 1000 px, lalu diskalakan mengikuti lebar kartu.
@@ -140,14 +138,6 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
     const ro = new ResizeObserver(() => setK(el.clientWidth / 1000));
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const sync = () => setNarrow(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
   }, []);
 
   // Kamera berganti sudut otomatis seperti video produk, lalu berhenti saat pengguna memilih sudut sendiri.
@@ -176,10 +166,10 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const pitch = orbit?.pitch ?? base.pitch;
   const [tx, ty, tz] = base.at;
 
-  // Di layar sempit saat kamera di sudut "screen", isi monitor juga ditampilkan sebagai
-  // lapisan 2D di atas monitor 3D. Safari menggambar elemen 3D dengan resolusi rendah,
-  // sehingga teks di monitor tampak buram.
-  const flatOn = narrow && base.key === "screen" && !orbit && !dragging;
+  // Saat kamera di sudut "screen", isi monitor juga ditampilkan sebagai lapisan 2D di atas
+  // monitor 3D. Safari menggambar elemen 3D dengan resolusi rendah, sehingga teks di
+  // monitor tampak buram. Berlaku di semua ukuran layar agar tampilannya sama.
+  const flatOn = base.key === "screen" && !orbit && !dragging;
   useEffect(() => {
     if (!flatOn) {
       setFlat(null);

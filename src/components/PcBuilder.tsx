@@ -1033,7 +1033,9 @@ const fmt = (ms: number) => {
 
 type Msg = { text: string; tone: "ok" | "warn" };
 
-export function PcBuilder() {
+// onLitChange memberi tahu halaman saat PC menyala, karena setelah itu judul halaman
+// mengikuti tampilan desktop di semua ukuran layar.
+export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => void }) {
   // Komponen yang sudah terpasang; urutannya bebas selama prasyaratnya terpenuhi.
   const [done, setDone] = useState<string[]>([]);
   // Komponen yang sedang difokuskan pengguna, yaitu yang terakhir dipilih di daftar.
@@ -1715,6 +1717,7 @@ export function PcBuilder() {
     ? new Date(endedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     : "";
   const lit = phase !== "build";
+  useEffect(() => onLitChange?.(lit), [lit, onLitChange]);
   // Komponen yang sudah terpasang dipindah ke bawah agar komponen berikutnya selalu di atas.
   const queue = [...STEPS.filter((s) => !has(s.id)), ...STEPS.filter((s) => has(s.id))];
   // Begitu juga kabel yang sudah tercolok.
@@ -1972,7 +1975,7 @@ export function PcBuilder() {
           dipakai kartu "Build a PC". grid-cols-1 menjaga kolom di layar sempit agar tidak
           melebar mengikuti baris status */}
       <div
-        className={`grid grid-cols-1 gap-3 sm:gap-4 ${lit ? "" : "lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
+        className={`grid grid-cols-1 ${lit ? "gap-4" : "gap-3 sm:gap-4 lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
       >
         {/* ── papan: casing terbuka ─────────────────────────────────────── */}
         <div className="relative flex flex-col overflow-hidden">
@@ -1984,7 +1987,9 @@ export function PcBuilder() {
               itu sendiri, jadi tetap pas di semua ukuran layar. Lebar 460/441.5 membuat
               tepi kanan casing ikut sejajar, sehingga jarak kiri dan kanan sama. */}
           <div className="w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)]">
-            <div className="flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-xs sm:text-sm text-muted">
+            <div
+              className={`flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-muted ${lit ? "text-sm" : "text-xs sm:text-sm"}`}
+            >
               <span className="flex min-w-0 gap-4">
                 <span className="min-w-0 truncate">
                   {built ? (lit ? "" : "build complete · ready to power on") : (cur?.name ?? "")}
@@ -2216,7 +2221,7 @@ export function PcBuilder() {
               <button
                 type="button"
                 onClick={reset}
-                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-base text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
               >
                 <span className="text-red">▶ </span>build another
               </button>
