@@ -17,14 +17,14 @@ export default function Fun() {
             "Just for Fun"
           ) : (
             <>
-              {/* Di layar sempit, judul halaman memakai judul game */}
-              <span className="lg:hidden">Build a PC</span>
-              <span className="hidden lg:inline">Just for Fun</span>
+              {/* Di mobile, judul halaman memakai judul game */}
+              <span className="md:hidden">Build a PC</span>
+              <span className="hidden md:inline">Just for Fun</span>
             </>
           )}
         </h1>
         <p
-          className={`lg:max-w-160 text-muted leading-[1.8] font-poppins-sans tracking-[0.012em] ${lit ? "text-base" : "text-sm sm:text-base"}`}
+          className={`md:max-w-160 text-muted leading-[1.8] font-poppins-sans tracking-[0.012em] ${lit ? "text-base" : "text-sm sm:text-base"}`}
         >
           I spend my days building software, so here&apos;s a chance to build the machine it runs
           on, one part at a time.

@@ -1521,17 +1521,17 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
       if (!p) return;
       return pr.kind === "part" ? placeAt(pr.id, p) : plug(pr.id, p);
     }
-    // Klik biasa hanya menampilkan petunjuk; komponen tetap dipasang dengan drag.
-    // Di layar sentuh, ketukan sekaligus memilih item untuk diseret.
+    // Klik atau ketukan memilih item dan menampilkan garis bantunya. Komponen tetap
+    // dipasang dengan drag, dan di layar sentuh hanya item terpilih yang bisa diseret.
     const then = pr.touch ? "now drag" : "drag";
     if (pr.kind === "cable") {
-      if (pr.touch) setPicked(`cable:${pr.id}`);
+      setPicked(`cable:${pr.id}`);
       return say(`${then} the ${CABLES.find((c) => c.id === pr.id)!.name} cable onto its header`);
     }
     const s = byId(pr.id);
     if (!ready(s)) return nudge(s);
     setFocusId(s.id);
-    if (pr.touch && canGrab(s)) setPicked(`part:${s.id}`);
+    if (canGrab(s)) setPicked(`part:${s.id}`);
     say(canGrab(s) ? `${then} the ${s.name} into the case` : busyTip(s));
   };
   dragFns.current = { move: onDragMove, end: onDragEnd };
@@ -1972,10 +1972,10 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
     // (pointercancel), sehingga komponen gagal dijatuhkan sampai halaman diklik.
     <div className="w-full select-none bg-background" onDragStart={(e) => e.preventDefault()}>
       {/* Lebar kolom papan dibatasi sesuai gambar PC (37.5rem) agar sisa lebarnya
-          dipakai kartu "Build a PC". grid-cols-1 menjaga kolom di layar sempit agar tidak
+          dipakai kartu "Build a PC". grid-cols-1 menjaga kolom di mobile agar tidak
           melebar mengikuti baris status */}
       <div
-        className={`grid grid-cols-1 ${lit ? "gap-4" : "gap-3 sm:gap-4 lg:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
+        className={`grid grid-cols-1 ${lit ? "gap-4" : "gap-3 sm:gap-4 md:grid-cols-[minmax(0,37.5rem)_minmax(18rem,1fr)]"}`}
       >
         {/* ── papan: casing terbuka ─────────────────────────────────────── */}
         <div className="relative flex flex-col overflow-hidden">
@@ -1986,13 +1986,25 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
               sejajar dengan judul halaman. Persen translate mengacu ke lebar elemen
               itu sendiri, jadi tetap pas di semua ukuran layar. Lebar 460/441.5 membuat
               tepi kanan casing ikut sejajar, sehingga jarak kiri dan kanan sama. */}
-          <div className="w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)]">
+          <div className="w-[calc(100%*460/441.5)] md:max-w-150 -translate-x-[calc(100%*9.25/460)]">
             <div
               className={`flex items-baseline justify-between gap-x-4 px-[calc(100%*10/460)] font-poppins-sans text-muted ${lit ? "text-sm" : "text-xs sm:text-sm"}`}
             >
               <span className="flex min-w-0 gap-4">
                 <span className="min-w-0 truncate">
-                  {built ? (lit ? "" : "build complete · ready to power on") : (cur?.name ?? "")}
+                  {built ? (
+                    lit ? (
+                      ""
+                    ) : (
+                      <>
+                        build complete
+                        {/* Dipendekkan di mobile dan tablet agar tidak terpotong */}
+                        <span className="hidden lg:inline"> · ready to power on</span>
+                      </>
+                    )
+                  ) : (
+                    (cur?.name ?? "")
+                  )}
                 </span>
                 {!lit && (
                   <span className="shrink-0">
@@ -2014,7 +2026,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                 </span>
               </span>
             </div>
-            {/* Feedback terakhir tampil tepat di atas papan, hanya di layar lebar. Tingginya
+            {/* Feedback terakhir tampil tepat di atas papan, hanya di desktop. Tingginya
               minimal satu baris agar gambar PC tidak bergeser saat pesan muncul */}
             <div
               className={`mt-1 min-h-[1.7em] px-[calc(100%*10/460)] font-poppins-sans text-sm leading-[1.7] ${lit ? "hidden" : "hidden lg:block"}`}
@@ -2040,7 +2052,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
             />
           ) : (
             <div className="relative">
-              <div className="relative mt-3 w-[calc(100%*460/441.5)] max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">
+              <div className="relative mt-3 w-[calc(100%*460/441.5)] md:max-w-150 -translate-x-[calc(100%*9.25/460)] overflow-hidden">
                 <svg
                   ref={svgRef}
                   viewBox="0 0 460 420"
@@ -2153,7 +2165,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                   >
                     {pasteStatus}
                   </p>
-                  <div className="grid w-full grid-cols-1 gap-2 lg:flex lg:items-center">
+                  <div className="grid w-full grid-cols-1 gap-2 md:flex md:items-center">
                     <button
                       type="button"
                       disabled={pasteState === "ok"}
@@ -2199,7 +2211,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
           {!side && explainStep && (
             <div
               key={`${explainStep.id}-${focusCable?.id ?? ""}`}
-              className="pc-slide mt-3 w-full max-w-150"
+              className="pc-slide mt-3 w-full md:max-w-150"
             >
               <LearnCard
                 step={explainStep}
@@ -2231,15 +2243,15 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
 
         {/* ── kartu: lembar rakitan ─────────────────────────────────────── */}
         {!lit && (
-          <aside className="flex flex-col lg:border-l lg:border-border lg:pl-5">
-            {/* Hanya di layar lebar. Di layar sempit, judul halaman sudah menjadi "Build a PC" */}
-            <div className="hidden lg:block">
+          <aside className="flex flex-col md:border-l md:border-border md:pl-5">
+            {/* Mulai tablet. Di mobile, judul halaman sudah menjadi "Build a PC" */}
+            <div className="hidden md:block">
               <h2 className="m-0 font-caveat text-3xl font-bold leading-none text-foreground">
                 Build a PC
               </h2>
             </div>
 
-            <div className="flex items-baseline justify-between lg:mt-4">
+            <div className="flex items-baseline justify-between md:mt-4">
               <span className="font-poppins-sans text-sm text-muted">progress</span>
               <span className="font-caveat text-2xl font-bold text-foreground">{pct}%</span>
             </div>
@@ -2256,11 +2268,14 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
             </p>
 
             <>
-              <ol className="mt-2 mb-0 flex list-none flex-col gap-1 p-0 lg:mt-4">
+              <ol className="mt-2 mb-0 flex list-none flex-col gap-1 p-0 md:mt-4">
                 {queue.map((s) => {
                   // Nomor tetap mengikuti urutan rakitan, bukan posisi di daftar.
                   const i = STEPS.indexOf(s);
                   const isDone = has(s.id);
+                  // Setelah cable kit muncul, yang diseret adalah kabelnya. Langkah kabel
+                  // dinonaktifkan agar tidak terlihat bisa diklik.
+                  const isLocked = isDone || (s.id === "cables" && showKit);
                   const isReady = phase === "build" && ready(s);
                   const isFocus = phase === "build" && cur?.id === s.id;
                   const missing = (s.needs ?? []).filter((n) => !has(n)).map((n) => byId(n).name);
@@ -2268,13 +2283,13 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                     <li key={s.id}>
                       <button
                         type="button"
-                        disabled={isDone}
-                        onPointerDown={(e) => !isDone && startPress("part", s.id, e)}
+                        disabled={isLocked}
+                        onPointerDown={(e) => !isLocked && startPress("part", s.id, e)}
                         onContextMenu={(e) => e.preventDefault()}
                         className={`flex w-full [-webkit-touch-callout:none] items-center gap-2.5 rounded-[5px] border px-2 py-1.5 text-left transition-[border-color,opacity] duration-500 ${
                           picked === `part:${s.id}` ? "touch-none" : "touch-pan-y"
                         } ${
-                          isDone
+                          isLocked
                             ? "cursor-default border-transparent opacity-50"
                             : drag?.id === s.id || picked === `part:${s.id}`
                               ? "cursor-grabbing border-blue"
@@ -2350,7 +2365,7 @@ export function PcBuilder({ onLitChange }: { onLitChange?: (lit: boolean) => voi
                 })}
               </ol>
 
-              <div className="mt-auto grid grid-cols-1 gap-2 pt-6 lg:flex">
+              <div className="mt-auto grid grid-cols-1 gap-2 pt-6 md:flex">
                 <button
                   type="button"
                   disabled={!built}
