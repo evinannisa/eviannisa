@@ -2216,7 +2216,7 @@ export function PcBuilder() {
               <button
                 type="button"
                 onClick={reset}
-                className="w-full cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] lg:w-auto duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                className="cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
               >
                 <span className="text-red">▶ </span>build another
               </button>

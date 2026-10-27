@@ -536,7 +536,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
             key={c.key}
             type="button"
             onClick={() => pick(i)}
-            className={`cursor-pointer rounded-full border px-2.5 py-1 font-poppins-sans text-[0.65rem] backdrop-blur-sm transition-colors duration-300 sm:text-xs ${
+            className={`cursor-pointer rounded-full border px-2.5 py-1 font-poppins-sans text-xs backdrop-blur-sm transition-colors duration-300 ${
               i === cam && !orbit
                 ? "border-blue bg-blue/15 text-foreground"
                 : "border-border bg-background/60 text-muted hover:text-foreground"
@@ -545,7 +545,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
             {c.label}
           </button>
         ))}
-        <span className="ml-auto hidden font-poppins-sans text-[0.65rem] text-muted lg:inline">
+        <span className="ml-auto font-poppins-sans text-[0.65rem] text-muted">
           {touring ? "touring · " : ""}drag to look around
         </span>
       </div>
