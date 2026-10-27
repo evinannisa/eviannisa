@@ -131,7 +131,9 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{ x: number; y: number; yaw: number; pitch: number } | null>(null);
 
-  // Adegan digambar di ruang 1000 px, lalu diskalakan mengikuti lebar kartu.
+  // Adegan 3D selalu digambar selebar 1000 px, lalu hasilnya diperkecil dengan scale 2D
+  // mengikuti lebar kartu. Safari tidak akurat menghitung adegan 3D yang diperkecil di
+  // dalam ruang 3D, jadi cara ini menjaga adegan tetap sama di semua ukuran layar.
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -221,7 +223,6 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
       <div
         ref={stageRef}
         className={`pc-desk relative aspect-[16/9] w-full touch-none overflow-hidden rounded-[6px] ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
-        style={{ perspective: 1500 * k }}
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
@@ -230,272 +231,277 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
         aria-label="The finished PC on a desk, next to a monitor showing the build report"
       >
         <div
-          className="absolute top-1/2 left-1/2"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: `translateZ(${-base.dist * k}px) scale3d(${k}, ${k}, ${k}) rotateX(${pitch}deg) rotateY(${yaw}deg) translate3d(${-tx}px, ${-ty}px, ${-tz}px)`,
-            transition: dragging ? "none" : "transform 1.8s cubic-bezier(0.65, 0, 0.35, 1)",
-          }}
+          className="absolute top-0 left-0"
+          style={{ width: 1000, height: 562.5, perspective: 1500, transform: `scale(${k})`, transformOrigin: "0 0" }}
         >
-          {/* Dinding: cahaya layar dan lampu strip memantul di belakang monitor */}
           <div
-            className="absolute"
+            className="absolute top-1/2 left-1/2"
             style={{
-              width: 2000,
-              height: 900,
-              left: -1000,
-              top: -900,
-              transform: `translateZ(${-DESK.d / 2 - 10}px)`,
-              background:
-                "radial-gradient(38% 34% at 47% 64%, var(--pc-bias) 0%, transparent 70%), var(--pc-wall)",
-              maskImage: "radial-gradient(60% 75% at 50% 70%, #000 45%, transparent 80%)",
+              transformStyle: "preserve-3d",
+              transform: `translateZ(${-base.dist}px) rotateX(${pitch}deg) rotateY(${yaw}deg) translate3d(${-tx}px, ${-ty}px, ${-tz}px)`,
+              transition: dragging ? "none" : "transform 1.8s cubic-bezier(0.65, 0, 0.35, 1)",
             }}
-          />
+          >
+            {/* Dinding: cahaya layar dan lampu strip memantul di belakang monitor */}
+            <div
+              className="absolute"
+              style={{
+                width: 2000,
+                height: 900,
+                left: -1000,
+                top: -900,
+                transform: `translateZ(${-DESK.d / 2 - 10}px)`,
+                background:
+                  "radial-gradient(38% 34% at 47% 64%, var(--pc-bias) 0%, transparent 70%), var(--pc-wall)",
+                maskImage: "radial-gradient(60% 75% at 50% 70%, #000 45%, transparent 80%)",
+              }}
+            />
 
-          {/* Meja: serat kayu tipis di permukaan, tepi depan lebih gelap */}
-          <Box
-            y={DESK.t / 2}
-            w={DESK.w}
-            h={DESK.t}
-            d={DESK.d}
-            fill="var(--pc-desk)"
-            faces={{
-              top: {
-                style: {
-                  background:
-                    "repeating-linear-gradient(90deg, transparent 0 37px, var(--pc-grain) 38px, transparent 41px 83px, var(--pc-grain) 84px, transparent 86px), linear-gradient(180deg, var(--pc-desk-far), var(--pc-desk))",
+            {/* Meja: serat kayu tipis di permukaan, tepi depan lebih gelap */}
+            <Box
+              y={DESK.t / 2}
+              w={DESK.w}
+              h={DESK.t}
+              d={DESK.d}
+              fill="var(--pc-desk)"
+              faces={{
+                top: {
+                  style: {
+                    background:
+                      "repeating-linear-gradient(90deg, transparent 0 37px, var(--pc-grain) 38px, transparent 41px 83px, var(--pc-grain) 84px, transparent 86px), linear-gradient(180deg, var(--pc-desk-far), var(--pc-desk))",
+                  },
                 },
-              },
-              front: { style: { background: "var(--pc-desk-edge)" } },
-            }}
-          />
+                front: { style: { background: "var(--pc-desk-edge)" } },
+              }}
+            />
 
-          {/* Pantulan cahaya layar dan RGB casing di meja, lalu bayangan kontak tiap benda */}
-          <Flat
-            x={MON.x}
-            z={MON.z + 150}
-            w={720}
-            d={330}
-            y={-0.4}
-            style={{ background: "radial-gradient(50% 50% at 50% 30%, rgba(125, 110, 255, 0.22), transparent 70%)" }}
-          />
-          <Flat
-            x={TOWER.x - 40}
-            z={TOWER.z + 10}
-            w={300}
-            d={360}
-            y={-0.4}
-            style={{ background: "radial-gradient(50% 50% at 40% 50%, rgba(88, 166, 255, 0.28), transparent 70%)" }}
-          />
-          <Flat
-            x={TOWER.x}
-            z={TOWER.z}
-            w={TOWER.w + 40}
-            d={TOWER.d + 40}
-            y={-0.6}
-            style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), transparent 75%)" }}
-          />
-          <Flat
-            x={MON.x}
-            z={MON.z + 30}
-            w={260}
-            d={190}
-            y={-0.6}
-            style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.5), transparent 75%)" }}
-          />
+            {/* Pantulan cahaya layar dan RGB casing di meja, lalu bayangan kontak tiap benda */}
+            <Flat
+              x={MON.x}
+              z={MON.z + 150}
+              w={720}
+              d={330}
+              y={-0.4}
+              style={{ background: "radial-gradient(50% 50% at 50% 30%, rgba(125, 110, 255, 0.22), transparent 70%)" }}
+            />
+            <Flat
+              x={TOWER.x - 40}
+              z={TOWER.z + 10}
+              w={300}
+              d={360}
+              y={-0.4}
+              style={{ background: "radial-gradient(50% 50% at 40% 50%, rgba(88, 166, 255, 0.28), transparent 70%)" }}
+            />
+            <Flat
+              x={TOWER.x}
+              z={TOWER.z}
+              w={TOWER.w + 40}
+              d={TOWER.d + 40}
+              y={-0.6}
+              style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), transparent 75%)" }}
+            />
+            <Flat
+              x={MON.x}
+              z={MON.z + 30}
+              w={260}
+              d={190}
+              y={-0.6}
+              style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.5), transparent 75%)" }}
+            />
 
-          {/* Alas meja kain, keyboard, dan mouse */}
-          <Flat
-            x={MON.x + 40}
-            z={140}
-            w={640}
-            d={210}
-            y={-0.8}
-            style={{
-              borderRadius: 14,
-              background: "linear-gradient(180deg, #24262b, #1c1d21)",
-              boxShadow: "0 0 0 1px rgba(255,255,255,0.05) inset, 0 6px 18px rgba(0,0,0,0.35)",
-            }}
-          />
-          <Box
-            x={MON.x}
-            y={-8}
-            z={140}
-            w={380}
-            h={14}
-            d={128}
-            fill={metal}
-            faces={{
-              top: {
-                style: { padding: 9, display: "flex", flexDirection: "column", gap: 4 },
-                children: KEY_ROWS.map((n, r) => (
-                  <div key={r} className="flex flex-1 gap-1">
-                    {n === 0 ? (
-                      <>
-                        <span className="w-[16%] rounded-[3px] bg-[#3a3d44]" />
-                        <span className="flex-1 rounded-[3px] bg-[#3a3d44]" />
-                        <span className="w-[16%] rounded-[3px] bg-[#3a3d44]" />
-                      </>
-                    ) : (
-                      Array.from({ length: n }, (_, i) => (
-                        <span
-                          key={i}
-                          className="flex-1 rounded-[3px]"
-                          style={{
-                            background: "linear-gradient(180deg, #43464e, #34373d)",
-                            boxShadow: "0 1.5px 0 #17181b, 0 0 6px rgba(88,166,255,0.18)",
-                          }}
+            {/* Alas meja kain, keyboard, dan mouse */}
+            <Flat
+              x={MON.x + 40}
+              z={140}
+              w={640}
+              d={210}
+              y={-0.8}
+              style={{
+                borderRadius: 14,
+                background: "linear-gradient(180deg, #24262b, #1c1d21)",
+                boxShadow: "0 0 0 1px rgba(255,255,255,0.05) inset, 0 6px 18px rgba(0,0,0,0.35)",
+              }}
+            />
+            <Box
+              x={MON.x}
+              y={-8}
+              z={140}
+              w={380}
+              h={14}
+              d={128}
+              fill={metal}
+              faces={{
+                top: {
+                  style: { padding: 9, display: "flex", flexDirection: "column", gap: 4 },
+                  children: KEY_ROWS.map((n, r) => (
+                    <div key={r} className="flex flex-1 gap-1">
+                      {n === 0 ? (
+                        <>
+                          <span className="w-[16%] rounded-[3px] bg-[#3a3d44]" />
+                          <span className="flex-1 rounded-[3px] bg-[#3a3d44]" />
+                          <span className="w-[16%] rounded-[3px] bg-[#3a3d44]" />
+                        </>
+                      ) : (
+                        Array.from({ length: n }, (_, i) => (
+                          <span
+                            key={i}
+                            className="flex-1 rounded-[3px]"
+                            style={{
+                              background: "linear-gradient(180deg, #43464e, #34373d)",
+                              boxShadow: "0 1.5px 0 #17181b, 0 0 6px rgba(88,166,255,0.18)",
+                            }}
+                          />
+                        ))
+                      )}
+                    </div>
+                  )),
+                },
+              }}
+            />
+            <Box
+              x={MON.x + 280}
+              y={-7}
+              z={150}
+              w={38}
+              h={14}
+              d={64}
+              fill={plastic}
+              faces={{
+                top: {
+                  style: {
+                    borderRadius: "19px 19px 16px 16px",
+                    background: "radial-gradient(60% 40% at 50% 30%, #3b3e45, #1c1d20)",
+                  },
+                },
+              }}
+            />
+
+            {/* Monitor: kaki dan dudukan, panel tipis, serta tonjolan VESA di bagian belakang */}
+            <Box
+              x={MON.x}
+              y={-3}
+              z={MON.z - 4}
+              w={210}
+              h={6}
+              d={130}
+              fill={metal}
+              faces={{ top: { style: { borderRadius: 10, background: "linear-gradient(180deg, #2c2f35, #3a3d44)" } } }}
+            />
+            <Box x={MON.x} y={-6 - NECK_H / 2} z={MON.z - MON.d / 2 - 29} w={46} h={NECK_H} d={14} fill={metal} />
+            <Box x={MON.x} y={MON_Y + 10} z={MON.z - MON.d / 2 - 11} w={190} h={150} d={22} fill={plastic} />
+            <Box
+              x={MON.x}
+              y={MON_Y}
+              z={MON.z}
+              w={MON.w}
+              h={MON.h}
+              d={MON.d}
+              fill={plastic}
+              faces={{
+                front: {
+                  style: { background: "#0b0b0c", padding: "8px 8px 16px", boxShadow: "inset 0 0 0 1px #2b2c30" },
+                  children: (
+                    <>
+                      <div ref={screenRef} className="relative flex h-full flex-col overflow-hidden rounded-[2px] bg-black">
+                        {screen}
+                        {/* Lapisan kaca dengan kilap diagonal tipis */}
+                        <div
+                          className="pointer-events-none absolute inset-0"
+                          style={{ background: "linear-gradient(118deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 32%, transparent 33%)" }}
                         />
-                      ))
-                    )}
-                  </div>
-                )),
-              },
-            }}
-          />
-          <Box
-            x={MON.x + 280}
-            y={-7}
-            z={150}
-            w={38}
-            h={14}
-            d={64}
-            fill={plastic}
-            faces={{
-              top: {
-                style: {
-                  borderRadius: "19px 19px 16px 16px",
-                  background: "radial-gradient(60% 40% at 50% 30%, #3b3e45, #1c1d20)",
+                      </div>
+                      <span className="pc-led absolute bottom-[6px] left-1/2 h-[3px] w-[3px] rounded-full bg-blue" />
+                    </>
+                  ),
                 },
-              },
-            }}
-          />
+              }}
+            />
 
-          {/* Monitor: kaki dan dudukan, panel tipis, serta tonjolan VESA di bagian belakang */}
-          <Box
-            x={MON.x}
-            y={-3}
-            z={MON.z - 4}
-            w={210}
-            h={6}
-            d={130}
-            fill={metal}
-            faces={{ top: { style: { borderRadius: 10, background: "linear-gradient(180deg, #2c2f35, #3a3d44)" } } }}
-          />
-          <Box x={MON.x} y={-6 - NECK_H / 2} z={MON.z - MON.d / 2 - 29} w={46} h={NECK_H} d={14} fill={metal} />
-          <Box x={MON.x} y={MON_Y + 10} z={MON.z - MON.d / 2 - 11} w={190} h={150} d={22} fill={plastic} />
-          <Box
-            x={MON.x}
-            y={MON_Y}
-            z={MON.z}
-            w={MON.w}
-            h={MON.h}
-            d={MON.d}
-            fill={plastic}
-            faces={{
-              front: {
-                style: { background: "#0b0b0c", padding: "8px 8px 16px", boxShadow: "inset 0 0 0 1px #2b2c30" },
-                children: (
-                  <>
-                    <div ref={screenRef} className="relative flex h-full flex-col overflow-hidden rounded-[2px] bg-black">
-                      {screen}
-                      {/* Lapisan kaca dengan kilap diagonal tipis */}
+            {/* Casing: sisi kaca kiri menghadap monitor, bagian depan mesh dengan dua kipas intake */}
+            <Box
+              x={TOWER.x}
+              y={-TOWER.h / 2}
+              z={TOWER.z}
+              w={TOWER.w}
+              h={TOWER.h}
+              d={TOWER.d}
+              fill={metal}
+              faces={{
+                left: {
+                  // Isi casing selalu digambar terang di atas interior gelap, apa pun tema situsnya.
+                  style: {
+                    background: "#0a0b0f",
+                    boxShadow: "inset 0 0 0 5px #24262b, inset 0 0 40px rgba(88,166,255,0.18)",
+                    ["--bg-color" as string]: "#0b0d12",
+                    ["--fg-color" as string]: "#d6dcea",
+                    ["--muted-color" as string]: "#5d6474",
+                    ["--blue-color" as string]: "#6cb4ff",
+                  },
+                  children: (
+                    <>
+                      <svg
+                        viewBox="0 0 460 420"
+                        className="pc-on block h-full w-full"
+                        fill="none"
+                        stroke="var(--fg-color)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        {caseArt}
+                      </svg>
+                      {/* Kaca tempered: pantulan miring dan tepi yang sedikit berkilau */}
                       <div
-                        className="pointer-events-none absolute inset-0"
-                        style={{ background: "linear-gradient(118deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 32%, transparent 33%)" }}
+                        className="pointer-events-none absolute inset-[5px]"
+                        style={{
+                          background:
+                            "linear-gradient(112deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 26%, transparent 27%, transparent 62%, rgba(255,255,255,0.06) 63%, transparent 78%)",
+                          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
+                        }}
                       />
-                    </div>
-                    <span className="pc-led absolute bottom-[6px] left-1/2 h-[3px] w-[3px] rounded-full bg-blue" />
-                  </>
-                ),
-              },
-            }}
-          />
-
-          {/* Casing: sisi kaca kiri menghadap monitor, bagian depan mesh dengan dua kipas intake */}
-          <Box
-            x={TOWER.x}
-            y={-TOWER.h / 2}
-            z={TOWER.z}
-            w={TOWER.w}
-            h={TOWER.h}
-            d={TOWER.d}
-            fill={metal}
-            faces={{
-              left: {
-                // Isi casing selalu digambar terang di atas interior gelap, apa pun tema situsnya.
-                style: {
-                  background: "#0a0b0f",
-                  boxShadow: "inset 0 0 0 5px #24262b, inset 0 0 40px rgba(88,166,255,0.18)",
-                  ["--bg-color" as string]: "#0b0d12",
-                  ["--fg-color" as string]: "#d6dcea",
-                  ["--muted-color" as string]: "#5d6474",
-                  ["--blue-color" as string]: "#6cb4ff",
+                    </>
+                  ),
                 },
-                children: (
-                  <>
-                    <svg
-                      viewBox="0 0 460 420"
-                      className="pc-on block h-full w-full"
-                      fill="none"
-                      stroke="var(--fg-color)"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      {caseArt}
-                    </svg>
-                    {/* Kaca tempered: pantulan miring dan tepi yang sedikit berkilau */}
-                    <div
-                      className="pointer-events-none absolute inset-[5px]"
-                      style={{
-                        background:
-                          "linear-gradient(112deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 26%, transparent 27%, transparent 62%, rgba(255,255,255,0.06) 63%, transparent 78%)",
-                        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
-                      }}
-                    />
-                  </>
-                ),
-              },
-              front: {
-                style: { padding: "14px 12px", display: "flex", flexDirection: "column", gap: 10 },
-                children: (
-                  <>
-                    <div className="flex items-center justify-between">
-                      <span className="pc-led h-[4px] w-[4px] rounded-full bg-[#6cb4ff]" />
-                      <span className="h-[9px] w-[9px] rounded-full border border-[#555a64] bg-[#1b1d21]" />
-                    </div>
-                    <div
-                      className="relative flex flex-1 flex-col items-center justify-around rounded-[4px]"
-                      style={{
-                        background:
-                          "radial-gradient(circle, #0c0d10 1.1px, transparent 1.6px) 0 0 / 5px 5px, #24262b",
-                      }}
-                    >
-                      {[0, 1].map((i) => (
-                        <span
-                          key={i}
-                          className="h-[78px] w-[78px] rounded-full"
-                          style={{
-                            border: "2px solid rgba(108,180,255,0.85)",
-                            boxShadow: "0 0 14px rgba(108,180,255,0.6), inset 0 0 12px rgba(108,180,255,0.45)",
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </>
-                ),
-              },
-              top: {
-                style: {
-                  background:
-                    "radial-gradient(circle, #0c0d10 1.1px, transparent 1.6px) 0 0 / 5px 5px, linear-gradient(180deg, #2c2f35, #24262b)",
-                  boxShadow: "inset 0 0 0 10px #2a2d33",
+                front: {
+                  style: { padding: "14px 12px", display: "flex", flexDirection: "column", gap: 10 },
+                  children: (
+                    <>
+                      <div className="flex items-center justify-between">
+                        <span className="pc-led h-[4px] w-[4px] rounded-full bg-[#6cb4ff]" />
+                        <span className="h-[9px] w-[9px] rounded-full border border-[#555a64] bg-[#1b1d21]" />
+                      </div>
+                      <div
+                        className="relative flex flex-1 flex-col items-center justify-around rounded-[4px]"
+                        style={{
+                          background:
+                            "radial-gradient(circle, #0c0d10 1.1px, transparent 1.6px) 0 0 / 5px 5px, #24262b",
+                        }}
+                      >
+                        {[0, 1].map((i) => (
+                          <span
+                            key={i}
+                            className="h-[78px] w-[78px] rounded-full"
+                            style={{
+                              border: "2px solid rgba(108,180,255,0.85)",
+                              boxShadow: "0 0 14px rgba(108,180,255,0.6), inset 0 0 12px rgba(108,180,255,0.45)",
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  ),
                 },
-              },
-            }}
-          />
+                top: {
+                  style: {
+                    background:
+                      "radial-gradient(circle, #0c0d10 1.1px, transparent 1.6px) 0 0 / 5px 5px, linear-gradient(180deg, #2c2f35, #24262b)",
+                    boxShadow: "inset 0 0 0 10px #2a2d33",
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
 
         {flat && (
