@@ -43,8 +43,8 @@ const navItems: NavItem[] = [
     icon: <User size={15} strokeWidth={2.2} />,
   },
   {
-    href: "/experience",
-    label: "experience",
+    href: "/experiences",
+    label: "experiences",
     ink: "var(--amber-color)",
     icon: <Briefcase size={15} strokeWidth={2.2} />,
   },

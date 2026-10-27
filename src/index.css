@@ -462,7 +462,7 @@ html.theme-swapping *::after {
 
 .coding-art {
   position: relative;
-  /* Ukuran dasar. Diperbesar mulai lg dan diperkecil di bawah sm. */
+  /* Ukuran dasar. Diubah di bawah sm, di tablet, dan mulai lg. */
   width: 18rem;
   max-width: 100%;
   margin-right: -2rem;
@@ -476,6 +476,12 @@ html.theme-swapping *::after {
     opacity: 0.8;
   }
 }
+/* Tablet: satu kolom seperti mobile, tetapi sketsanya lebih besar. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .coding-art {
+    width: 21rem;
+  }
+}
 @media (max-width: 639px) {
   .coding-art {
     width: 13rem;
@@ -483,7 +489,7 @@ html.theme-swapping *::after {
     margin-left: 1rem;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .coding-art {
     opacity: 0.35;
   }
@@ -519,7 +525,7 @@ html.theme-swapping *::after {
   opacity: 0.4;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   :root.light .coding-art-img {
     opacity: 1;
   }
@@ -528,9 +534,9 @@ html.theme-swapping *::after {
 .coding-art {
   --ca-steam-ink: var(--orange-color);
 }
-/* Mode gelap: ilustrasi diredupkan agar tidak bersaing dengan teks profil.
-   Di bawah md sudah diatur 0.35, jadi aturan ini hanya berlaku mulai md. */
-@media (min-width: 768px) {
+/* Mode gelap: ilustrasi diredupkan agar tidak bersaing dengan teks.
+   Di bawah lg opacity-nya sudah 0.35. */
+@media (min-width: 1024px) {
   :root:not(.light) .coding-art {
     opacity: 0.4;
   }
@@ -574,10 +580,6 @@ html.theme-swapping *::after {
 }
 :root.light .doodle-sm:is(.edu-book, .ah-laptop, .ah-lamp) {
   opacity: 0.4;
-}
-/* Di versi kecil, garis kode di layar laptop terlalu rapat sehingga disembunyikan. */
-.doodle-sm.ah-laptop .wh-code {
-  display: none;
 }
 :root.light .coding-art {
   --ca-steam-ink: var(--red-color);

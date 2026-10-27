@@ -92,7 +92,7 @@ export function FloatingContacts() {
   const launcherRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isChatRoute = pathname === "/chat";
-  // Di layar sempit, tombol kontak melayang hanya tampil di halaman Connect with me (beranda).
+  // Di mobile dan tablet, tombol kontak hanya tampil di beranda.
   const showContacts = pathname === "/";
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export function FloatingContacts() {
       <TimeCapsulePopup open={capsuleOpen} onClose={closeCapsule} />
 
       <div
-        className={`pointer-events-none fixed z-50 flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8 ${showContacts ? "flex" : "hidden sm:flex"}`}
+        className={`pointer-events-none fixed z-50 flex-col gap-3 right-4 top-auto bottom-16 items-end sm:right-8 ${showContacts ? "flex" : "hidden lg:flex"}`}
       >
         <div
           className="hidden lg:flex flex-col items-end pr-1 pointer-events-none"

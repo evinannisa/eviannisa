@@ -53,7 +53,7 @@ export default function Home() {
     <div className="mt-1 sm:mt-1">
       <section
         ref={sectionRef}
-        className="min-h-screen flex items-center relative overflow-hidden px-6 pt-24 pb-15 md:px-10 md:py-24 lg:px-20 lg:py-16 notebook"
+        className="min-h-svh flex items-center relative overflow-hidden px-6 pt-20 pb-15 md:px-10 md:pb-20 lg:px-20 lg:py-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
         {/* Doodle yang tersebar di seluruh halaman, di belakang konten */}
@@ -165,7 +165,8 @@ export default function Home() {
         </svg>
         <svg
           style={{ opacity: 0.3 }}
-          className="hero-doodle mb-35 bottom-0 right-160"
+          // Di tablet dipindah ke kanan atas.
+          className="hero-doodle mb-35 bottom-0 right-160 md:max-lg:mb-0 md:max-lg:bottom-auto md:max-lg:right-10 md:max-lg:top-[16%]"
           width="80"
           height="14"
           viewBox="0 0 80 14"
@@ -186,7 +187,7 @@ export default function Home() {
           <i></i>
         </div>
 
-        <div className="max-w-5xl mx-auto w-full grid-cols-1 grid md:grid-cols-2 xl:grid-cols-[1fr_auto] items-center relative z-10">
+        <div className="max-w-5xl mx-auto w-full grid-cols-1 grid lg:grid-cols-2 xl:grid-cols-[1fr_auto] items-center relative z-10">
           {/* ── kiri ── */}
           <div className="mb-14 lg:mb-0">
             <div className="flex items-center gap-4 mb-6">
@@ -244,10 +245,10 @@ export default function Home() {
                 >
                   Software Engineer
                 </div>
-                {/* Hanya di layar sempit. Dibuat absolute agar posisi nama tidak bergeser.
-                    Di layar lebar gelombang ini ada di atas hero (PageDoodles). */}
+                {/* Hanya di mobile dan tablet. Dibuat absolute agar nama tidak bergeser.
+                    Di desktop, gelombang ini ada di atas hero (PageDoodles). */}
                 <svg
-                  className="md:hidden absolute left-12 top-full -mt-0.5"
+                  className="lg:hidden absolute left-12 top-full -mt-0.5"
                   width={40}
                   viewBox="0 0 48 28"
                   fill="none"

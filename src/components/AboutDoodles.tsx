@@ -55,7 +55,7 @@ const GRID_MARKS: Mark[] = [
     box: "0 0 40 20",
     paths: ["M6,10 L8,10", "M18,14 L20,14", "M30,10 L32,10"],
     sw: 2.6,
-    hide: "hidden md:block",
+    hide: "hidden lg:block",
   },
 ];
 

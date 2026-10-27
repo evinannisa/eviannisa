@@ -141,7 +141,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   const [orbit, setOrbit] = useState<{ yaw: number; pitch: number } | null>(null);
   const [touring, setTouring] = useState(true);
   const [dragging, setDragging] = useState(false);
-  // Sama dengan batas sm: di bawahnya bingkai adegan berubah dari 16:9 menjadi 4:3.
+  // Di bawah lg (mobile dan tablet), bingkai adegan berubah dari 16:9 menjadi 4:3.
   const [narrow, setNarrow] = useState(false);
   const drag = useRef<{ x: number; y: number; yaw: number; pitch: number } | null>(null);
 
@@ -155,7 +155,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
   }, []);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
+    const mq = window.matchMedia("(max-width: 1023px)");
     const sync = () => setNarrow(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -242,7 +242,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
     <div className="pc-fade">
       <div
         ref={stageRef}
-        className={`pc-desk relative aspect-[4/3] w-full touch-none overflow-hidden rounded-[6px] sm:aspect-[16/9] ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
+        className={`pc-desk relative aspect-[4/3] w-full touch-none overflow-hidden rounded-[6px] lg:aspect-[16/9] ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
         style={{ perspective: 1500 * k }}
         onPointerDown={onDown}
         onPointerMove={onMove}
@@ -557,7 +557,7 @@ export function PcDesk({ caseArt, screen, booting }: { caseArt: ReactNode; scree
             {c.label}
           </button>
         ))}
-        <span className="ml-auto hidden font-poppins-sans text-[0.65rem] text-muted sm:inline">
+        <span className="ml-auto hidden font-poppins-sans text-[0.65rem] text-muted lg:inline">
           {touring ? "touring · " : ""}drag to look around
         </span>
       </div>

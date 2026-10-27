@@ -1065,9 +1065,9 @@ export function PcBuilder() {
   const [postShown, setPostShown] = useState(0);
   // Angka memory test yang terus naik di layar POST.
   const [memCount, setMemCount] = useState(0);
-  // Layar cukup lebar untuk menaruh kartu penjelasan di samping papan.
+  // Desktop: kartu penjelasan ditaruh di samping papan.
   const [wide, setWide] = useState(false);
-  // Layar sempit: komponen atau kabel yang baru terpasang tetap di-zoom bersama
+  // Mobile dan tablet: komponen atau kabel yang baru terpasang tetap di-zoom bersama
   // penjelasannya sampai "got it" ditekan. Item berikutnya tetap bisa langsung dipilih.
   const [review, setReview] = useState<{ step: string; cable?: string } | null>(null);
 
@@ -1140,7 +1140,7 @@ export function PcBuilder() {
   }, []);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
+    const mq = window.matchMedia("(min-width: 1024px)");
     const sync = () => setWide(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -1602,7 +1602,7 @@ export function PcBuilder() {
   // Slot yang berdenyut menandai tujuan komponen yang sedang dipegang atau aksi
   // berikutnya. Garis bantu dan labelnya muncul di setiap langkah, tanpa menunggu
   // komponen dipegang, agar pengguna langsung tahu tujuan dan fungsinya.
-  // Layar sempit: garis bantu baru muncul setelah item diketuk, dipegang, atau
+  // Mobile dan tablet: garis bantu baru muncul setelah item diketuk, dipegang, atau
   // langkahnya sedang dikerjakan, agar papan tidak penuh petunjuk sejak awal.
   const hint = wide || !!active || !!lock || !!picked;
   const glow: { b: Box; label?: string }[] = [];
@@ -2148,7 +2148,7 @@ export function PcBuilder() {
                   >
                     {pasteStatus}
                   </p>
-                  <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:items-center">
+                  <div className="grid w-full grid-cols-1 gap-2 lg:flex lg:items-center">
                     <button
                       type="button"
                       disabled={pasteState === "ok"}
@@ -2190,7 +2190,7 @@ export function PcBuilder() {
             </div>
           )}
 
-          {/* Layar sempit (dan langkah kabel): kartu penjelasan di bawah papan */}
+          {/* Mobile, tablet, dan langkah kabel: kartu penjelasan di bawah papan */}
           {!side && explainStep && (
             <div
               key={`${explainStep.id}-${focusCable?.id ?? ""}`}
@@ -2216,7 +2216,7 @@ export function PcBuilder() {
               <button
                 type="button"
                 onClick={reset}
-                className="w-full cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] sm:w-auto duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
+                className="w-full cursor-pointer rounded-md border border-border bg-transparent px-4 py-2 font-poppins-sans text-sm sm:text-base text-foreground transition-[border-color] lg:w-auto duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)] hover:border-muted"
               >
                 <span className="text-red">▶ </span>build another
               </button>
@@ -2345,7 +2345,7 @@ export function PcBuilder() {
                 })}
               </ol>
 
-              <div className="mt-auto grid grid-cols-1 gap-2 pt-6 sm:flex">
+              <div className="mt-auto grid grid-cols-1 gap-2 pt-6 lg:flex">
                 <button
                   type="button"
                   disabled={!built}

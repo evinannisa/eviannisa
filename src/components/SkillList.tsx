@@ -54,7 +54,7 @@ export function SkillList({
         Tools and technologies I’ve used at work, in personal projects, and along the way.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10 items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 items-start">
         {groups.map((g) => {
           const items = g.items.filter(Boolean);
 

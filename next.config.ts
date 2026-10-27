@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   env: {
     WA_ME: process.env.WA_ME ?? '',
   },
+  // Link lama /experience diarahkan ke /experiences.
+  async redirects() {
+    return [{ source: '/experience', destination: '/experiences', permanent: true }]
+  },
 }
 
 export default nextConfig

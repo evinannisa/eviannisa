@@ -190,7 +190,7 @@ export function EducationTimeline() {
                 program through Kampus Merdeka, where I got to collaborate with different teams and
                 meet people from different parts of Indonesia.
               </span>
-              <Link href="/experience" className="self-start">
+              <Link href="/experiences" className="self-start">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="text-sm sm:text-base text-muted font-poppins-sans hover:text-foreground">
                     See more experiences

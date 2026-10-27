@@ -13,11 +13,15 @@ type Mark = {
   ink?: string;
   sw?: number;
   hide?: string;
+  className?: string;
 };
 
-// Garis gelombang biru. Juga dipakai di bawah "Software Engineer" di layar sempit (page.tsx).
+// Garis gelombang biru. Juga dipakai di bawah "Software Engineer" di mobile dan tablet (page.tsx).
 export const WAVE = "M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14";
 export const WAVE_INK = "#79c0ff";
+// Bintang ungu.
+const STAR = "M20.0,6.0 L23.5,15.3 L33.3,15.8 L25.6,22.0 L28.2,31.3 L20.0,25.9 L11.8,31.3 L14.4,22.0 L6.7,15.8 L16.5,15.3 Z";
+const STAR_INK = "var(--purple-color)";
 
 const MARKS: Mark[] = [
   // Pita atas
@@ -29,6 +33,8 @@ const MARKS: Mark[] = [
     paths: [
       "M20.0,5.0 L23.7,14.9 L34.3,15.4 L26.0,21.9 L28.8,32.1 L20.0,26.3 L11.2,32.1 L14.0,21.9 L5.7,15.4 L16.3,14.9 Z",
     ],
+    // Disembunyikan di tablet.
+    hide: "md:max-lg:hidden",
   },
   {
     top: "9%",
@@ -37,7 +43,7 @@ const MARKS: Mark[] = [
     box: "0 0 48 28",
     paths: [WAVE],
     ink: WAVE_INK,
-    hide: "hidden md:block",
+    hide: "hidden lg:block",
   },
   // Sisi kiri
   // Sisi kanan
@@ -46,11 +52,11 @@ const MARKS: Mark[] = [
     right: "12%",
     w: 34,
     box: "0 0 40 40",
-    paths: [
-      "M20.0,6.0 L23.5,15.3 L33.3,15.8 L25.6,22.0 L28.2,31.3 L20.0,25.9 L11.8,31.3 L14.4,22.0 L6.7,15.8 L16.5,15.3 Z",
-    ],
-    ink: "var(--purple-color)",
+    paths: [STAR],
+    ink: STAR_INK,
     hide: "hidden md:block",
+    // Di tablet dipindah ke atas teks.
+    className: "md:max-lg:!top-[10%] md:max-lg:!right-auto md:max-lg:!left-[10%]",
   },
   // Pita bawah
   {
@@ -61,6 +67,7 @@ const MARKS: Mark[] = [
     paths: ["M6,10 L8,10", "M18,14 L20,14", "M30,10 L32,10"],
     sw: 2.6,
     hide: "hidden sm:block",
+    className: "md:max-lg:!left-[15%] md:max-lg:!top-[84%]",
   },
 ];
 
@@ -109,7 +116,7 @@ export function PageDoodles() {
       {MARKS.map((m, i) => (
         <svg
           key={i}
-          className={`pd-mark absolute ${m.hide ?? ""}`}
+          className={`pd-mark absolute ${m.hide ?? ""} ${m.className ?? ""}`}
           style={{ top: m.top, left: m.left, right: m.right, width: m.w }}
           viewBox={m.box}
           fill="none"

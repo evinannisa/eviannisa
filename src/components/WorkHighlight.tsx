@@ -10,7 +10,7 @@ import { useTheme } from "@/components/ThemeProvider";
 
 const TOP_WORK = timeline.slice(0, 1);
 
-// Stack diambil dari entri experience terbaru agar selalu sama dengan halaman /experience.
+// Stack diambil dari entri experience terbaru agar sama dengan halaman /experiences.
 const STACK_SHOWN = 5;
 
 // Doodle laptop dipakai di dua ukuran: besar di layar lebar, kecil di samping judul.
@@ -194,25 +194,13 @@ export function WorkHighlight() {
         {laptopPaths}
       </svg>
 
-      <div className="flex gap-2.5 items-center sm:justify-end mb-2">
+      <div className="flex gap-2.5 items-center lg:justify-end mb-2">
         <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">// 02</div>
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
           Work Experience
         </div>
-        <svg
-          className="ah-doodle ah-laptop doodle-sm hidden sm:block lg:hidden pointer-events-none"
-          width={34}
-          viewBox="0 0 116 96"
-          fill="none"
-          stroke="var(--muted-color)"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          {laptopPaths}
-        </svg>
       </div>
-      <p className="mb-4 sm:mb-6 text-sm sm:text-base sm:text-right lg:max-w-160 text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
+      <p className="mb-4 sm:mb-6 text-sm sm:text-base lg:text-right lg:max-w-160 text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
         And then, after graduation, everything I had learned and experienced along the way started
         turning into real work, with projects across banking, geospatial, and carbon certification.
       </p>
@@ -270,7 +258,7 @@ export function WorkHighlight() {
               </div>
 
               <div className="flex justify-start mt-2 sm:mt-4">
-                <Link href="/experience">
+                <Link href="/experiences">
                   <span className="inline-flex items-center gap-1.5">
                     <span className="text-sm sm:text-base text-muted font-poppins-sans hover:text-foreground">
                       See more works
