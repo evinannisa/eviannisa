@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "../index.css";
 import { LayoutWrapper } from "../components/LayoutWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
