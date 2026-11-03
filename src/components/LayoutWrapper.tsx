@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { FloatingContacts, whatsappHref } from "@/components/FloatingContacts";
 import { SideMenu } from "@/components/SideMenu";
+import { NavLinks } from "@/components/NavLinks";
 
 const C = {
   bg: "var(--bg-color)",
@@ -23,23 +24,26 @@ const C = {
   orange: "var(--orange-color)",
 };
 
-const RESUME_MESSAGE = "Halo! Saya lihat portfolio kamu dan ingin minta resume kamu, boleh?";
-
-const navItems = [
-  { href: "/", label: "home", exact: true },
-  { href: "/about", label: "about" },
-  { href: "/projects", label: "projects" },
-  { href: "/writing", label: "writing" },
-];
+// Pesan dua bahasa agar pengunjung bisa memakai bahasa yang paling nyaman.
+const RESUME_MESSAGE =
+  "🇬🇧 Hi! I saw your portfolio and would like to request your resume, may I?\n\n" +
+  "🇮🇩 Halo! Saya lihat portfolio kamu dan ingin minta resume kamu, boleh?";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const [hoverResume, setHoverResume] = useState(false);
-  const [mobile, setMobile] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  // Navbar beranda transparan, kecuali di layar sempit setelah di-scroll agar tidak menimpa konten.
-  const clearNav = isHome && !(mobile && scrolled);
+  // Navbar beranda transparan selama belum di-scroll. Setelah di-scroll navbar diberi latar
+  // agar tidak tertimpa konten. Di desktop navbar beranda selalu disamakan dengan halaman lain
+  // agar garis buku tidak tampil di belakangnya. Memakai class `lg:` (bukan state JS) agar
+  // sudah benar sejak halaman pertama tampil. Class ditulis lengkap agar terbaca oleh Tailwind.
+  const clearNav = isHome && !scrolled;
+  const navClass = clearNav
+    ? "bg-transparent border-transparent lg:bg-(--nav-bg) lg:backdrop-blur-[10px]"
+    : scrolled
+      ? "bg-(--nav-bg-scrolled) border-border backdrop-blur-[10px]"
+      : "bg-(--nav-bg) border-transparent backdrop-blur-[10px]";
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -47,17 +51,14 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 30);
+    // Batasnya 30px, tetapi di halaman yang hanya bisa di-scroll sedikit (misalnya beranda
+    // di desktop) cukup setengah jarak scroll agar garis bawah navbar tetap muncul.
+    const fn = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrolled(window.scrollY > Math.min(30, max / 2));
+    };
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const fn = () => setMobile(mq.matches);
-    fn();
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
   }, []);
 
   return (
@@ -71,17 +72,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         /* Transisi hanya untuk properti yang berubah saat scroll, yaitu background
            dan garis bawah. `transition-all` ikut menganimasikan backdrop-filter dan
            properti layout, sehingga navbar terasa tertinggal dari halaman. */
-        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
-          !clearNav && scrolled ? "border-border" : "border-transparent"
-        }`}
-        style={{
-          backgroundColor: clearNav
-            ? "transparent"
-            : scrolled
-              ? "var(--nav-bg-scrolled)"
-              : "var(--nav-bg)",
-          backdropFilter: clearNav ? "none" : "blur(10px)",
-        }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b ${navClass}`}
       >
         <div className="max-w-5xl mx-auto px-4 pt-3 pb-3 flex items-center justify-between gap-2">
           {/* Resume tidak dibagikan langsung, pengunjung diarahkan ke WhatsApp untuk memintanya */}
@@ -154,8 +145,11 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             </span>
           </a>
 
-          <div className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar">
-            <span className="hidden sm:flex sm:mr-40 lg:mr-38 xl:mr-0">
+          {/* Di desktop link navbar berada di paling kanan, berdampingan dengan theme switch. */}
+          <div className="flex items-center gap-4 md:gap-8 lg:gap-5 overflow-x-auto no-scrollbar">
+            <NavLinks />
+            {/* Margin kanan memberi ruang untuk tombol SideMenu, yang disembunyikan di desktop. */}
+            <span className="hidden sm:flex sm:mr-40 lg:mr-0">
               <ThemeSwitch />
             </span>
           </div>

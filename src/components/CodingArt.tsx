@@ -86,7 +86,8 @@ export function CodingArt() {
             yoyo: true,
           });
 
-          (self.selector!(".ca-steam") as SVGPathElement[]).forEach((el, i) => {
+          // Semua garis uap muncul dan hilang bersamaan agar terlihat rapi.
+          (self.selector!(".ca-steam") as SVGPathElement[]).forEach((el) => {
             const len = el.getTotalLength();
 
             const base = el.getPointAtLength(0);
@@ -100,13 +101,14 @@ export function CodingArt() {
                   x: -0.8,
                   scale: 1.14,
                   strokeDashoffset: -len,
+                  // Ikut memudar agar ujung garis tidak tersisa sebagai titik.
+                  opacity: 0,
                   duration: 1.5,
                   ease: "sine.inOut",
                 },
                 { y: 2, x: 0, scale: 0.9, opacity: 0, strokeDashoffset: 0, duration: 0.01 },
               ],
               repeat: -1,
-              delay: i * 0.9,
             });
           });
 
@@ -202,9 +204,9 @@ export function CodingArt() {
             x2="0"
             y2="168"
           >
-            <stop offset="0%" style={{ stopColor: "var(--ca-steam-ink)", stopOpacity: 0.9 }} />
-            <stop offset="55%" style={{ stopColor: "var(--ca-steam-ink)", stopOpacity: 0.5 }} />
-            <stop offset="100%" style={{ stopColor: "var(--muted-color)", stopOpacity: 0.1 }} />
+            <stop offset="0%" style={{ stopColor: "var(--muted-color)", stopOpacity: 1 }} />
+            <stop offset="55%" style={{ stopColor: "var(--muted-color)", stopOpacity: 0.6 }} />
+            <stop offset="100%" style={{ stopColor: "var(--muted-color)", stopOpacity: 0.15 }} />
           </linearGradient>
         </defs>
         {SPARKS.map((sp) => (
@@ -224,7 +226,13 @@ export function CodingArt() {
           <path className="ca-draw" d="M28,204 C37,200 59,200 68,204" />
           <path className="ca-draw" d="M32,210 C23,210 21,222 32,224" strokeWidth="1.4" />
         </g>
-        <g stroke="url(#ca-steam-grad)" strokeWidth="1.6" filter="url(#ca-steam-blur)">
+        {/* Warna uap disamakan dengan cangkir, tetapi dibuat lebih pekat agar tetap terlihat. */}
+        <g
+          stroke="url(#ca-steam-grad)"
+          strokeWidth="1.6"
+          filter="url(#ca-steam-blur)"
+          opacity="0.9"
+        >
           <path className="ca-draw ca-steam" d="M42,195 C38,190 46,186 42,182" />
           <path className="ca-draw ca-steam" d="M48,190 C44,185 52,181 48,176" />
           <path className="ca-draw ca-steam" d="M54,195 C58,190 50,186 54,182" />

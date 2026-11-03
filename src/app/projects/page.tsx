@@ -98,10 +98,6 @@ export default function Projects() {
         <h1 className="font-caveat text-[clamp(2rem,4vw,2.8rem)] font-bold text-foreground m-0">
           Ideas in Code
         </h1>
-        <p className="lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
-          From simple ideas to working projects, here are a few things I’ve built while trying new
-          things, learning, and having fun along the way.
-        </p>
       </div>
 
       <div className="px-6 max-w-5xl mx-auto mb-6">

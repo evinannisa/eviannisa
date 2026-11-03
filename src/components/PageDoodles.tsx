@@ -16,7 +16,7 @@ type Mark = {
   className?: string;
 };
 
-// Garis gelombang biru. Juga dipakai di bawah "Software Engineer" di mobile dan tablet (page.tsx).
+// Garis gelombang biru, dipakai di bawah "Software Engineer" di semua ukuran layar (page.tsx).
 export const WAVE = "M4,16 C12,6 20,24 28,14 C34,8 40,20 45,14";
 export const WAVE_INK = "#79c0ff";
 // Bintang ungu.
@@ -35,15 +35,6 @@ const MARKS: Mark[] = [
     ],
     // Disembunyikan di tablet.
     hide: "md:max-lg:hidden",
-  },
-  {
-    top: "9%",
-    left: "26%",
-    w: 46,
-    box: "0 0 48 28",
-    paths: [WAVE],
-    ink: WAVE_INK,
-    hide: "hidden lg:block",
   },
   // Sisi kiri
   // Sisi kanan

@@ -10,11 +10,14 @@ import { TimeCapsulePopup } from "@/components/TimeCapsulePopup";
 
 // Nomor dengan kode negara tanpa "+", misalnya 6281234567890. Diatur lewat env WA_ME.
 export const WHATSAPP_NUMBER = process.env.WA_ME ?? "";
-const WHATSAPP_MESSAGE = "Halo! Saya lihat portfolio kamu dan ingin ngobrol.";
+// Pesan dua bahasa, sama seperti pesan resume di navbar.
+const WHATSAPP_MESSAGE =
+  "🇬🇧 Hi! I saw your portfolio and would love to chat.\n\n" +
+  "🇮🇩 Halo! Saya lihat portfolio kamu dan ingin ngobrol.";
 export const whatsappHref = (message: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 const EMAIL = "evinurannisa00@gmail.com";
-const EMAIL_SUBJECT = "Halo dari portfolio kamu";
+const EMAIL_SUBJECT = "Hello from your portfolio";
 
 function WhatsAppIcon() {
   return (

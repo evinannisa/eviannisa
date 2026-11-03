@@ -359,6 +359,275 @@ html.theme-swapping *::after {
   position: relative;
 }
 
+/* ── Rasi bintang skill (SkillConstellation) ─────────────────────────────── */
+.skill-constellation {
+  --sc-star: #dce8ff;
+  --sc-warm: #f2c94c; /* kuning keemasan */
+  --sc-line: var(--muted-color);
+  /* Lama satu siklus animasi rasi. Jeda tiap garis dan bintang diatur di SkillConstellation.tsx. */
+  --sc-cycle: 12s;
+  width: 17rem;
+  max-width: 100%;
+  margin: 0.5rem 0;
+}
+/* Mode terang: semua bintang berwarna kuning keemasan. Warnanya lebih tua dari
+   versi mode gelap agar tetap terlihat di latar krem. Garis tetap biru batu. */
+:root.light .skill-constellation {
+  --sc-star: #c9971c;
+  --sc-warm: #c9971c;
+  --sc-line: #4f6f7d;
+}
+@media (min-width: 1024px) {
+  .skill-constellation {
+    width: 20rem;
+  }
+}
+@media (max-width: 639px) {
+  .skill-constellation {
+    width: 16rem;
+  }
+  .skill-constellation .sc-label {
+    font-size: 15px;
+  }
+}
+.skill-constellation svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sc-field {
+  fill: var(--sc-star);
+  animation: sc-twinkle-soft 6s ease-in-out infinite alternate;
+}
+
+/* Garis rasi digambar satu per satu saat halaman dimuat. */
+.sc-lines line {
+  stroke: var(--sc-line);
+  stroke-width: 0.9;
+  /* --sc-depth diisi SkillConstellation.tsx sesuai kedalaman garis. */
+  stroke-opacity: var(--sc-depth, 0.2);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  /* Digambar satu per satu seperti saat halaman dimuat, bertahan, memudar, lalu digambar
+     ulang. Jeda tiap garis diatur dari SkillConstellation.tsx. */
+  animation: sc-draw var(--sc-cycle) ease-out infinite;
+}
+
+/* Bidang acuan 3D dan garis jatuh dari setiap bintang. */
+.sc-plane {
+  fill: none;
+  stroke: var(--sc-line);
+  stroke-width: 0.6;
+  stroke-opacity: 0.12;
+}
+.sc-drop line {
+  stroke: var(--sc-line);
+  stroke-width: 0.6;
+  stroke-opacity: 0.22;
+  stroke-dasharray: 1.5 3;
+}
+.sc-drop ellipse {
+  fill: none;
+  stroke: var(--sc-line);
+  stroke-width: 0.6;
+  stroke-opacity: 0.35;
+}
+.sc-drop {
+  opacity: 0;
+  animation: sc-fade var(--sc-cycle) ease-out infinite;
+}
+
+/* Bintang muncul satu per satu saat garis sampai kepadanya, lalu memudar bersama garis. */
+.sc-pop {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sc-pop var(--sc-cycle) ease-out infinite;
+}
+
+/* Bintang rasi dibuat sedikit redup agar senada dengan nama skill. */
+.sc-core,
+.sc-glow,
+.sc-spike {
+  opacity: 0.4;
+}
+.sc-core {
+  fill: var(--sc-star);
+}
+.sc-warm .sc-core {
+  fill: var(--sc-warm);
+}
+.sc-spike {
+  stroke: var(--sc-star);
+  stroke-width: 0.5;
+  stroke-opacity: 0.45;
+}
+.sc-warm .sc-spike {
+  stroke: var(--sc-warm);
+}
+/* Di latar terang, glow berwarna gelap terlihat seperti noda. Glow hanya
+   dipakai bintang hangat dan dibuat sangat tipis, sedangkan inti bintang dibuat
+   lebih pekat agar terlihat seperti titik tinta yang tegas. */
+:root.light .sc-glow {
+  opacity: 0;
+}
+:root.light .sc-warm .sc-glow {
+  opacity: 0.15;
+}
+:root.light .sc-core {
+  opacity: 0.55;
+}
+:root.light .sc-spike {
+  opacity: 0.4;
+}
+/* Mode gelap: bidang acuan 3D dan garis jatuh dibuat lebih terlihat, sedangkan
+   garis penghubung antarbintang dibuat lebih samar. */
+:root:not(.light) .sc-plane {
+  stroke-opacity: 0.22;
+}
+:root:not(.light) .sc-drop line {
+  stroke-opacity: 0.38;
+}
+:root:not(.light) .sc-drop ellipse {
+  stroke-opacity: 0.5;
+}
+:root:not(.light) .sc-lines line {
+  stroke-opacity: calc(var(--sc-depth, 0.2) * 0.6);
+}
+/* Garis penghubung antarbintang dibuat jauh lebih samar di latar krem. */
+:root.light .sc-lines line {
+  stroke-opacity: calc(var(--sc-depth, 0.2) * 0.4);
+}
+:root.light .sc-label {
+  fill-opacity: 0.5;
+}
+
+/* Bintang berkelip pelan dengan jeda berbeda-beda. */
+.sc-star {
+  transform-box: fill-box;
+  animation: sc-twinkle 4.5s ease-in-out infinite alternate;
+}
+
+.sc-label {
+  fill: var(--muted-color);
+  fill-opacity: 0.6;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  /* Pinggiran warna latar agar tulisan tidak tertimpa garis rasi. */
+  paint-order: stroke;
+  stroke: var(--bg-color);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  /* fill-opacity ikut ditransisikan agar perubahan terang tulisan tidak melompat. */
+  transition:
+    fill 0.45s ease,
+    fill-opacity 0.45s ease;
+}
+/* Pinggiran di atas hanya rapi jika warnanya sama persis dengan latar. Saat tema
+   berganti, latar dan pinggiran bisa berubah dengan kecepatan berbeda (terutama
+   di Safari), sehingga tulisan sempat terlihat ber-outline. Selama transisi
+   tema, pinggiran disembunyikan lalu muncul lagi setelah warna latar selesai
+   berubah. Selektor ini lebih spesifik dari aturan `html.theme-swapping *`. */
+html.theme-swapping .sc-label {
+  stroke-opacity: 0;
+  transition: fill var(--theme-swap) ease !important;
+}
+.sc-star:hover .sc-label {
+  fill: var(--fg-color);
+  fill-opacity: 1;
+}
+
+@keyframes sc-draw {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  4% {
+    stroke-dashoffset: 0;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+}
+@keyframes sc-fade {
+  0% {
+    opacity: 0;
+  }
+  4%,
+  80% {
+    opacity: 1;
+  }
+  92%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes sc-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  3% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  6% {
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+@keyframes sc-twinkle {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.72;
+  }
+}
+@keyframes sc-twinkle-soft {
+  from {
+    fill-opacity: 1;
+  }
+  to {
+    fill-opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-star,
+  .sc-field {
+    animation: none;
+  }
+  .sc-pop,
+  .sc-drop {
+    animation: none;
+    opacity: 1;
+  }
+  .sc-lines line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* ── Polaroid (about) ────────────────────────────────────────────────────── */
 /* Proporsi mengikuti theodorusclarence.com/about: padding tipis di tiga sisi,
    strip bawah tebal, foto di-crop persegi, dan kartu dimiringkan. */
@@ -531,9 +800,6 @@ html.theme-swapping *::after {
   }
 }
 
-.coding-art {
-  --ca-steam-ink: var(--orange-color);
-}
 /* Mode gelap: ilustrasi diredupkan agar tidak bersaing dengan teks.
    Di bawah lg opacity-nya sudah 0.35. */
 @media (min-width: 1024px) {
@@ -581,10 +847,6 @@ html.theme-swapping *::after {
 :root.light .doodle-sm:is(.edu-book, .ah-laptop, .ah-lamp) {
   opacity: 0.4;
 }
-:root.light .coding-art {
-  --ca-steam-ink: var(--red-color);
-}
-
 :root.light .ca-object {
   opacity: 0.2;
 }
@@ -1403,4 +1665,13 @@ html.theme-swapping *::after {
    sehingga kabel tampak hilang. Tebal kabel diatur dari komponen. */
 .pc-zoomed :is(path:not(.pc-cable), rect, circle) {
   vector-effect: non-scaling-stroke;
+}
+
+/* Titik penanda halaman aktif di navbar desktop. --ink diatur per link. */
+.nav-link-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background-color: var(--ink);
 }

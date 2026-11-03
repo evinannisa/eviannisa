@@ -18,7 +18,7 @@ import gsap from "gsap";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { useTheme } from "@/components/ThemeProvider";
 
-type NavItem = {
+export type NavItem = {
   href: string;
   label: string;
   exact?: boolean;
@@ -28,7 +28,7 @@ type NavItem = {
   hidden?: boolean;
 };
 
-const navItems: NavItem[] = [
+export const navItems: NavItem[] = [
   {
     href: "/",
     label: "connect with me",
@@ -354,7 +354,8 @@ export function SideMenu() {
   return (
     <div
       ref={rootRef}
-      className="fixed right-0 top-2.25 z-50 flex sm:top-3.25"
+      // Di desktop menu diganti navbar, lihat NavLinks di LayoutWrapper.
+      className="fixed right-0 top-2.25 z-50 flex sm:top-3.25 lg:hidden"
       style={
         place === null ? undefined : { left: place.x, top: place.y, right: "auto", bottom: "auto" }
       }

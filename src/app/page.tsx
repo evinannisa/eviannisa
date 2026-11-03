@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeProvider";
-import { CodingArt } from "@/components/CodingArt";
+import SkillConstellation from "@/components/SkillConstellation";
 import { PageDoodles, WAVE, WAVE_INK } from "@/components/PageDoodles";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -53,7 +53,7 @@ export default function Home() {
     <div className="mt-1 sm:mt-1">
       <section
         ref={sectionRef}
-        className="min-h-svh flex items-center relative overflow-hidden px-6 pt-20 pb-15 md:px-10 md:pb-20 lg:px-20 lg:py-16 notebook"
+        className="min-h-svh flex items-center relative overflow-hidden px-6 pt-20 pb-15 md:px-10 md:pb-20 lg:px-20 lg:pt-30 lg:pb-16 notebook"
         style={{ backgroundColor: C.bg }}
       >
         {/* Doodle yang tersebar di seluruh halaman, di belakang konten */}
@@ -165,8 +165,8 @@ export default function Home() {
         </svg>
         <svg
           style={{ opacity: 0.3 }}
-          // Di tablet dipindah ke kanan atas.
-          className="hero-doodle mb-35 bottom-0 right-160 md:max-lg:mb-0 md:max-lg:bottom-auto md:max-lg:right-10 md:max-lg:top-[16%]"
+          // Di tablet dipindah ke kanan atas, di desktop disembunyikan.
+          className="hero-doodle lg:hidden mb-35 bottom-0 right-160 md:max-lg:mb-0 md:max-lg:bottom-auto md:max-lg:right-10 md:max-lg:top-[16%]"
           width="80"
           height="14"
           viewBox="0 0 80 14"
@@ -217,13 +217,6 @@ export default function Home() {
                     filter: "grayscale(15%)",
                   }}
                 />
-                <span
-                  className="absolute bottom-1 right-1 w-3 h-3 rounded-full border-2 animate-pulse"
-                  style={{
-                    backgroundColor: C.green,
-                    borderColor: C.bg,
-                  }}
-                />
               </div>
               <div className="relative">
                 <div
@@ -245,10 +238,9 @@ export default function Home() {
                 >
                   Software Engineer
                 </div>
-                {/* Hanya di mobile dan tablet. Dibuat absolute agar nama tidak bergeser.
-                    Di desktop, gelombang ini ada di atas hero (PageDoodles). */}
+                {/* Dibuat absolute agar nama tidak bergeser. */}
                 <svg
-                  className="lg:hidden absolute left-12 top-full -mt-0.5"
+                  className="absolute left-12 top-full -mt-0.5"
                   width={40}
                   viewBox="0 0 48 28"
                   fill="none"
@@ -362,9 +354,12 @@ export default function Home() {
           </div>
 
           {/* ── kanan ── */}
-          <div className="flex justify-center lg:justify-end w-11/12">
-            <div className="hero-photo-stack">
-              <CodingArt />
+          {/* Rasi bintang Orion berisi skill, menggantikan sketsa CodingArt. Di desktop rasi
+              dibuat absolute agar tidak ikut menentukan tinggi baris, jadi posisi kolom kiri
+              tidak berubah. Titik tengahnya disejajarkan dengan titik tengah kolom kiri. */}
+          <div className="flex justify-center lg:justify-end lg:relative lg:self-stretch">
+            <div className="lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2">
+              <SkillConstellation />
             </div>
           </div>
         </div>
