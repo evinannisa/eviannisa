@@ -96,14 +96,16 @@ export function EducationTimeline() {
       </div>
 
       <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
-        This is where it all started. It began with random campus assignments, then somehow turned
-        into an internship where coding stopped being &ldquo;just homework&rdquo; and started
-        feeling like I was actually building something.
+        This is where it all started.
+        <br />
+        It began with random campus assignments. Then, somewhere along the way, it turned into
+        something more. Coding stopped being &ldquo;just homework&rdquo; and started to feel like I
+        was actually building something.
       </p>
 
       <svg
         className="edu-doodle edu-book hidden lg:block absolute pointer-events-none"
-        style={{ right: "-10.5rem", top: "5.5rem", width: 132 }}
+        style={{ right: "-14rem", top: "10rem", width: 132 }}
         viewBox="0 0 120 92"
         fill="none"
         stroke="var(--muted-color)"
@@ -118,7 +120,7 @@ export function EducationTimeline() {
 
       <svg
         className="edu-doodle hidden lg:block absolute pointer-events-none"
-        style={{ right: "-13rem", top: "3.1rem", width: 26 }}
+        style={{ right: "-16.5rem", top: "7.6rem", width: 26 }}
         viewBox="0 0 40 40"
         fill="none"
         stroke="var(--muted-color)"
@@ -137,8 +139,8 @@ export function EducationTimeline() {
       <svg
         className="edu-doodle hidden lg:block absolute pointer-events-none"
         style={{
-          right: "-13.5rem",
-          top: "15.5rem",
+          right: "-17rem",
+          top: "20rem",
           width: 30,
         }}
         viewBox="0 0 19 10"
@@ -179,16 +181,18 @@ export function EducationTimeline() {
               Informatics Engineering
             </div>
             <div className="font-mono text-[12px] sm:text-sm text-muted">
-              Amikom Yogyakarta Univesity | GPA 3,82 | 2019 - 2022
+              University of Amikom Yogyakarta | GPA 3,82 | 2019 - 2022
             </div>
             <div className="mt-1.5 text-sm sm:text-base text-muted flex flex-col gap-2.5 font-poppins-sans leading-[1.7]">
               <span>
-                I also joined a few events and organizations through HIMADITI and BEM. Before
-                getting into internships, I got to be a teaching assistant, helping students learn
-                web development during practical sessions. My first internship was part of my degree
-                program, where I learned what working was really like. Later, I joined the MSIB
-                program through Kampus Merdeka, where I got to collaborate with different teams and
-                meet people from different parts of Indonesia.
+                Outside the classroom, I joined a few events and organizations through HIMADITI and
+                BEM. I also became a teaching assistant, helping students learn web development
+                during practical sessions.
+              </span>
+              <span>
+                Then I joined the MSIB internship program through Kampus Merdeka. There, I learned
+                for the first time how to build a product, from brainstorming all the way to working
+                with a team. Even better, I got to meet friends from all across Indonesia!
               </span>
               <Link href="/experiences" className="self-start">
                 <span className="inline-flex items-center gap-1.5">

@@ -150,8 +150,8 @@ export default function Experience() {
         </div>
 
         <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
-          The roles I&apos;ve held, the teams I worked alongside, and the products I helped bring to
-          production.
+          The companies I&apos;ve worked at, the roles I&apos;ve held, and the products I&apos;ve
+          helped build along the way.
         </p>
 
         {groups.map((g, gi) => (

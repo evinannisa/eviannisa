@@ -51,7 +51,7 @@ export function SkillList({
         </div>
       </div>
       <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted leading-[1.8] font-poppins-sans tracking-[0.012em]">
-        Tools and technologies I’ve used at work, in personal projects, and along the way.
+        The tools and technologies I’ve used at work, in side projects, and everywhere in between.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 items-start">

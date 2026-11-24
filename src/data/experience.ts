@@ -1,10 +1,10 @@
 // Riwayat pengalaman, dipakai di halaman /experience dan WorkHighlight di halaman About.
 export const timeline = [
   {
-    year: "March 2026 - Current",
+    year: "March 2026 - Present",
     title: "Software Engineer",
     place: "TAN Digital",
-    desc: "After that, I joined a team working on network reporting, using data from Ookla and Speedtest. It was a different kind of challenge, working with network data and turning those reports into useful insights through the application.",
+    desc: "Today, I'm building an electronic signature application, and I've been on it since day one. It started with going through the SDLC, step by step. Then I sat down with the client to explain how the application would be implemented and work together with their other systems. Along the way, I learned that keeping a project running well isn't only about code. It's also about listening to feedback from teammates, team leads, and the client, and knowing how to filter it.",
     skills: [
       "Next.js",
       "TypeScript",

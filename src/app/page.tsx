@@ -269,10 +269,11 @@ export default function Home() {
             >
               {/* Penanda baseline baris pertama untuk menyelaraskan garis buku. */}
               <span ref={baseRef} aria-hidden="true" className="inline-block h-0 w-0" />
-              I build things, learn new stuff, and turn little ideas into something real. I’m always
-              curious, trying something new, and seeing where it takes me.
+              I build things, learn new stuff, and turn little ideas into something real.
               <br />
-              This is my little space for the things I’ve been working on.
+              I’m always curious and always trying something new.
+              <br />
+              This is my own space for the things I’ve been working on.
             </p>
 
             {/* Status */}

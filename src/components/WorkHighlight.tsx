@@ -159,7 +159,7 @@ export function WorkHighlight() {
     <section ref={rootRef} className="relative lg:ml-auto lg:max-w-160">
       <svg
         className="ah-doodle hidden lg:block absolute pointer-events-none"
-        style={{ top: "3.4rem", left: "-6rem", width: 30 }}
+        style={{ top: "5rem", left: "-6rem", width: 30 }}
         viewBox="0 0 40 20"
         fill="none"
         stroke="var(--purple-color)"
@@ -177,7 +177,7 @@ export function WorkHighlight() {
       <svg
         className="ah-doodle ah-laptop hidden lg:block absolute pointer-events-none"
         style={{
-          top: "9.5rem",
+          top: "11rem",
           left: "-15.2rem",
           width: 150,
           transform: "rotate(-6deg)",
@@ -201,8 +201,8 @@ export function WorkHighlight() {
         </div>
       </div>
       <p className="mb-4 sm:mb-6 text-sm sm:text-base lg:text-right lg:max-w-160 text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
-        And then, after graduation, everything I had learned and experienced along the way started
-        turning into real work, with projects across banking, geospatial, and carbon certification.
+        After graduation, everything I had learned started turning into real work, with projects
+        across banking, geospatial, carbon certification and government.
       </p>
 
       <div className="tl-list pl-4 sm:pl-6.75 lg:pl-20">

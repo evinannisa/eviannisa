@@ -649,17 +649,9 @@ html.theme-swapping .sc-label {
   transform: rotate(2deg);
 }
 :root.light .polaroid {
-  /* Mat tema light dibuat PUTIH, sengaja lebih terang dari latar halaman.
-
-     Mat krem yang lebih gelap (#e7d9c4) memang menaikkan kontras, tetapi
-     terlihat keruh seperti bidang cokelat kusam. Bingkai polaroid asli putih,
-     jadi mat yang lebih terang adalah pilihan yang tepat.
-
-     Karena kontras putih di atas krem sangat rendah (1.057), kartu dipisahkan
-     dari halaman lewat garis tepi hangat 1px di ::after dan bayangan di bawah
-     ini, seperti kertas foto yang terlihat dari tepi dan bayangannya. */
-  --mat: #ffffff;
-  box-shadow: 0 4px 12px rgba(42, 33, 24, 0.08);
+  /* Mat tetap gelap di tema light, tetapi memakai cokelat tua dari palet
+     (--fg-color tema light) agar serasi dengan latar krem, bukan hitam pekat. */
+  --mat: var(--fg-color);
 }
 /* Garis tepi 1px dengan teknik mask-composite: gradasi mengisi area padding,
    lalu bagian dalamnya dilubangi sehingga hanya garis tepi yang tersisa.
@@ -687,18 +679,6 @@ html.theme-swapping .sc-label {
   mask-composite: exclude;
   pointer-events: none;
 }
-/* Di tema light, sorotan putih tidak terlihat karena mat-nya sudah terang,
-   sehingga kartu kehilangan garis batasnya. Sorotan diganti dengan tinta
-   hangat yang sama dengan bayangan (rgb 122,106,85 = --muted-color tema light),
-   dengan arah gradasi yang sama. */
-:root.light .polaroid::after {
-  background: linear-gradient(
-    to bottom right,
-    rgba(122, 106, 85, 0.3) 0%,
-    rgba(122, 106, 85, 0.55) 62%,
-    rgba(122, 106, 85, 0.3) 100%
-  );
-}
 .polaroid-photo {
   position: relative;
   width: 100%;
@@ -720,8 +700,13 @@ html.theme-swapping .sc-label {
   align-items: center;
   justify-content: flex-end;
   padding: 0 12px 2px 6px;
-  color: var(--fg-color);
+  /* Mat polaroid selalu hitam di semua tema, jadi tanda tangan tetap terang. */
+  color: #e6edf3;
   transform: rotate(-1deg);
+}
+:root.light .polaroid-caption {
+  /* Krem dari palet (--surface2-color) agar serasi dengan mat cokelat. */
+  color: var(--surface2-color);
 }
 /* Coretan mewarisi `color` dari .polaroid-caption lewat currentColor, jadi
    warnanya mengikuti tema seperti tanda tangan. */
@@ -820,6 +805,18 @@ html.theme-swapping .sc-label {
     .ah-lamp
   ) {
   filter: opacity(0.55);
+}
+/* Doodle kecil di sekitar buku (bintang dan </>), laptop (titik tiga), dan
+   lampu (bintang biru) diredupkan lagi, hanya di mode terang. Selektornya lebih
+   spesifik daripada aturan di atas, jadi nilai ini yang dipakai. */
+:root.light
+  .about-page
+  :is(.edu-doodle, .ah-doodle, .ph-star):not(.edu-book, .ah-laptop, .ah-lamp) {
+  filter: opacity(0.3);
+}
+/* Doodle di sekitar buku diredupkan lebih jauh lagi, hanya di mode terang. */
+:root.light .about-page .edu-doodle:not(.edu-book) {
+  filter: opacity(0.18);
 }
 
 /* Doodle buku (Education), laptop (Experience), dan lampu (Projects),
@@ -1036,11 +1033,9 @@ html.theme-swapping .sc-label {
   position: relative;
 }
 :root.light .polaroid-stack::after {
-  /* Disamakan dengan --mat kartu depan, sesuai ss3.png. Kartu ini sudah punya
-     border sendiri, jadi tetap terlihat terpisah meskipun putih di atas krem. */
-  background: #ffffff;
+  /* Disamakan dengan mat kartu depan. */
+  background: var(--fg-color);
 }
-
 /* Panah diposisikan absolut terhadap .polaroid-stack agar tidak menggeser
    polaroid dari posisi tengahnya. z-index diperlukan karena latar kartu
    polaroid akan menutupinya. */

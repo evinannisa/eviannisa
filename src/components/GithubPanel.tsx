@@ -104,7 +104,7 @@ export function GithubPanel() {
     <div ref={rootRef} className="relative w-full">
       <svg
         className="gh-mark hidden lg:block absolute pointer-events-none"
-        style={{ top: "0.38rem", left: "1rem", width: 34 }}
+        style={{ top: "0.9rem", left: "1rem", width: 34 }}
         viewBox="0 0 48 28"
         fill="none"
         stroke="var(--teal-color)"
@@ -125,8 +125,8 @@ export function GithubPanel() {
           </div>
         </div>
         <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted lg:text-right font-poppins-sans leading-[1.8] tracking-[0.012em]">
-          Some of the things I build end up here. This part comes straight from GitHub, so you can
-          see what I’ve been coding lately.
+          Not everything I build makes it onto this page, but some of it does. This part comes
+          straight from GitHub, so you can see what I’ve been coding lately.
         </p>
       </div>
 

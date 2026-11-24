@@ -156,7 +156,7 @@ export default function About() {
           <AboutDoodles />
 
           <div className="flex flex-col gap-6">
-            <div className="sm:pt-8 pb-2 pl-1 w-full">
+            <div className="pt-4 sm:pt-14 md:max-lg:pt-24 pb-2 pl-1 w-full">
               <PolaroidStack>
                 <div className="polaroid m-auto">
                   <div className="polaroid-photo" style={{ aspectRatio: "1000 / 1108" }}>
@@ -200,23 +200,20 @@ export default function About() {
               </div>
             </div>
             <p className="about-fx font-normal! text-sm sm:text-base font-poppins leading-[1.8] tracking-[0.012em] text-muted">
-              Hello! I'm <span className="text-foreground/90 font-medium">Evi</span>. I am a
-              Software Engineer with 3+ years of experience in web development, with a passion for
-              exploring new ideas and staying curious about new technologies.{" "}
+              Hello! I'm <span className="text-foreground/90 font-medium">Evi</span>, a Software
+              Engineer with 3+ years of experience in web development. I love exploring new ideas
+              and staying curious about new technologies, so I'm always learning, building, and
+              growing through every project.
               <span className="block my-2 sm:my-4">
-                {" "}
-                I'm always learning, building, and growing through every project. I have experience
-                across projects in{" "}
+                Along the way, I've worked on projects across{" "}
                 <span className="text-foreground/90 font-medium">
-                  banking, geospatial, and carbon certification
+                  banking, geospatial, carbon certification, and government
                 </span>
-                .{" "}
-              </span>{" "}
+                . I have a strong eye for UI details, write clean code, and care about usability.
+              </span>
               <span className="block">
-                {" "}
-                Strong eye for UI details, write clean code, and care about usability. Take a moment
-                to explore the resume and see what fun things have been built. Thanks for stopping
-                by!
+                Take a moment to look around and see where my curiosity has taken me so far. Thanks
+                for stopping by!
               </span>
             </p>
           </div>

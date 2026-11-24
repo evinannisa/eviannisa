@@ -56,11 +56,10 @@ const lampPaths = (
   </>
 );
 
-// Cerita tambahan yang hanya tampil di halaman About, ditambahkan setelah
-// deskripsi proyek.
-const ABOUT_NOTE: Record<string, string> = {
+// Deskripsi khusus halaman About, menggantikan deskripsi proyek bila ada.
+const ABOUT_DESC: Record<string, string> = {
   signal:
-    "The idea came from Pramuka (scouts), where I first learned Morse code. You can challenge friends, send Morse messages for others to guess, or learn step by step with lessons, listening drills, and quizzes.",
+    "Signal is one of those random ideas. I first learned Morse code in Pramuka (scouts) back in junior high. Wait... what if I built an app for learning Morse code? It would be more fun, and learning wouldn't be limited to what's taught in person at school. In Signal, you can learn through lessons, listening drills, and quizzes, then test your skills in a Morse game. You can also challenge friends, or send Morse messages for others to guess.",
 };
 
 export function ProjectsHighlight() {
@@ -181,7 +180,7 @@ export function ProjectsHighlight() {
       <div className="flex gap-2.5 items-center mb-2">
         <div className="font-mono text-[0.845rem] text-muted opacity-[0.65]">// 03</div>
         <div className="font-caveat text-xl sm:text-2xl font-bold text-foreground tracking-[0.080em]">
-          Poject Playground
+          Project Playground
         </div>
         <svg
           className="ah-doodle ah-lamp doodle-sm lg:hidden pointer-events-none"
@@ -198,13 +197,14 @@ export function ProjectsHighlight() {
       </div>
 
       <p className="mb-4 sm:mb-6 lg:max-w-160 text-sm sm:text-base text-muted font-poppins-sans leading-[1.8] tracking-[0.012em]">
-        There’s always something new to explore, so I keep building little things on the side.
-        Mostly random ideas, just for fun and to see what I can make.
+        There’s always something new that catches my curiosity, so I keep building little things on
+        the side. Most of them start as random ideas, just for fun. But along the way, I want to see
+        what I can make, and how far I can take it.
       </p>
 
       <div className="relative">
         <svg
-          className="ph-star hidden lg:block absolute pointer-events-none top-[50%] mt-14 -right-64 w-4.5 rotate-[9deg]"
+          className="ph-star hidden lg:block absolute pointer-events-none top-[50%] mt-10 -right-64 w-4.5 rotate-[9deg]"
           viewBox="0 0 40 40"
           fill="none"
           stroke="var(--blue-color)"
@@ -297,7 +297,7 @@ export function ProjectsHighlight() {
         </svg> */}
 
         <svg
-          className="ah-doodle ah-lamp hidden lg:block absolute pointer-events-none top-[50%] -mt-30 -right-58 w-28 rotate-[-8deg]"
+          className="ah-doodle ah-lamp hidden lg:block absolute pointer-events-none top-[50%] -mt-34 -right-58 w-28 rotate-[-8deg]"
           viewBox="0 0 100 128"
           fill="none"
           stroke="var(--muted-color)"
@@ -330,11 +330,8 @@ export function ProjectsHighlight() {
 
                 {/* Jarak dan ukuran disamakan dengan Work Experience (WorkHighlight) */}
                 <div className="mt-1.5 text-sm sm:text-base flex flex-col gap-2 text-muted font-poppins-sans leading-[1.7]">
-                  <span>
-                    {p.desc}
-                    {ABOUT_NOTE[p.id] && ` ${ABOUT_NOTE[p.id]}`}
-                  </span>
-                  <span>Here’s the tech stack I’ve worked with :</span>
+                  <span>{ABOUT_DESC[p.id] ?? p.desc}</span>
+                  <span>So I'm building it with :</span>
                 </div>
 
                 <div className="flex items-center justify-start gap-5 mt-2 flex-wrap">
