@@ -630,7 +630,7 @@ html.theme-swapping .sc-label {
 
 /* ── Polaroid (about) ────────────────────────────────────────────────────── */
 /* Proporsi mengikuti theodorusclarence.com/about: padding tipis di tiga sisi,
-   strip bawah tebal, foto di-crop persegi, dan kartu dimiringkan. */
+   strip bawah tebal, dan kartu dimiringkan. */
 .polaroid {
   --mat: #090b0f;
   position: relative;
@@ -644,19 +644,19 @@ html.theme-swapping .sc-label {
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.22),
     0 14px 26px -14px rgba(0, 0, 0, 0.5);
-  /* Kartu depan dimiringkan sedikit. Hover hanya mengangkat kartu dan tidak
-     meluruskannya, agar tumpukan kartu tidak berantakan saat disorot. */
+  /* Kartu depan dimiringkan sedikit. */
   transform: rotate(2deg);
 }
 :root.light .polaroid {
-  /* Mat tetap gelap di tema light, tetapi memakai cokelat tua dari palet
-     (--fg-color tema light) agar serasi dengan latar krem, bukan hitam pekat. */
-  --mat: var(--fg-color);
+  /* Mat tema light: cokelat tua (espresso) yang hangat, selaras dengan
+     --fg-color tema light (#2a2118) tetapi sedikit lebih terang. */
+  --mat: #3b2d22;
+  box-shadow:
+    0 2px 4px rgba(42, 33, 24, 0.18),
+    0 14px 26px -14px rgba(42, 33, 24, 0.45);
 }
 /* Garis tepi 1px dengan teknik mask-composite: gradasi mengisi area padding,
-   lalu bagian dalamnya dilubangi sehingga hanya garis tepi yang tersisa.
-   Sorotannya putih transparan, bukan token palet, karena token border tema
-   light (krem) terlihat mencolok di atas kartu sepekat ini. */
+   lalu bagian dalamnya dilubangi sehingga hanya garis tepi yang tersisa. */
 .polaroid::after {
   content: "";
   position: absolute;
@@ -679,6 +679,15 @@ html.theme-swapping .sc-label {
   mask-composite: exclude;
   pointer-events: none;
 }
+/* Sorotan tepi krem tipis di atas mat cokelat. */
+:root.light .polaroid::after {
+  background: linear-gradient(
+    to bottom right,
+    rgba(245, 237, 224, 0.1) 0%,
+    rgba(245, 237, 224, 0.28) 62%,
+    rgba(245, 237, 224, 0.1) 100%
+  );
+}
 .polaroid-photo {
   position: relative;
   width: 100%;
@@ -692,24 +701,20 @@ html.theme-swapping .sc-label {
   height: 100%;
   object-fit: cover;
 }
-/* Strip bawah: tanda tangan dan sapuan garis berada di kanan bawah,
-   mengikuti ss3.png. */
+/* Strip bawah: coretan berada di kanan bawah. */
 .polaroid-caption {
   height: 46px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 0 12px 2px 6px;
-  /* Mat polaroid selalu hitam di semua tema, jadi tanda tangan tetap terang. */
+  /* Mat selalu gelap di semua tema, jadi coretan tetap terang. */
   color: #e6edf3;
   transform: rotate(-1deg);
 }
 :root.light .polaroid-caption {
-  /* Krem dari palet (--surface2-color) agar serasi dengan mat cokelat. */
   color: var(--surface2-color);
 }
-/* Coretan mewarisi `color` dari .polaroid-caption lewat currentColor, jadi
-   warnanya mengikuti tema seperti tanda tangan. */
 .polaroid-scribble {
   width: 74px;
 }
@@ -1002,15 +1007,13 @@ html.theme-swapping .sc-label {
 }
 
 /* ── Polaroid stack (about) ──────────────────────────────────────────────── */
-/* Kartu di belakang polaroid, mengikuti ss3.png. Digambar sebagai
-   pseudo-element agar markup polaroid di page.tsx tidak perlu diubah. */
+/* Pembungkus polaroid, tempat kartu belakang dan panah diposisikan. */
 .polaroid-stack {
   position: relative;
   width: fit-content;
   margin-inline: auto;
 }
-/* Hanya SATU kartu di belakang, karena di ss3.png totalnya dua polaroid:
-   kartu depan berisi foto dan satu kartu lagi menyembul di belakangnya. */
+/* Satu kartu di belakang yang menyembul di kanan atas. */
 .polaroid-stack::after {
   content: "";
   position: absolute;
@@ -1019,22 +1022,16 @@ html.theme-swapping .sc-label {
   background: #090b0f;
   border: 1px solid var(--border-color);
   opacity: 0.9;
-  /* Kartu ini tegak, tidak ikut dimiringkan. Transform tidak memengaruhi tata
-     letak, jadi `inset: 0` tetap mengikuti posisi polaroid sebelum dirotasi.
-     Hasilnya kartu belakang menyembul rapi di kanan atas. */
   transform: translate(9px, -6px);
-  /* Berada di belakang polaroid. Pembungkusnya tidak punya background,
-     jadi tidak ada yang menutupi kartu ini. */
   z-index: -1;
   pointer-events: none;
 }
-
+:root.light .polaroid-stack::after {
+  background: #3b2d22;
+  border-color: rgba(42, 33, 24, 0.35);
+}
 .polaroid-stack-wrap {
   position: relative;
-}
-:root.light .polaroid-stack::after {
-  /* Disamakan dengan mat kartu depan. */
-  background: var(--fg-color);
 }
 /* Panah diposisikan absolut terhadap .polaroid-stack agar tidak menggeser
    polaroid dari posisi tengahnya. z-index diperlukan karena latar kartu

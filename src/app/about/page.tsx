@@ -161,8 +161,8 @@ export default function About() {
                 <div className="polaroid m-auto">
                   <div className="polaroid-photo" style={{ aspectRatio: "1000 / 1108" }}>
                     <img
-                      src="/assets/images/foto.jpg"
-                      alt="Evi Nur Annisa"
+                      src="/assets/images/bear.svg"
+                      alt="A cute anime bear illustration"
                       width={1000}
                       height={1108}
                     />

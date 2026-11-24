@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1108" role="img" aria-label="Cute anime bear">
+  <rect width="1000" height="1108" fill="#f4e7d4" />
+  <circle cx="500" cy="560" r="400" fill="#f9efe0" />
+
+  <!-- sparkles -->
+  <g fill="#e8a838" opacity="0.85">
+    <path d="M170 220 l14 40 l40 14 l-40 14 l-14 40 l-14 -40 l-40 -14 l40 -14 z" />
+    <path d="M850 330 l10 28 l28 10 l-28 10 l-10 28 l-10 -28 l-28 -10 l28 -10 z" />
+    <path d="M800 150 l8 22 l22 8 l-22 8 l-8 22 l-8 -22 l-22 -8 l22 -8 z" opacity="0.7" />
+  </g>
+  <path d="M120 760 c-30 -50 40 -70 40 -25 c0 -45 70 -25 40 25 l-40 45 z" fill="#f2a091" opacity="0.8" />
+
+  <!-- body -->
+  <ellipse cx="500" cy="1000" rx="270" ry="250" fill="#b9835a" />
+  <ellipse cx="500" cy="1020" rx="170" ry="170" fill="#ecd2ab" />
+  <!-- arms -->
+  <ellipse cx="270" cy="930" rx="65" ry="95" fill="#b9835a" transform="rotate(25 270 930)" />
+  <ellipse cx="730" cy="930" rx="65" ry="95" fill="#b9835a" transform="rotate(-25 730 930)" />
+  <circle cx="300" cy="1000" r="26" fill="#ecd2ab" />
+  <circle cx="700" cy="1000" r="26" fill="#ecd2ab" />
+
+  <!-- ears -->
+  <circle cx="285" cy="320" r="100" fill="#b9835a" />
+  <circle cx="715" cy="320" r="100" fill="#b9835a" />
+  <circle cx="285" cy="325" r="55" fill="#f0c3a6" />
+  <circle cx="715" cy="325" r="55" fill="#f0c3a6" />
+
+  <!-- head -->
+  <ellipse cx="500" cy="560" rx="300" ry="270" fill="#c48f64" />
+
+  <!-- muzzle -->
+  <ellipse cx="500" cy="650" rx="130" ry="95" fill="#f2dcbc" />
+
+  <!-- eyes -->
+  <ellipse cx="385" cy="540" rx="30" ry="40" fill="#2a2118" />
+  <ellipse cx="615" cy="540" rx="30" ry="40" fill="#2a2118" />
+  <circle cx="395" cy="525" r="12" fill="#ffffff" />
+  <circle cx="625" cy="525" r="12" fill="#ffffff" />
+  <circle cx="377" cy="556" r="6" fill="#ffffff" opacity="0.85" />
+  <circle cx="607" cy="556" r="6" fill="#ffffff" opacity="0.85" />
+
+  <!-- blush -->
+  <ellipse cx="310" cy="632" rx="52" ry="30" fill="#f2a091" opacity="0.65" />
+  <ellipse cx="690" cy="632" rx="52" ry="30" fill="#f2a091" opacity="0.65" />
+
+  <!-- nose and mouth -->
+  <ellipse cx="500" cy="618" rx="34" ry="22" fill="#2a2118" />
+  <ellipse cx="490" cy="611" rx="9" ry="5" fill="#ffffff" opacity="0.6" />
+  <g fill="none" stroke="#2a2118" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M500 640 v22" />
+    <path d="M500 662 q-26 28 -54 4" />
+    <path d="M500 662 q26 28 54 4" />
+  </g>
+</svg>
